@@ -1,0 +1,115 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drive-auth-deployment
+spec:
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+      - name: auth
+        image: ashinjoy/auth-srv:latest
+        env:
+         - name: PORT
+           valueFrom:
+             secretKeyRef:
+               name: auth-secret
+               key: PORT
+         - name: MONGO_STRING
+           valueFrom:
+             secretKeyRef:
+              name: auth-secret
+              key: MONGO_STRING  
+         - name: JWT_ACCESSTOKEN_SECRET
+           valueFrom:
+             secretKeyRef:
+               name: auth-secret
+               key: JWT_ACCESSTOKEN_SECRET
+         - name: JWT_REFRESHTOKEN_SECRET
+           valueFrom:
+             secretKeyRef:
+              name: auth-secret
+              key: JWT_REFRESHTOKEN_SECRET  
+         - name: MAIL
+           valueFrom:
+             secretKeyRef:
+              name: auth-secret
+              key: MAIL     
+         - name: PASSWORD
+           valueFrom:
+             secretKeyRef:
+               name: auth-secret
+               key: PASSWORD
+         - name: SESSION_SECRET
+           valueFrom:
+             secretKeyRef:
+              name: auth-secret
+              key: SESSION_SECRET  
+         - name: BUCKET_NAME
+           valueFrom:
+             secretKeyRef:
+               name: auth-secret
+               key: BUCKET_NAME
+         - name: REGION
+           valueFrom:
+             secretKeyRef:
+               name: auth-secret
+               key: REGION      
+         - name: S3_ACCESSKEY
+           valueFrom:
+             secretKeyRef:
+              name: auth-secret
+              key: S3_ACCESSKEY
+         - name: S3_SECRETKEY
+           valueFrom:
+             secretKeyRef:
+              name: auth-secret
+              key: S3_SECRETKEY      
+         - name: TWILIO_ACCOUNT_SID
+           valueFrom:
+             secretKeyRef:
+              name: auth-secret
+              key: TWILIO_ACCOUNT_SID  
+         - name: TWILIO_AUTH_TOKEN
+           valueFrom:
+             secretKeyRef:
+              name: auth-secret
+              key: TWILIO_AUTH_TOKEN 
+         - name: TWILIO_ACCOUNT_PHONE
+           valueFrom:
+             secretKeyRef:
+              name: auth-secret
+              key: TWILIO_ACCOUNT_PHONE  
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "120m"  
+            memory: "128Mi"
+
+        # ports:
+        # - containerPort: 3002
+---
+apiVersion: v1   
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  selector:
+    app: auth
+  ports:
+  - name: auth
+    port: 3002
+    targetPort: 3002
+
+
+
+
+  

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: drive-chat-deployment
+spec:
+  selector:
+    matchLabels:
+      app: chat
+  template:
+    metadata:
+      labels:
+        app: chat
+    spec:
+      containers:
+        - name: chat
+          image: ashinjoy/chat-srv:latest    
+          imagePullPolicy: Always
+          env:
+           - name: PORT
+             valueFrom:
+              secretKeyRef:
+                name: chat-secret
+                key: PORT
+           - name: MONGO_STRING
+             valueFrom: 
+              secretKeyRef:
+                name: chat-secret
+                key: MONGO_STRING
+           - name: JWT_ACCESSTOKEN_SECRET
+             valueFrom: 
+               secretKeyRef:
+                 name: chat-secret
+                 key: JWT_ACCESSTOKEN_SECRET
+           - name: JWT_REFRESHTOKEN_SECRET
+             valueFrom: 
+               secretKeyRef:
+                 name: chat-secret
+                 key: JWT_REFRESHTOKEN_SECRET                                             
+          resources:
+            requests: 
+              cpu: "120m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+              cpu: "128m"
+---
+apiVersion: v1
+kind: Service    
+metadata:
+  name: chat-service
+spec:
+  selector:
+    app: chat
+  ports:
+  - name: chat
+    protocol: TCP
+    port: 3004
+    targetPort: 3004    

@@ -1,0 +1,53 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drive-client-deployment
+spec:
+  selector:
+    matchLabels:
+      app: drive-client
+  template:
+    metadata:
+      labels:
+        app: drive-client
+    spec:
+      containers:
+      - name: drive-client
+        image: ashinjoy/drive-client:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        env:
+         - name: REACT_APP_CLIENT_ID
+           valueFrom:
+             secretKeyRef:
+               name: client-secret
+               key: REACT_APP_CLIENT_ID
+         - name: REACT_APP_MAPBOX_TOKEN
+           valueFrom:
+             secretKeyRef:
+              name: client-secret
+              key: REACT_APP_MAPBOX_TOKEN                                                      
+---
+apiVersion: v1   
+kind: Service
+metadata:
+  name: drive-client-service
+spec:
+  selector:
+    app: drive-client
+  ports:
+  - name: drive-client
+    port: 3000
+    targetPort: 3000
+
+
+
+
+  

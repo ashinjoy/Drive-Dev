@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+
+  font-family: "Lexend Deca", sans-serif;
+  font-weight: 500;
+  height: 100%;
+  /* overflow-x: hidden; */
+  background: linear-gradient(to right, #ffffff, #F5F5F5);
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+}

@@ -1,0 +1,80 @@
+
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.2/deploy/static/provider/cloud/deploy.yaml
+
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: ingress-nginx
+    annotations:
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+      nginx.ingress.kubernetes.io/enable-websocket: "true"
+      nginx.ingress.kubernetes.io/proxy-connection-header: "true"
+      nginx.org/proxy-read-timeout: "3600"
+      nginx.org/proxy-send-timeout : "3600"
+      nginx.ingress.kubernetes.io/upgrade: "websocket"
+      nginx.ingress.kubernetes.io/websocket-services: "chat-service,trip-service"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-origin: "https://drivee.online"
+      nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+      nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: drivee.online
+      http:
+        paths:
+        - path: /api/chat/
+          pathType: Prefix
+          backend:
+            service:
+              name: chat-service
+              port:
+                number: 3004
+        - path: /api/auth/
+          pathType: Prefix
+          backend:
+            service:
+              name: auth-service
+              port:
+                number: 3002
+        - path: /api/trip/
+          pathType: Prefix
+          backend:
+            service:
+              name: trip-service
+              port:
+                number: 3003        
+        - path: /api/payment
+          pathType: Prefix
+          backend:
+            service:
+              name: payment-service
+              port:
+                number: 3005          
+        - path: /socket.io/chat/
+          pathType: ImplementationSpecific
+          backend:
+            service: 
+              name: chat-service
+              port:
+                number: 3004
+        - path: /socket.io/trip/
+          pathType: ImplementationSpecific
+          backend:
+            service: 
+              name: trip-service
+              port:
+                number: 3003         
+        - path: /
+          pathType: Prefix
+          backend:
+            service: 
+              name: drive-client-service
+              port:
+                number: 3000                      
+    tls:
+    - hosts:
+       - drivee.online
+      secretName: drivee-tls 
