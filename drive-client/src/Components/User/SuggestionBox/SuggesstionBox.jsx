@@ -29,11 +29,9 @@ function SuggesstionBox({suggestions,setSuggestions,setPickupSuggestion,setPicku
         </div>
     </div>
     </li>
-
-              })
-            }
+  })}
               
-            </ul>
+  </ul>
 </div>
   )
 }

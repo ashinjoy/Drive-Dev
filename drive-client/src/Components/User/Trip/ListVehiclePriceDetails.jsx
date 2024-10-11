@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { requestRideAction } from "../../../Features/Trip/tripActions";
 import { useNavigate } from "react-router-dom";
@@ -21,14 +21,13 @@ function ListVehiclePriceDetails({
   const { additionalSearchMetaData } = useSelector((state) => state.trip);
   const dispatch = useDispatch();
 
-  const handleSelectVehicle = (vehicle) => {
-    setSelectCategory(vehicle);
-    if (selectCategory === "Bike") {
-      bikeContainerRef.current.focus();
-    } else {
-      autoContainerRef.current.focus();
-    }
+  const handleSelectVehicle = (vehicleType) => {
+    setSelectCategory(vehicleType)
   };
+
+  useEffect(()=>{
+console.log('seleected',selectCategory);
+  },[selectCategory])
   const handleRequestRide = () => {
     let data = {
       userId: user?.id,
@@ -63,12 +62,12 @@ function ListVehiclePriceDetails({
       <div className="flex flex-col mt-[6.3rem] w-[48%] ">
         <h2 className="text-xl font-bold mb-4">Choose a ride</h2>
         <div
-          className="h-[10rem]"
+          className='h-[10rem]'
           onClick={() => handleSelectVehicle("Bike")}
           ref={bikeContainerRef}
           id="bikeContainer"
         >
-          <div className="border-2  rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ">
+          <div className={`border-2  rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory == "Bike") && 'border-2 border-black'} `}>
             <div className="flex items-center ">
               <img
                 src="/assets/scooter-illustration-vintage-vehicle-sign-and-symbol-vector.jpg"
@@ -94,7 +93,7 @@ function ListVehiclePriceDetails({
           ref={autoContainerRef}
           id="autoContainer"
         >
-          <div className="border rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ">
+          <div className={`border rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory == "Auto") && 'border-2 border-black'}`}>
             <div className="flex items-center">
               <img
                 src="/assets/TukTuk_Green_v1.png"
