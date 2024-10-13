@@ -9,5 +9,6 @@ export const dbConnect = async()=>{
       }
     } catch (error) {
         console.error(error);
+        throw error
     }
 }

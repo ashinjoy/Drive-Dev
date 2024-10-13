@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { requestRideAction } from "../../../Features/Trip/tripActions";
 import { useNavigate } from "react-router-dom";
+import CashPaymentConfirmModal from '../Modal/CashPaymentConfirmModal'
+import { toast } from "react-toastify";
 
 function ListVehiclePriceDetails({
   pickUpCoords,
@@ -17,6 +19,7 @@ function ListVehiclePriceDetails({
   const bikeContainerRef = useRef(null);
   const autoContainerRef = useRef(null);
   const [paymentMethod, setPaymentMethod] = useState("Online-Payment");
+  const [cashPaymentModal,setCashPaymentModal] = useState(false)
   const navigate = useNavigate();
   const { additionalSearchMetaData } = useSelector((state) => state.trip);
   const dispatch = useDispatch();
@@ -25,10 +28,22 @@ function ListVehiclePriceDetails({
     setSelectCategory(vehicleType)
   };
 
+  const handlePaymentMethod = (e)=>{
+    if(e.target.value === "Cash"){
+        setCashPaymentModal(true)
+    }
+        setPaymentMethod(e.target.value)
+  }
+
   useEffect(()=>{
 console.log('seleected',selectCategory);
   },[selectCategory])
-  const handleRequestRide = () => {
+  const handleRequestRide = (e) => {
+    if(selectCategory === ""){
+      e.preventDefault()
+      toast('please select vehicle')
+      return
+    }
     let data = {
       userId: user?.id,
       vehicleType: selectCategory,
@@ -57,8 +72,11 @@ console.log('seleected',selectCategory);
     setEta(vehicleDetails?.eta);
   }, [additionalSearchMetaData]);
 
+
+
   return (
     <>
+    {cashPaymentModal &&  <CashPaymentConfirmModal setPaymentMethod={setPaymentMethod} setCashPaymentModal={setCashPaymentModal}/>}
       <div className="flex flex-col mt-[6.3rem] w-[48%] ">
         <h2 className="text-xl font-bold mb-4">Choose a ride</h2>
         <div
@@ -67,7 +85,7 @@ console.log('seleected',selectCategory);
           ref={bikeContainerRef}
           id="bikeContainer"
         >
-          <div className={`border-2  rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory == "Bike") && 'border-2 border-black'} `}>
+          <div className={`border-2  rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory === "Bike") && 'border-2 border-black'} `}>
             <div className="flex items-center ">
               <img
                 src="/assets/scooter-illustration-vintage-vehicle-sign-and-symbol-vector.jpg"
@@ -93,7 +111,7 @@ console.log('seleected',selectCategory);
           ref={autoContainerRef}
           id="autoContainer"
         >
-          <div className={`border rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory == "Auto") && 'border-2 border-black'}`}>
+          <div className={`border rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory === "Auto") && 'border-2 border-black'}`}>
             <div className="flex items-center">
               <img
                 src="/assets/TukTuk_Green_v1.png"
@@ -116,17 +134,18 @@ console.log('seleected',selectCategory);
         <div className="mt-6 flex items-center justify-between">
           <select
             className="border p-2 rounded-md"
-            onChange={(e) => setPaymentMethod(e.target.value)}
+            value={paymentMethod}
+            onChange={handlePaymentMethod}
           >
             <option value="Cash">Cash</option>
-            <option value="Online-Payment" selected>
+            <option value="Online-Payment" >
               Pay Online
             </option>
             <option value="Wallet">Wallet</option>
           </select>
           <button
             className="bg-black text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-colors duration-200"
-            onClick={() => handleRequestRide(selectCategory)}
+            onClick={handleRequestRide}
           >
             Request Ride
           </button>
@@ -135,6 +154,7 @@ console.log('seleected',selectCategory);
     </>
   );
 }
+
 
 export default ListVehiclePriceDetails;
 

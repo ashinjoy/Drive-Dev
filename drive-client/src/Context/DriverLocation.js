@@ -12,12 +12,8 @@ function DriverLocation({ children }) {
 
 
   const [enableChat, setEnableChat] = useState(false);
+console.log(driverLive,'driver Live in context');
 
-
-  useEffect(()=>{
-console.log('startRide in UseEffect',startRide);
-
-  },[startRide])
   return (
     <driverLiveLocation.Provider
       value={{

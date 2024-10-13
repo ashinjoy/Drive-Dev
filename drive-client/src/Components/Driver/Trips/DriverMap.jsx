@@ -25,7 +25,7 @@ function DriverMap() {
   const [senderId, setSenderId] = useState(null);
   const { driver, currentStatus } = useSelector((state) => state.driver);
   const { tripDetail, message } = useSelector((state) => state.trip);
-  const { driverLive, setTripCoordintes, startRide, setStartRide } = useContext(driverLiveLocation);
+  const { driverLive, setTripCoordintes, startRide, setStartRide,tripCoordinates } = useContext(driverLiveLocation);
   const dispatch = useDispatch();
   const [openChat, setOpenChat] = useState(false);
   const [pickup, setPickUp] = useState([]);
@@ -41,7 +41,6 @@ function DriverMap() {
   const [endRide, setEndRide] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const { socket } = useSocket();
-// const rideIntiated = localStorage.getItem('rideInitiated')
   useEffect(() => {
     if (!tripDetail) {
       if (navigator.geolocation) {
@@ -65,24 +64,26 @@ function DriverMap() {
   }, [tripDetail]);
 
   useEffect(() => {
-    if (tripDetail ) {
-      // localStorage.setItem('rideInitiated')
-      console.log('inside the useEffect of the location');
-      
+    if (tripDetail) { 
       setPickUp(tripDetail?.startLocation?.coordinates);
       setDropoff(tripDetail?.endLocation?.coordinates);
-      setDriverCoords(tripDetail?.driverId?.currentLocation?.coordinates);
+      if(driverLive.length === 0){
+        console.log('driverLive in Map',driverLive);
+        console.log('inside the condition');
+        setDriverCoords(tripDetail?.driverId?.currentLocation?.coordinates);
+      }
+      
       const getRoute = async () => {
         const response = await axios.get(
           `https://api.mapbox.com/directions/v5/mapbox/driving/${tripDetail?.driverId?.currentLocation?.coordinates[0]},${tripDetail?.driverId?.currentLocation?.coordinates[1]};${tripDetail?.startLocation?.coordinates[0]},${tripDetail?.startLocation?.coordinates[1]};${tripDetail?.endLocation?.coordinates[0]},${tripDetail?.endLocation?.coordinates[1]}?geometries=geojson&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
         );
-        // console.log(
-        //   "Coordintaes For Testing Purpose of Live Location ===>",
-        //   response.data
-        // );
         const routeInfo = response.data;
         setRoute(routeInfo?.routes[0]?.geometry);
-        setTripCoordintes(routeInfo?.routes[0]?.geometry?.coordinates);
+        if(tripCoordinates.length === 0){
+          setTripCoordintes(routeInfo?.routes[0]?.geometry?.coordinates);
+          console.log('inside the second condition');
+          
+        }
       };
       const bounds = [
         [
@@ -122,7 +123,6 @@ function DriverMap() {
 
   useEffect(() => {
     if (!driverLive || !tripDetail) return;
-
     setDriverCoords(driverLive);
     const approx = checkApproxDistance(driverLive, pickup);
     const dropDestination = checkApproxDistance(driverLive, dropOff);
@@ -131,10 +131,6 @@ function DriverMap() {
       if (!rideStarted) {
         setStartRide(true);
         setRideStarted(true);
-        // socket.emit("nearbyPickup", {
-        //   userId: tripDetail?.userId,
-        //   duration: tripDetail?.duration,
-        // });
       }
     } else if (dropDestination < 0.1) {
       completeJourney();
@@ -198,6 +194,7 @@ function DriverMap() {
     dispatch(
       finishRide({ userId: tripDetail?.userId, tripId: tripDetail?._id })
     );
+    localStorage.removeItem('tripCoordsIndex')
   };
 
   useEffect(() => {
@@ -267,10 +264,6 @@ function DriverMap() {
           <div className="bg-white rounded-lg p-4 shadow-md flex flex-col items-center">
             <h2 className="text-2xl font-bold text-gray-800">Driver Status</h2>
             <p className="text-lg text-gray-600 mt-2">
-              {/* You are currently{" "}
-              {currentStatus?.currentStatus === "active"
-                ? "Active"
-                : "Inactive"} */}
             </p>
             <button
               className={`mt-4 rounded-full w-full h-14 text-xl font-bold shadow-lg transition-transform duration-200 ${

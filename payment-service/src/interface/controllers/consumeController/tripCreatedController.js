@@ -6,7 +6,7 @@ export class TripCreateConsumerController{
   }
   async createTrip(data){
       try {
-          console.log('cretaeUsesr');
+         
          await this.tripCreateUseCase.execute(data)
       } catch (error) {
           console.error(error);

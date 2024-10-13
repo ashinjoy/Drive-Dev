@@ -18,7 +18,7 @@ const tripSchema = new mongoose.Schema({
     },
     requestStatus:{
       type:String,
-      enum:['pending', 'accepted','rejected','no-reponse','cancelled'],
+      enum:['pending', 'accepted','rejected','no-response','cancelled'],
       default:'pending'
     },
     cancellationReason:{
@@ -75,6 +75,9 @@ const tripSchema = new mongoose.Schema({
     isPaymentComplete:{
       type:Boolean,
       default:false
+    },
+    cancelledTime:{
+      type:Date
     },
     paymentMethod:{
       type:String,

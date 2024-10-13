@@ -10,6 +10,10 @@ import { useNavigate } from "react-router-dom";
 import { cancelRide, payment } from "../../../Features/Trip/tripActions";
 import CancellationModal from "../Modal/CancellationModal";
 import CancelConfirmedModal from "../Modal/CancelConfirmedModal";
+import { CgEditBlackPoint } from "react-icons/cg";
+import { ImLocation } from "react-icons/im";
+import { AiFillCreditCard } from "react-icons/ai";
+
 
 
 function BookingInfo() {
@@ -81,7 +85,7 @@ function BookingInfo() {
   <div className="flex flex-col items-center border-b-2 pb-4">
     <div className="flex items-center mb-2">
        <div className="flex items-center mb-2">
-  {tripStatus !== "requested" ? (
+  {(tripStatus === "accepted" || tripStatus === "started") ? (
     <>
       <img
         src={tripDetail?.driverDetails?.profileImg}
@@ -91,11 +95,10 @@ function BookingInfo() {
       <div className="ml-4">
         <h2 className="text-lg font-bold">{tripDetail?.driverDetails?.name}</h2>
         <p className="text-gray-500">{tripDetail?.driverDetails?.vehicleDetails?.vehicleType}</p>
-        <p className="text-gray-500">KL65G5188</p>
+        <p className="text-gray-500">licec</p>
       </div>
     </>
-  ) : (
-    <>
+  ) : <>
     <div className="flex flex-col">
     <h1 className="text-center text-xl font-bold tracking-wide">
         Looking For Nearby Drivers
@@ -105,10 +108,9 @@ function BookingInfo() {
         alt="img"
         className="h-[5rem] w-auto mx-auto mt-6 opacity-90 animate-pulse"
       />
-    </div>
-      
-    </>
-  )}
+    </div> 
+    </>}
+  
 </div>
 
     </div>
@@ -123,7 +125,7 @@ function BookingInfo() {
   <div className="flex items-center  mt-4">
   </div>
   <div className="flex justify-between items-center mt-4">
-   {tripStatus !== "requested" && <>
+   {(tripStatus === "accepted" || tripStatus === "started") && <>
     <div className="flex flex-col items-center">
       <button  onClick={handleSos}>
       <MdHealthAndSafety size={'2rem'} style={{color:"blue"}}/>
@@ -139,17 +141,20 @@ function BookingInfo() {
    </> }
   </div>
   <div className="mt-4 flex flex-col">
-    <div className="flex items-center">
-      <span className="w-2 h-2 bg-black rounded-full mr-2"></span>
-      <p className="text-base text-gray-600">{tripDetail?.pickUpLocation}</p>
+    <div className="flex items-center gap-4">
+    <CgEditBlackPoint size={'1rem'}/>
+      <p className="text-lg font-medium ">{tripDetail?.pickUpLocation}</p>
     </div>
-    <div className="flex items-center  mt-2">
-      <span className="w-2 h-2 bg-black rounded-full mr-2"></span>
-      <p className="text-base text-gray-600">{tripDetail?.dropOffLocation}</p>
+    <div className="flex items-center  mt-4 gap-4">
+    <ImLocation size={'1rem'}/>
+      <div className="flex flex-col gap-1">
+      <p className="text-lg font-medium">{tripDetail?.dropOffLocation.split(',')[0]}</p>
+      <p className="text-base text-gray-600">{tripDetail?.dropOffLocation.split(',').slice(1)}</p>
+      </div>
     </div>
-    <div className="flex items-center  mt-2">
-      <span className="w-2 h-2 bg-black rounded-full mr-2"></span>
-      <p className="text-base text-gray-600">Fare:  {tripDetail?.fare}</p>
+    <div className="flex items-center  mt-4 gap-4">
+      <AiFillCreditCard size={'1rem'}/>
+      <p className="text-lg ">₹ {tripDetail?.fare}</p>
     </div>
     <div className="flex items-center justify-between mt-2">
     {((tripStatus === "accepted" || tripStatus === "started") &&  (paymentStatus !== "paid")) && (

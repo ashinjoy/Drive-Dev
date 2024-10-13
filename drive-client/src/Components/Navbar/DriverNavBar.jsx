@@ -27,7 +27,8 @@ function DriverNavBar() {
   const notificationDurationRef = useRef(null);
   const [rideStarted, setRideStarted] = useState(false);
   const liveIntervalRef = useRef(null);
-  const arrayIndexRef = useRef(0);
+  const tripIndex = localStorage.getItem('tripCoordsIndex')
+  const arrayIndexRef = useRef(tripIndex || 0);
 
   const {
     setDriverLive,
@@ -90,6 +91,8 @@ function DriverNavBar() {
             setRideStarted(true);
           }
         }
+        localStorage.setItem('tripCoordsIndex',arrayIndexRef.current)
+        
         setDriverLive(tripCoordinates[arrayIndexRef.current]);
         socket?.emit("location-update", {
           liveLocation: tripCoordinates[arrayIndexRef.current],
@@ -103,6 +106,7 @@ function DriverNavBar() {
     socket?.on("cancel-ride", () => {
       clearInterval(liveIntervalRef.current);
       dispatch(resetTripDetails());
+      localStorage.removeItem('tripCoordsIndex')
     });
     socket?.on("payment-update", (data) => {
       dispatch(setPaymentInfo(data));

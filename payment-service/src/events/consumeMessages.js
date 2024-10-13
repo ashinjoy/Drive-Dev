@@ -41,12 +41,7 @@ export class consumeManager{
                         await this.consumeDriverUpdatedController.driverUpdatedConsumer(data)
                         break
                 case 'TRIP_CREATED':
-                       const tripCreated =   await this.consumeTripCreateController.createTrip(data)
-                       await this.createPaymentController.createPayment({
-                        tripId:tripCreated._id,
-                        userId:tripCreated?.userId,
-                        paymentMethod:tripCreated?.paymentMethod
-                       })     
+                         await this.consumeTripCreateController.createTrip(data)    
                           break   
                 case 'TRIP_UPDATED':
                        await this.consumeTripUpdateController.updateTrip(data)

@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { searchAutoCompleteService } from "../../../Features/Trip/tripService";
 
 
+
 function   SearchLocation({setSearch}) {
   const {
     selectPickupLocation,
@@ -43,12 +44,15 @@ function   SearchLocation({setSearch}) {
     }
   };
 
-  const handleDropoffLocation = (evt) => {
-    setDropLocation(evt);
-  };
+  // const handleDropoffLocation = (evt) => {
+  //   setDropLocation(evt);
+  // };
 
   const handleResult = (result) => {
+    console.log('result selected',result);
+    
     selectDropOffLocation(result?.geometry?.coordinates);
+    setDropLocation(result?.properties?.full_address)
   };
 
   const handleSearchRide = (event) => {
@@ -138,7 +142,7 @@ function   SearchLocation({setSearch}) {
                   value={dropLocation}
                   placeholder="Dropoff Location"
                   onRetrieve={handleResult}
-                  onChange={handleDropoffLocation}
+                  // onChange={handleDropoffLocation}
                   options={{
                     proximity:pickUpCoords,
                     country:'in'

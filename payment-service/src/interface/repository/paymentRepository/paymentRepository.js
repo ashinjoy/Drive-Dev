@@ -10,6 +10,7 @@ export class PaymentRepository {
         paymentMethod: data?.paymentMethod,
         paymentStatus: "paid",
       });
+      
     } catch (error) {
       console.error(error);
       throw error

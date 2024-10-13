@@ -7,7 +7,7 @@ constructor(dependencies){
 async execute(inpOtp,userOtp,tripId) {
     try {
         if(inpOtp === userOtp){
-            const dataToUpdate ={tripStatus:'started'}
+            const dataToUpdate ={tripStatus:'started',startTime:Date.now()}
           const updateTripStatus =  await this.tripRepository.findTripByIdAndUpdate(tripId,dataToUpdate)
           userNotify('ride-start','started',updateTripStatus?.userId)
           return updateTripStatus

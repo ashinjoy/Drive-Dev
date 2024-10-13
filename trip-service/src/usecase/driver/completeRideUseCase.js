@@ -9,7 +9,7 @@ export class CompleteRideUseCase {
   }
   async execute(tripId,userId){
     try {
-        const dataToUpdate = {tripStatus:'completed'}
+        const dataToUpdate = {tripStatus:'completed',endTime:Date.now()}
         const completeRide =  await this.tripRepository.findTripByIdAndUpdate(tripId,dataToUpdate)
 
        const dataToPublish = {
@@ -30,7 +30,6 @@ export class CompleteRideUseCase {
         dropOffLocation:completeRide?.dropOffLocation,
         createdAt:completeRide?.createdAt
        }
-
        this.kafka.produceMessage(TRIP_TOPIC,{
         type:TRIP_UPDATED,
         value:JSON.stringify(dataToPublish)
