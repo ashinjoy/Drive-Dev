@@ -11,8 +11,6 @@ export class VerifyOtpUseCase {
   async execute(session, otpEntered) {
     try {
       const awsS3Config = new S3Config();
-     
-      
       if (!session) {
         const error = new Error();
         error.status = 400;

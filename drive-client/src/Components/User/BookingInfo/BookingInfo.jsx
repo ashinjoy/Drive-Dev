@@ -30,6 +30,7 @@ function BookingInfo() {
   const [senderId, setSenderId] = useState(null);
   const [recieverId, setRecieverId] = useState(null);
   const { user } = useSelector((state) => state.user);
+  
 
   const selectPaymentOption = async (e) => {
     setPayOption(e.target.value);
@@ -115,8 +116,8 @@ function BookingInfo() {
 
     </div>
     {tripStatus !== "requested" && <div className="mt-2 flex justify-center">
-      {tripDetail?.otp && tripDetail?.otp.split('').map((el)=>{
-     return <button className="px-3 py-1 bg-blue-500 text-white rounded-md mx-1">{el}</button>
+      {tripDetail?.otp && tripDetail?.otp.split('').map((el,index)=>{
+     return <button key={index} className="px-3 py-1 bg-blue-500 text-white rounded-md mx-1">{el}</button>
       
       })}
       

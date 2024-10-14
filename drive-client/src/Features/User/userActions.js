@@ -10,6 +10,7 @@ import {
   userCurrentLocationService,
   saveContactServices,
   SosAlertService,
+  reviewRatingsService
 } from "../../Features/User/userService";
 console.log("userAction");
 
@@ -119,3 +120,18 @@ export const SosAlert = createAsyncThunk(
     }
   }
 );
+
+export const reviewRatings = createAsyncThunk(
+  "sosAlert",
+  async (formdata, { rejectWithValue }) => {
+    try {
+      const response = await reviewRatingsService(formdata);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+     
+    }
+  }
+);
+
+

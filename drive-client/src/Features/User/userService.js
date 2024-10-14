@@ -80,3 +80,6 @@ export const SosAlertService = async(userId)=>{
   return await UserPrivate.post('trip/users/emergency-alert',{userId})
 }
 
+export const reviewRatingsService = async(formData)=>{
+  return await UserPrivate.post('trip/users/review',formData)
+}

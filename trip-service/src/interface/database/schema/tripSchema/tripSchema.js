@@ -83,7 +83,7 @@ const tripSchema = new mongoose.Schema({
       type:String,
       enum:['Cash','Wallet','Online-Payment'],
       default:'Online-Payment'
-    }
+    },
 
   },{
     timestamps:true

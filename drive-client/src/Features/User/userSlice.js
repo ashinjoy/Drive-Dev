@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { emailAuth, googleAuth, verifyOtp, resendOtp,userProfileUpdate,userCurrentLocation, saveContacts, userLogout } from "./userActions";
+import { emailAuth, googleAuth, verifyOtp, resendOtp,userProfileUpdate,userCurrentLocation, saveContacts, userLogout, reviewRatings } from "./userActions";
 
 
 const userDetails = JSON.parse(localStorage.getItem('userDetail'))
@@ -141,6 +141,18 @@ const userSlice = createSlice({
       .addCase(userLogout.rejected,(state,action)=>{
         console.log('err');
         
+      })
+      .addCase(reviewRatings.pending,(state)=>{
+        state.loading = true
+      })
+      .addCase(reviewRatings.fulfilled,(state,action)=>{
+        console.log('axtion',action.payload.message);
+        
+        state.success = action?.payload?.success
+        state.message = action?.payload?.message
+      })
+      .addCase(reviewRatings.rejected,(state,action)=>{
+        // state.error
       })
   },
 });

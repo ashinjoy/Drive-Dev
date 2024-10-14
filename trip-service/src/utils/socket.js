@@ -55,15 +55,6 @@ export const notifyDriver = (event, notification, driverId) => {
 };
 
 export const userNotify = (event, data, userId) => {
-
-  
-  // const usereIdtoString = userId.toString();
-  
-
-
-  // io.to(userAndSocketId.get(usereIdtoString)).emit(event, data);
-  console.log('usersID',userId);
-  
   io.to(userId.toString()).emit(event,data)
   return;
 };

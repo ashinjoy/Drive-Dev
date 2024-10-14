@@ -26,14 +26,17 @@ import {
   GetLatestTripsUseCase,
   GetAllLatestTripsUseCase,
   MostActiveDriverUseCase,
-  TotalTripsCountUseCase
+  TotalTripsCountUseCase,
+  ReviewRatingUseCase
   
 } from "../usecase/index.js";
 import { 
   MongoAdminRepository,
   MongoUserRepository,
   MongoDriverRepository,
-  MongoTripRepository
+  MongoTripRepository,
+   MongoReviewRepository
+
 } from "../interface/repository/index.js";
 
 const useCase = {
@@ -64,14 +67,16 @@ const useCase = {
   GetLatestTripsUseCase,
   GetAllLatestTripsUseCase,
   MostActiveDriverUseCase,
-  TotalTripsCountUseCase
+  TotalTripsCountUseCase,
+  ReviewRatingUseCase
 };
 
 const repository = {
   MongoAdminRepository,
   MongoDriverRepository,
   MongoUserRepository,
-  MongoTripRepository
+  MongoTripRepository,
+  MongoReviewRepository
 };
 
 export const dependencies = {

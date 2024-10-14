@@ -41,6 +41,67 @@ function DriverMap() {
   const [endRide, setEndRide] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const { socket } = useSocket();
+  const setMapBoundary = ()=>{
+    const bounds = [
+      [
+        Math.min(
+          tripDetail?.startLocation?.coordinates[0],
+          tripDetail?.endLocation?.coordinates[0],
+          tripDetail?.driverId?.currentLocation?.coordinates[0]
+        ),
+        Math.min(
+          tripDetail?.startLocation?.coordinates[1],
+          tripDetail?.endLocation?.coordinates[1],
+          tripDetail?.driverId?.currentLocation?.coordinates[1]
+        ),
+      ],
+      [
+        Math.max(
+          tripDetail?.startLocation?.coordinates[0],
+          tripDetail?.endLocation?.coordinates[0],
+          tripDetail?.driverId?.currentLocation?.coordinates[0]
+        ),
+        Math.max(
+          tripDetail?.startLocation?.coordinates[1],
+          tripDetail?.endLocation?.coordinates[1],
+          tripDetail?.driverId?.currentLocation?.coordinates[1]
+        ),
+      ],
+    ];
+
+    if (mapContainerRef.current) {
+      mapContainerRef.current.fitBounds(bounds, {
+        padding: 20,
+      });
+    }
+  }
+  const checkApproxDistance = (driverLocation, destination) => {
+    if (
+      driverLocation &&
+      driverLocation.length > 0 &&
+      destination &&
+      destination.length > 0
+    ) {
+      const approx = turf.distance(driverLocation, destination, {
+        units: "meters",
+      });
+      return approx;
+    }
+  };
+
+  const calculateTripCoordinates = (routeCoords)=>{
+    console.log('routes',routeCoords);
+    const routeLine = turf.lineString(routeCoords)
+    const path = turf.lineChunk(routeLine,100,{units:'meters'})?.features
+    const liveCoords = []
+    console.log('payh',path);
+    for (const point of path){
+      console.log(point?.geometry?.coordinates[0]);
+      liveCoords.push(point?.geometry?.coordinates[0])
+    }
+    return liveCoords
+  }
+
   useEffect(() => {
     if (!tripDetail) {
       if (navigator.geolocation) {
@@ -68,8 +129,6 @@ function DriverMap() {
       setPickUp(tripDetail?.startLocation?.coordinates);
       setDropoff(tripDetail?.endLocation?.coordinates);
       if(driverLive.length === 0){
-        console.log('driverLive in Map',driverLive);
-        console.log('inside the condition');
         setDriverCoords(tripDetail?.driverId?.currentLocation?.coordinates);
       }
       
@@ -80,59 +139,27 @@ function DriverMap() {
         const routeInfo = response.data;
         setRoute(routeInfo?.routes[0]?.geometry);
         if(tripCoordinates.length === 0){
-          setTripCoordintes(routeInfo?.routes[0]?.geometry?.coordinates);
-          console.log('inside the second condition');
-          
+        const liveCoordinate =   calculateTripCoordinates(routeInfo?.routes[0]?.geometry?.coordinates)
+        setTripCoordintes(liveCoordinate); 
         }
       };
-      const bounds = [
-        [
-          Math.min(
-            tripDetail?.startLocation?.coordinates[0],
-            tripDetail?.endLocation?.coordinates[0],
-            tripDetail?.driverId?.currentLocation?.coordinates[0]
-          ),
-          Math.min(
-            tripDetail?.startLocation?.coordinates[1],
-            tripDetail?.endLocation?.coordinates[1],
-            tripDetail?.driverId?.currentLocation?.coordinates[1]
-          ),
-        ],
-        [
-          Math.max(
-            tripDetail?.startLocation?.coordinates[0],
-            tripDetail?.endLocation?.coordinates[0],
-            tripDetail?.driverId?.currentLocation?.coordinates[0]
-          ),
-          Math.max(
-            tripDetail?.startLocation?.coordinates[1],
-            tripDetail?.endLocation?.coordinates[1],
-            tripDetail?.driverId?.currentLocation?.coordinates[1]
-          ),
-        ],
-      ];
-
-      if (mapContainerRef.current) {
-        mapContainerRef.current.fitBounds(bounds, {
-          padding: 20,
-        });
-      }
+      setMapBoundary()
       getRoute();
     }
   }, [tripDetail]);
+
 
   useEffect(() => {
     if (!driverLive || !tripDetail) return;
     setDriverCoords(driverLive);
     const approx = checkApproxDistance(driverLive, pickup);
     const dropDestination = checkApproxDistance(driverLive, dropOff);
-
-    if (approx <= 0.5) {
+    if (approx <= 100) {
       if (!rideStarted) {
         setStartRide(true);
         setRideStarted(true);
       }
-    } else if (dropDestination < 0.1) {
+    } else if (dropDestination <100 ) {
       completeJourney();
     } else {
       setEndRide(false);
@@ -140,19 +167,7 @@ function DriverMap() {
     }
   }, [socket,driverLive,tripDetail]);
 
-  const checkApproxDistance = (driverLocation, destination) => {
-    if (
-      driverLocation &&
-      driverLocation.length > 0 &&
-      destination &&
-      destination.length > 0
-    ) {
-      const approx = turf.distance(driverLocation, destination, {
-        units: "kilometers",
-      });
-      return approx;
-    }
-  };
+ 
 
   const routeLine = {
     id: "route",

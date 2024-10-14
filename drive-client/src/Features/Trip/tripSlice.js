@@ -33,6 +33,10 @@ const tripSlice = createSlice({
             localStorage.setItem('tripStatus',action?.payload)
             state.tripStatus =action?.payload
         },
+        setTripStatusComplete:(state,action)=>{
+            localStorage.setItem('tripStatus','completed')
+            state.tripStatus = 'completed'
+        },
         resetTripDetails:(state,action)=>{
             localStorage.removeItem('tripDetail')
             localStorage.removeItem('tripStatus')
@@ -114,8 +118,6 @@ const tripSlice = createSlice({
             state.loading  = true
         })
         .addCase(payment.fulfilled,(state,action)=>{
-            console.log('action in the fulfill',action);
-            
             localStorage.setItem('paymentStatus',action.payload?.paymentStatus)
             state.paymentStatus = action.payload?.paymentStatus
         })
@@ -124,5 +126,5 @@ const tripSlice = createSlice({
         })
     }
 })
-export const {setTripData,resetTripDetails,setTripStatus,setPaymentInfo} = tripSlice.actions
+export const {setTripData,resetTripDetails,setTripStatus,setPaymentInfo,setTripStatusComplete} = tripSlice.actions
 export default tripSlice.reducer

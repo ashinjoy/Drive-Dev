@@ -80,6 +80,9 @@ const driverSchema = new mongoose.Schema({
     enum:['inactive','active','busy'],
     default:'inactive'
   },
+  ratings:{
+    type:String
+  }
   
 });
 

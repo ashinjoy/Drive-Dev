@@ -85,8 +85,6 @@ function DriverNavBar() {
         };
         if (tripStatus === "started") {
           if (!rideStarted) {
-            console.log("inside the condition");
-
             handleJourneyAfterStart();
             setRideStarted(true);
           }
@@ -102,7 +100,7 @@ function DriverNavBar() {
       } else {
         clearInterval(liveIntervalRef.current);
       }
-    }, 5000);
+    }, 2000);
     socket?.on("cancel-ride", () => {
       clearInterval(liveIntervalRef.current);
       dispatch(resetTripDetails());

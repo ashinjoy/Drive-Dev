@@ -10,10 +10,12 @@ import {
   resetTripDetails,
   setTripData,
   setTripStatus,
+  setTripStatusComplete,
 } from "../../Features/Trip/tripSlice";
 import NearByPickup from "../User/Notification/NearByPickup";
 import UserAccountMenu from "../User/UserAccountMenu/UserAccountMenu";
 import UserNavBarDrawer from "./UserNavBarDrawer";
+import ReviewRating from "../User/Trip/ReviewRating";
 
 function UserNavbar() {
   const { user, token } = useSelector((state) => state.user);
@@ -22,6 +24,7 @@ function UserNavbar() {
   const [navDrawer, setNavDrawer] = useState(false);
   const [rideComplete, setRideComplete] = useState(false);
   const [rideCompleteData, setRideCompleteData] = useState(null);
+  const [showReviewModal,setReviewModal] = useState(false)
   const dispatch = useDispatch();
   const userId = user?.id;
 
@@ -56,9 +59,12 @@ function UserNavbar() {
     };
 
     const handleRideEndSocket = (data) => {
-      dispatch(resetTripDetails());
+      // dispatch(resetTripDetails());
+      dispatch(setTripStatusComplete())
       setRideComplete(true);
       setRideCompleteData(data);
+      setReviewModal(true)
+      
     };
     socket?.on('ride-start', handleRideStartSocket);
     socket?.on("ride-complete", handleRideEndSocket);
@@ -74,6 +80,7 @@ function UserNavbar() {
   };
 
   return (
+    
     <nav className="fixed top-0 left-0 flex flex-row justify-between items-center h-[5rem] w-full bg-white shadow-[0] z-40 border-b">
       <div className="ml-8 w-36">
         <img
@@ -82,7 +89,7 @@ function UserNavbar() {
           className="w-full h-full object-contain"
         />
       </div>
-
+{showReviewModal && <ReviewRating setReviewModal={setReviewModal}/>}
       <div className="hidden md:flex items-center gap-x-12 text-gray-600">
         <NavLink
           to="/"

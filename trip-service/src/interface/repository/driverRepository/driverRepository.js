@@ -19,9 +19,17 @@ export class DriverRepository {
     return await driverModel.findOne(phone);
   }
   async findDriverByIdAndUpdate(id, detailsToUpdate) {
-    return await driverModel
+    try {
+    console.log(id,detailsToUpdate);
+      return await driverModel
       .findByIdAndUpdate({ _id: id }, { $set: detailsToUpdate }, { new: true })
       .lean();
+    } catch (error) {
+      console.error(error);
+      throw error
+      
+    }
+   
   }
 
   async getDriverByIdAndUpdate(id, dataToUpdate) {

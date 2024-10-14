@@ -9,6 +9,7 @@ import { EmergencyAlertController } from '../../controllers/userController/emerg
 import { CancelRideController } from '../../controllers/userController/cancelRideController.js'
 import { ReverseGeoCodeController } from '../../controllers/userController/reverseGeocodeController.js'
 import { GetTripHistoryController } from '../../controllers/userController/getTripHistoryController.js'
+import { ReviewRatingController } from '../../controllers/userController/reviewRatingController.js'
 
 import { dependencies } from '../../../config/dependencies.js'
 import { AuthHandler } from '../../middleware/authMiddleware.js'
@@ -25,6 +26,8 @@ const controllers = {
     cancelRideController:new CancelRideController(dependencies),
     reverseGeocodeController: new ReverseGeoCodeController(dependencies),
     getAllTripDetailsController: new GetTripHistoryController (dependencies),
+    reviewRatingController: new ReviewRatingController(dependencies)
+
 
 
 }
@@ -37,6 +40,7 @@ userRouter.post('/cancel-ride',AuthHandler.isUserLogin,async(req,res,next)=>{con
 userRouter.put('/change-paymentmode',AuthHandler.isUserLogin,async(req,res,next)=>{controllers.changePaymentController.changePaymentMode(req,res,next)})
 userRouter.post('/emergency-alert',async(req,res,next)=>{controllers.emergencyAlertController.sendAlert(req,res,next)})
 userRouter.get('/trip-details',AuthHandler.isUserLogin,async(req,res,next)=>controllers.getAllTripDetailsController.getTripHistory(req,res,next))
+userRouter.post('/review',AuthHandler.isUserLogin,async(req,res,next)=>controllers.reviewRatingController.ReviewRatingController(req,res,next))
 
 
 export default userRouter

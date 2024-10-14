@@ -11,6 +11,7 @@ import {RideRequestUseCase} from './user/requestRideUseCase.js'
 import { GetAdditionalTripDataUseCase } from "./user/getAdditionalTripData.js";
 import { ReverseGeoCodeUseCase } from "./user/reverseGeocodeUseCase.js";
 import { ChangePaymentUseCase } from "./user/changePaymentUseCase.js";
+import { ReviewRatingUseCase } from "./user/reviewRatingUseCase.js";
 
 import { AcceptRideUseCase } from "./driver/acceptRideUseCase.js";
 import { RejectRideUseCase } from "./driver/rejectRideUseCase.js";
@@ -60,5 +61,6 @@ export {
     GetAllLatestTripsUseCase,
     MostActiveDriverUseCase,
     TotalTripsCountUseCase,
-    TripUpdateConsumerUseCase
+    TripUpdateConsumerUseCase,
+    ReviewRatingUseCase
 }
