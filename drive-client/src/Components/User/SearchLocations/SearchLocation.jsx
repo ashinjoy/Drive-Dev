@@ -28,7 +28,12 @@ function   SearchLocation({setSearch}) {
   const { user } = useSelector((state) => state.user);
   const { additionalSearchMetaData } = useSelector((state) => state.trip);
   const dispatch = useDispatch();
-
+  const geoCoderTheme = {
+    variables:{
+      focus:'#F59E0B',
+      outline:'none'
+    }
+  }
   const handlePickUpLocation = async (e) => {
     const { value } = e.target;
     setPickupLocation(value);
@@ -44,13 +49,9 @@ function   SearchLocation({setSearch}) {
     }
   };
 
-  // const handleDropoffLocation = (evt) => {
-  //   setDropLocation(evt);
-  // };
 
-  const handleResult = (result) => {
-    console.log('result selected',result);
-    
+
+  const handleResult = (result) => { 
     selectDropOffLocation(result?.geometry?.coordinates);
     setDropLocation(result?.properties?.full_address)
   };
@@ -94,7 +95,7 @@ function   SearchLocation({setSearch}) {
     <>
       <div className="flex w-[35%]">
         <div className="mt-[7rem] ml-[2rem]  ">
-          <div className="w-[100%] h-auto p-3  shadow-xl border-2 border-slate-300 rounded-lg bg-white flex flex-col gap-3">
+          <div className="w-[100%] h-auto p-3  shadow-xl border-2 border-yellow-500 rounded-lg bg-white flex flex-col gap-3">
             <h1 className="font-bold text-2xl   text-gray-700">Start Ride</h1>
             <form action="" onSubmit={handleSearchRide}>
               <div className="flex flex-col w-full max-w-md mx-auto relative">
@@ -104,7 +105,7 @@ function   SearchLocation({setSearch}) {
                 >
                   Pickup Location
                 </label>
-                <div className="flex h-10 items-center border-2 border-gray-300 rounded-md  overflow-hidden shadow-sm focus-within:border-black transition duration-200">
+                <div className="flex h-10 items-center border-2 border-gray-300 rounded-md  overflow-hidden shadow-sm focus-within:border-yellow-500 transition duration-200">
                   <input
                     type="text"
                     id="pickup"
@@ -115,7 +116,7 @@ function   SearchLocation({setSearch}) {
                   />
                   <button
                     type="button"
-                    className="h-9 w-9 text-black flex items-center justify-center   transition duration-200"
+                    className="h-9 w-9 text-black flex items-center justify-center focus:text-blue-600 transition duration-200"
                     onClick={handleCurrentLocation}
                   >
                     <FaLocationArrow />
@@ -142,15 +143,12 @@ function   SearchLocation({setSearch}) {
                   value={dropLocation}
                   placeholder="Dropoff Location"
                   onRetrieve={handleResult}
-                  // onChange={handleDropoffLocation}
+                  theme={geoCoderTheme}
                   options={{
                     proximity:pickUpCoords,
                     country:'in'
                   }}
                   accessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-                  style={{
-                    backgroundColor:'#cbd5e1'
-                  }}
                 />
               </div>
 

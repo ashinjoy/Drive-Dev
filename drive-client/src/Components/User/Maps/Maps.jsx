@@ -4,27 +4,31 @@ import Map, { Marker, Source, Layer } from "react-map-gl";
 import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
-import { VscDebugBreakpointData } from "react-icons/vsc";
+import { TbPointFilled } from "react-icons/tb";
 import { IoLocationSharp } from "react-icons/io5";
 import { searchLocationContext } from "../../../Context/UserSearchContext";
 import ListVehiclePriceDetails from "../Trip/ListVehiclePriceDetails";
-
+import useGeolocation from "../../../Hooks/useGeolocation";
+import useMapRoutes from "../../../Hooks/useMapRoutes";
 
 function Maps({ isSearch }) {
-  const { pickUpCoords, dropCoords, pickupLocation, dropLocation } = useContext(searchLocationContext);
+  const mapRef = useRef(null);
+  const { pickUpCoords, dropCoords, pickupLocation, dropLocation } = useContext(
+    searchLocationContext
+  );
   const [pickupLongitude, setPickUpLng] = useState(null);
   const [pickupLatitude, setPickUpLat] = useState(null);
   const [dropoffLongitude, setDropOffLng] = useState(null);
   const [dropoffLatitude, setDropOffLat] = useState(null);
-  const [route, setRoute] = useState(null);
   const { nearbyDrivers } = useSelector((state) => state.trip);
   const [nearbyDriverLocations, setNearbyDriverLocations] = useState(null);
-  const [viewState, setViewState] = useState({
-    latitude: 76.2673,
-    longitude: 9.9312,
-    zoom:12,
-  });
-  const mapRef = useRef(null);
+  const [viewState, setViewState] = useGeolocation(); // custom hook for fetching the state for the map
+  const route = useMapRoutes(pickUpCoords, dropCoords); // custom hook for fetching the route connectings the markers in maps
+
+  useEffect(() => {
+    console.log("viewState,", viewState, setViewState);
+    console.log("coors", pickUpCoords, dropCoords);
+  }, [viewState, pickUpCoords, dropCoords]);
 
   useEffect(() => {
     if (nearbyDrivers && nearbyDrivers.length > 0) {
@@ -36,26 +40,6 @@ function Maps({ isSearch }) {
       return;
     }
   }, [nearbyDrivers]);
-
-  useEffect(() => { 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setViewState((prev) => ({
-            ...prev,
-            latitude: pos?.coords?.latitude,
-            longitude: pos?.coords?.longitude,
-            zoom: 12,
-          }));
-        },
-        (err) => console.error(err),
-        {
-          enableHighAccuracy: true,
-          maximumAge: 0,
-        }
-      );
-    }
-  }, []);
 
   useEffect(() => {
     if (pickUpCoords.length > 0) {
@@ -72,23 +56,10 @@ function Maps({ isSearch }) {
       setDropOffLng(dropCoords[0]);
       setDropOffLat(dropCoords[1]);
     }
-
     if (pickUpCoords.length > 0 && dropCoords.length > 0) {
-      const getRoute = async () => {
-        try {
-          const response = await axios.get(
-            `https://api.mapbox.com/directions/v5/mapbox/driving/${pickUpCoords[0]},${pickUpCoords[1]};${dropCoords[0]},${dropCoords[1]}?geometries=geojson&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
-          );
-          console.log("Route GeoJSON", response.data);
-          setRoute(response.data?.routes[0]?.geometry);
-        } catch (error) { 
-          console.error("Failed to fetch the route", error);
-        }
-      };
-
-      const bounds = [
+      const bounds = [ // Map settings in mapbox for setting boundary to map according to the markers.
         [
-          Math.min(pickUpCoords[0], dropCoords[0]),
+          Math.min(pickUpCoords[0], dropCoords[0]), 
           Math.min(pickUpCoords[1], dropCoords[1]),
         ],
         [
@@ -101,7 +72,6 @@ function Maps({ isSearch }) {
           padding: 20,
         });
       }
-      getRoute();
     }
   }, [pickUpCoords, dropCoords]);
 
@@ -116,8 +86,7 @@ function Maps({ isSearch }) {
     paint: {
       "line-color": "#4285F4",
       "line-width": 5,
-      "line-opacity": 0.75,
-
+      "line-opacity": 1,
     },
   };
 
@@ -153,7 +122,7 @@ function Maps({ isSearch }) {
               latitude={pickupLatitude}
               style={{ width: "2rem" }}
             >
-              <VscDebugBreakpointData size={25} style={{color:"black"}}/>
+              <TbPointFilled size={"2rem"} style={{ color: "#343434" }} />
             </Marker>
           )}
           {dropoffLongitude && dropoffLatitude && (
@@ -162,7 +131,7 @@ function Maps({ isSearch }) {
               latitude={dropoffLatitude}
               style={{ width: "2rem" }}
             >
-             <IoLocationSharp size={25} style={{color:"red"}}/>
+              <IoLocationSharp size={25} style={{ color: "red" }} />
             </Marker>
           )}
           {route && (

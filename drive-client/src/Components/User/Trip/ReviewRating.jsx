@@ -4,7 +4,6 @@ import { GoStar } from "react-icons/go";
 import { GoStarFill } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { reviewRatings } from "../../../Features/User/userActions";
-import { resetAll } from "../../../Features/User/userSlice";
 import { resetTripDetails } from "../../../Features/Trip/tripSlice";
 import { useNavigate } from "react-router-dom";
 
