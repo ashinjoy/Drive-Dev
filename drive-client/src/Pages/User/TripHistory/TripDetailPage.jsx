@@ -1,113 +1,149 @@
-import React, { useState ,useEffect} from 'react'
-import { useParams } from 'react-router-dom'
-import { getTripDetailService } from '../../../Features/Trip/tripService';
-import UserNavbar from '../../../Components/Navbar/UserNavbar';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import Map, { Marker } from "react-map-gl";
+import { TbRoad } from "react-icons/tb";
+import { MdAccessTimeFilled, MdDateRange } from "react-icons/md";
+import { IoPricetagSharp } from "react-icons/io5";
+import { TbPointFilled } from "react-icons/tb";
+import UserNavbar from "../../../Components/Navbar/UserNavbar";
+import { getTripDetailService } from "../../../Features/Trip/tripService";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 function TripDetailPage() {
-    const {tripId} = useParams()
-    const [tripDetail,setTripDetail] = useState(null)
-    const [date,setDate] =useState(null)
-     useEffect(() => {
-        const getTripDetail = async()=>{
-         const response =    await getTripDetailService(tripId)
-         setTripDetail(response?.getTripDetail)
-         setDate(response?.getTripDetail?.createdAt)
-        }
-        getTripDetail()
-       
-    }, []);
+  const { tripId } = useParams();
+  const [tripDetail, setTripDetail] = useState(null);
+  useEffect(() => {
+    const getTripDetail = async () => {
+      try {
+        const { getTripDetail } = await getTripDetailService(tripId);
+        setTripDetail(getTripDetail);
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    };
+    getTripDetail();
+  }, []);
+
   return (
     <>
-    <UserNavbar/>
-    <div className="min-h-screen mt-[2rem] flex items-center justify-center p-4">
-  <div className="max-w-lg w-full bg-white shadow-lg rounded-lg overflow-hidden">
-    <div className="bg-blue-500 text-white p-6">
-      <h1 className="text-2xl font-semibold">Trip Details</h1>
-    </div>
-    <div className="p-6 space-y-4">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800">Pickup Location</h2>
-          <p className="text-gray-600">{tripDetail?.pickUpLocation}</p>
-        </div>
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800">Dropoff Location</h2>
-          <p className="text-gray-600">{tripDetail?.dropOffLocation}</p>
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center border-t border-gray-200 pt-4">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800">Driver</h2>
-          <p className="text-gray-600">{tripDetail?.driverId?.name}</p>
-        </div>
-        <div className="flex items-center">
-          <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-            JD
+      <UserNavbar />
+      <div className="min-w-screen flex justify-center bg-gray-50">
+        <div className="lg:w-1/2 md:w-3/4 sm:w-full mt-[7rem] flex flex-col gap-6 p-4">
+          <h1 className="text-center text-3xl font-bold text-gray-800">
+            Your Trip
+          </h1>
+          <p className="text-center text-lg text-gray-600">
+            <MdDateRange size={"1.5rem"} className="inline-block" />{" "}
+            {new Date(tripDetail?.createdAt).toLocaleString("en-US", {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+            })}{" "}
+            with{" "}
+            <span className="font-semibold">
+              {tripDetail?.driverId?.name.toUpperCase()}
+            </span>
+          </p>
+          <div className="bg-white shadow-md border rounded-lg w-full h-[19rem] flex items-center justify-center">
+            <Map
+              mapStyle="mapbox://styles/mapbox/streets-v9"
+              mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+              attributionControl={false}
+            >
+              {tripDetail?.startLocation?.coordinates.length > 0 && (
+                <Marker
+                  longitude={tripDetail?.startLocation?.coordinates[0]}
+                  latitude={tripDetail?.startLocation?.coordinates[1]}
+                ></Marker>
+              )}
+              {tripDetail?.endLocation?.coordinates.length > 0 && (
+                <Marker
+                  longitude={tripDetail?.endLocation?.coordinates[0]}
+                  latitude={tripDetail?.endLocation?.coordinates[1]}
+                ></Marker>
+              )}
+            </Map>
+          </div>
+          <div className="bg-white shadow-md border rounded-lg p-4">
+            <h2 className="text-lg font-bold text-gray-800">Trip Details</h2>
+            <div className="flex gap-3 mt-2">
+              <TbRoad size={"1.5rem"} className="text-gray-600" />
+              <span className="text-gray-700">{`${(
+                parseFloat(tripDetail?.distance) / 1000
+              ).toFixed(2)} kilometers`}</span>
+            </div>
+            <div className="flex gap-3 mt-2">
+              <MdAccessTimeFilled size={"1.5rem"} className="text-gray-600" />
+              <span className="text-gray-700">
+                {(parseFloat(tripDetail?.duration) / 60).toFixed(2)} min
+              </span>
+            </div>
+            <div className="flex gap-3 mt-2">
+              <IoPricetagSharp size={"1.5rem"} className="text-gray-600" />
+              <span className="text-gray-700 font-bold">
+                ₹{tripDetail?.fare}
+              </span>
+            </div>
+            <button className="mt-4 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">
+              View Receipt
+            </button>
+          </div>
+          <div className="bg-white shadow-md border rounded-lg p-4">
+            <h2 className="text-lg font-bold text-gray-800">Routes</h2>
+            <div className="flex flex-col gap-3 mt-2">
+              <div className="flex justify-between">
+                <TbPointFilled size={"1.5rem"} className="text-gray-600" />
+                <p className="text-gray-700 flex-1">
+                  {tripDetail?.pickUpLocation}
+                </p>
+                <span className="text-gray-500">
+                  {new Date(tripDetail?.startTime).toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                  })}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <TbPointFilled size={"1.5rem"} className="text-gray-600" />
+                <p className="text-gray-700 flex-1">
+                  {tripDetail?.dropOffLocation}
+                </p>
+                <span className="text-gray-500">
+                  {new Date(tripDetail?.endTime).toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                  })}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white shadow-md border rounded-lg p-4">
+            <h2 className="text-lg font-bold text-gray-800">Driver Data</h2>
+            <div className="flex flex-col gap-3 mt-2">
+              <div className="flex justify-between">
+                <TbPointFilled size={"1.5rem"} className="text-gray-600" />
+                <p className="text-gray-700 flex-1">
+                  {tripDetail?.driverId?.name}
+                </p>
+                <span className="text-gray-500">Rating: ★★★★☆</span>
+              </div>
+              <div className="flex justify-between">
+                <TbPointFilled size={"1.5rem"} className="text-gray-600" />
+                <p className="text-gray-700 flex-1">License</p>
+                <span className="text-gray-500">
+                  {tripDetail?.driverId?.vehicleDetails?.rc_Number}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="flex justify-between items-center border-t border-gray-200 pt-4">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800">Vehicle Details</h2>
-          <p className="text-gray-600">{tripDetail?.driverId?.vehicleDetails?.vehicle_type}</p>
-        </div>
-        <div className="flex items-center">
-          <svg
-            className="w-12 h-12 text-yellow-500"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6.75 12a.75.75 0 100-1.5.75.75 0 000 1.5zM17.25 12a.75.75 0 100-1.5.75.75 0 000 1.5z"
-            />
-            <path
-              fillRule="evenodd"
-              d="M1.5 11.25A4.5 4.5 0 016 6.75h12a4.5 4.5 0 014.5 4.5v7.5a1.5 1.5 0 01-1.5 1.5h-1.19a2.25 2.25 0 11-4.31 0H8.5a2.25 2.25 0 11-4.31 0H3a1.5 1.5 0 01-1.5-1.5v-7.5zm18 7.5a.75.75 0 10-1.5 0 .75.75 0 001.5 0zM7.5 18.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center border-t border-gray-200 pt-4">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800">Fare</h2>
-          <p className="text-gray-600">{tripDetail?.fare}</p>
-        </div>
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800">Trip Status</h2>
-          <p className="text-gray-600">{tripDetail?.tripStatus}</p>
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center border-t border-gray-200 pt-4">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800">Trip Date</h2>
-         {date && <p className="text-gray-600">{ new Date(date).toLocaleString({
-             month:'short',
-            day:'2-digit'
-         })}</p>}
-        </div>
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800">Trip Time</h2>
-          {date &&<p className="text-gray-600">{new Date(date).toLocaleString('en-US', {
-            hour: 'numeric', 
-            minute: '2-digit', 
-            hour12: true 
-          }).replace(":", ".")}</p>}
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center border-t border-gray-200 pt-4">
-      </div>
-    </div>
-  </div>
-</div>
-</>
-  )
+    </>
+  );
 }
 
-export default TripDetailPage
+export default TripDetailPage;

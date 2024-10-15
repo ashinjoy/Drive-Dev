@@ -1,18 +1,22 @@
 import { useEffect,  } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { rideOngoing } from "../Features/Trip/tripActions";
 
 function TripProtectedRoute({ children }) {
-  const { tripStatus } = useSelector((state) => state.trip);
+  const { tripDetail } = useSelector((state) => state.trip);
+  const {user} = useSelector(state =>state.user)
+  const dispatch = useDispatch()
   const navigate = useNavigate(); 
   useEffect(() => {
-    if (tripStatus) {
+    if (tripDetail) {
       navigate("/trip");
       return;
     }
-  }, [tripStatus]);
+    dispatch(rideOngoing(user?.id))
+  }, [tripDetail]);
 
-  if (!tripStatus) {
+  if (!tripDetail) {
     return children;
   }
 }

@@ -30,6 +30,7 @@ import { GetLatestTripsUseCase } from "./driver/getLatestTripUseCase.js";
 import { GetAllLatestTripsUseCase } from "./admin/getAllLatestTripController.js";
 import { MostActiveDriverUseCase } from "./admin/mostActiveDriversUseCase.js";
 import { TotalTripsCountUseCase } from "./admin/totalTripsCountUseCase.js";
+import { RideOngoingUseCase } from "./user/rideOngoingUsecase.js";
 
 
 export {
@@ -62,5 +63,6 @@ export {
     MostActiveDriverUseCase,
     TotalTripsCountUseCase,
     TripUpdateConsumerUseCase,
-    ReviewRatingUseCase
+    ReviewRatingUseCase,
+    RideOngoingUseCase
 }

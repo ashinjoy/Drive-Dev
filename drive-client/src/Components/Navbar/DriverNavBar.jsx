@@ -29,7 +29,7 @@ function DriverNavBar() {
   const liveIntervalRef = useRef(null);
   const tripIndex = localStorage.getItem('tripCoordsIndex')
   const arrayIndexRef = useRef(tripIndex || 0);
-
+  
   const {
     setDriverLive,
     tripCoordinates,

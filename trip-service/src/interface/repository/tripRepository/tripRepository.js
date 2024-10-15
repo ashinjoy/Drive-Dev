@@ -100,7 +100,7 @@ export class TripRepository {
     }
   }
 
-  async getUsersTrip(userId, page, limit = 6) {
+  async getUsersTrip(userId, page, limit = 5) {
     try {
       return await tripModel.find({ userId: userId }).skip((page-1)*limit).limit(limit).sort({createdAt:-1});
     } catch (error) {
@@ -213,5 +213,13 @@ export class TripRepository {
   }
   async getTotalTripsCompletedCount(){
     return await tripModel.find({tripStatus:"completed"}).countDocuments()
+  }
+  async getTripsByUserId(userId){
+try {
+  return await tripModel.findOne({userId:userId,$or:[{tripStatus:"accepted"},{tripStatus:"started"}]}).populate('driverId')
+} catch (error) {
+  console.error(error)
+  throw error
+}
   }
 }

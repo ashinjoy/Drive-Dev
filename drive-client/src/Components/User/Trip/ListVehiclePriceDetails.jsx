@@ -85,7 +85,7 @@ console.log('seleected',selectCategory);
           ref={bikeContainerRef}
           id="bikeContainer"
         >
-          <div className={`border-2  rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory === "Bike") && 'border-2 border-black'} `}>
+          <div className={`border-2  rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory === "Bike") && 'border-2 border-yellow-500'} `}>
             <div className="flex items-center ">
               <img
                 src="/assets/scooter-illustration-vintage-vehicle-sign-and-symbol-vector.jpg"
@@ -111,7 +111,7 @@ console.log('seleected',selectCategory);
           ref={autoContainerRef}
           id="autoContainer"
         >
-          <div className={`border rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory === "Auto") && 'border-2 border-black'}`}>
+          <div className={`border rounded-lg p-4 flex items-center justify-between cursor-pointer h-[9rem] hover:shadow-lg transition-shadow duration-200 ${(selectCategory === "Auto") && 'border-2 border-yellow-500'}`}>
             <div className="flex items-center">
               <img
                 src="/assets/TukTuk_Green_v1.png"

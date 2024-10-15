@@ -9,7 +9,7 @@ function CancellationModal({setCancelModal,setCancelConfirmModal}) {
     const {user} = useSelector(state=>state.user)
     const {tripDetail,tripStatus,cancelData} = useSelector(state=>state.trip)
     useEffect(()=>{
-        if(tripStatus == 'cancelled'){
+        if(tripStatus === 'cancelled'){
         setCancelConfirmModal(true)
         setCancelModal(false)
         dispatch(resetTripDetails())

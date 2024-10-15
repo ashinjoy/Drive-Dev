@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { seacrhNearByDriver,requestRideAction,acceptTrip,startTrip,finishRide,cancelRide, payment } from "./tripActions";
+import { seacrhNearByDriver,requestRideAction,acceptTrip,startTrip,finishRide,cancelRide, payment, rideOngoing } from "./tripActions";
 import { json } from "react-router-dom";
 import { act } from "react";
 
@@ -123,6 +123,21 @@ const tripSlice = createSlice({
         })
         .addCase(payment.rejected,(state,action)=>{
 
+        })
+        .addCase(rideOngoing.pending,(state)=>{
+            state.loading  = true
+        })
+        .addCase(rideOngoing.fulfilled,(state,action)=>{
+            if(action.payload.message === 'user is already in Trip'){
+                localStorage.setItem('tripDetail',JSON.stringify(action.payload?.tripDetail))
+                localStorage.setItem('tripStatus',action.payload?.tripDetail?.tripStatus)
+                state.tripDetail = action.payload.tripDetail
+                state.tripStatus = action.payload.tripDetail?.tripStatus
+            }
+            state.message = action?.payload?.message
+        })
+        .addCase(rideOngoing.rejected,(state)=>{
+            // state.
         })
     }
 })

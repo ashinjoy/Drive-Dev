@@ -7,6 +7,7 @@ export class GetTripDetailByIdUseCase{
         return  await this.tripRepository.findTripById(id)
         } catch (error) {
             console.error(error);
+            throw error
             
         }
     }

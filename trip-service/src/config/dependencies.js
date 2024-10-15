@@ -27,7 +27,8 @@ import {
   GetAllLatestTripsUseCase,
   MostActiveDriverUseCase,
   TotalTripsCountUseCase,
-  ReviewRatingUseCase
+  ReviewRatingUseCase,
+  RideOngoingUseCase
   
 } from "../usecase/index.js";
 import { 
@@ -68,7 +69,8 @@ const useCase = {
   GetAllLatestTripsUseCase,
   MostActiveDriverUseCase,
   TotalTripsCountUseCase,
-  ReviewRatingUseCase
+  ReviewRatingUseCase,
+  RideOngoingUseCase
 };
 
 const repository = {

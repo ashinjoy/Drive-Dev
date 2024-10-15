@@ -22,7 +22,7 @@ export const socketConnection = async (httpServer) => {
       });
       socket.on("location-update", (data) => {
         const userIdToString = data?.userId.toString();
-        socket.to(userAndSocketId.get(userIdToString)).emit("live-location", data);
+        socket.to(userIdToString).emit("live-location", data);
       });
         socket.on('nearbyPickup',(data)=>{
         socket.to(data?.userId).emit('nearbyRide',data)

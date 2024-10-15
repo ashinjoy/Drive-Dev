@@ -82,3 +82,7 @@ export const paymentService = async(data)=>{
 export const searchAutoCompleteService = async (data)=>{
   return await UserPrivate.get(`trip/users/pickup-location-autocomplete?search=${data}`);
 }
+
+export const rideOngoingService = async (data)=>{
+  return await UserPrivate.get(`trip/users/ongoing-ride/${data}`)
+}

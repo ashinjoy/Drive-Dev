@@ -10,6 +10,7 @@ import { CancelRideController } from '../../controllers/userController/cancelRid
 import { ReverseGeoCodeController } from '../../controllers/userController/reverseGeocodeController.js'
 import { GetTripHistoryController } from '../../controllers/userController/getTripHistoryController.js'
 import { ReviewRatingController } from '../../controllers/userController/reviewRatingController.js'
+import { RideOngoingController } from '../../controllers/userController/isRideOngoingController.js'
 
 import { dependencies } from '../../../config/dependencies.js'
 import { AuthHandler } from '../../middleware/authMiddleware.js'
@@ -26,10 +27,8 @@ const controllers = {
     cancelRideController:new CancelRideController(dependencies),
     reverseGeocodeController: new ReverseGeoCodeController(dependencies),
     getAllTripDetailsController: new GetTripHistoryController (dependencies),
-    reviewRatingController: new ReviewRatingController(dependencies)
-
-
-
+    reviewRatingController: new ReviewRatingController(dependencies),
+    rideOngoingController: new RideOngoingController(dependencies)
 }
 userRouter.get('/pickup-location-autocomplete',AuthHandler.isUserLogin,async(req,res,next)=>{controllers.autoCompleteLocationController.autoComplete(req,res,next)})
 userRouter.get('/reverse-geocode',async(req,res,next)=>controllers.reverseGeocodeController.reverseGeocode(req,res,next))
@@ -41,6 +40,7 @@ userRouter.put('/change-paymentmode',AuthHandler.isUserLogin,async(req,res,next)
 userRouter.post('/emergency-alert',async(req,res,next)=>{controllers.emergencyAlertController.sendAlert(req,res,next)})
 userRouter.get('/trip-details',AuthHandler.isUserLogin,async(req,res,next)=>controllers.getAllTripDetailsController.getTripHistory(req,res,next))
 userRouter.post('/review',AuthHandler.isUserLogin,async(req,res,next)=>controllers.reviewRatingController.ReviewRatingController(req,res,next))
+userRouter.get('/ongoing-ride/:userId',AuthHandler.isUserLogin,async(req,res,next)=>controllers.rideOngoingController.isRideOngoing(req,res,next))
 
 
 export default userRouter

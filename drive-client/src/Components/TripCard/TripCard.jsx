@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const TripCard = ({ title, date, time, price, status,id }) => {
   return (
-    <div className="flex w-[50%] items-center  bg-white p-4 rounded-lg border-2 border-black shadow-md mb-4">
+    <div className="flex w-[50%] items-center  bg-white p-4 rounded-lg border-2 shadow-md mb-4 hover:bg-slate-100 hover:cursor-pointer">
       <div className="flex-shrink-0">
         <img
           src="/assets/TukTuk_Green_v1.png"

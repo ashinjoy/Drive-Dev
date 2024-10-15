@@ -8,7 +8,8 @@ import {
   finishRideService,
   sendMessageService,
   cancelRideService,
-  paymentService
+  paymentService,
+  rideOngoingService
 } from "./tripService";
 
 
@@ -115,3 +116,13 @@ export const payment = createAsyncThunk("payment", async (paymentData) => {
 
   }
 });
+
+export const rideOngoing = createAsyncThunk("rideOngoing",async(userId)=>{
+  try {
+    const response = await rideOngoingService(userId)
+    return response.data
+  } catch (error) {
+    console.error(error);
+    
+  }
+})
