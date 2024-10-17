@@ -7,7 +7,6 @@ import { AnimatePresence } from "framer-motion";
 
 import { useSocket } from "../../Hooks/socket";
 import {
-  resetTripDetails,
   setTripData,
   setTripStatus,
   setTripStatusComplete,
@@ -24,7 +23,7 @@ function UserNavbar() {
   const [navDrawer, setNavDrawer] = useState(false);
   const [rideComplete, setRideComplete] = useState(false);
   const [rideCompleteData, setRideCompleteData] = useState(null);
-  const [showReviewModal,setReviewModal] = useState(false)
+  const [showReviewModal, setReviewModal] = useState(false);
   const dispatch = useDispatch();
   const userId = user?.id;
 
@@ -35,12 +34,10 @@ function UserNavbar() {
       return;
     }
     socket?.emit("user-connected", userId);
-    socket?.on('request-ride',(data)=>{
-      dispatch(setTripData(data))
-    })
+    socket?.on("request-ride", (data) => {
+      dispatch(setTripData(data));
+    });
     socket?.on("ride-accept", (tripData) => {
-      console.log('rideaccept',tripData);
-      
       dispatch(setTripData(tripData));
     });
     return () => {
@@ -53,20 +50,17 @@ function UserNavbar() {
     if (!token || !user || !tripDetail) {
       return;
     }
-
     const handleRideStartSocket = (data) => {
       dispatch(setTripStatus(data));
     };
 
     const handleRideEndSocket = (data) => {
-      // dispatch(resetTripDetails());
-      dispatch(setTripStatusComplete())
+      dispatch(setTripStatusComplete());
       setRideComplete(true);
       setRideCompleteData(data);
-      setReviewModal(true)
-      
+      setReviewModal(true);
     };
-    socket?.on('ride-start', handleRideStartSocket);
+    socket?.on("ride-start", handleRideStartSocket);
     socket?.on("ride-complete", handleRideEndSocket);
 
     return () => {
@@ -80,8 +74,7 @@ function UserNavbar() {
   };
 
   return (
-    
-    <nav className="fixed top-0 left-0 flex flex-row justify-between items-center h-[5rem] w-full bg-white shadow-[0] z-40 border-b">
+    <nav className="fixed top-0 left-0 flex flex-row justify-between items-center h-[5rem] w-full bg-white shadow-md z-40 border-b">
       <div className="ml-8 w-36">
         <img
           src="/assets/logo-cl.png"
@@ -89,7 +82,7 @@ function UserNavbar() {
           className="w-full h-full object-contain"
         />
       </div>
-{showReviewModal && <ReviewRating setReviewModal={setReviewModal}/>}
+      {showReviewModal && <ReviewRating setReviewModal={setReviewModal} />}
       <div className="hidden md:flex items-center gap-x-12 text-gray-600">
         <NavLink
           to="/"
@@ -97,12 +90,14 @@ function UserNavbar() {
         >
           Home
         </NavLink>
-       {  !token && <NavLink
-          to="/driver/signup"
-          className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
-        >
-          Drive
-        </NavLink>}
+        {!token && (
+          <NavLink
+            to="/driver/signup"
+            className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
+          >
+            Drive
+          </NavLink>
+        )}
         <NavLink
           to="/search-ride"
           className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"

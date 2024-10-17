@@ -20,6 +20,7 @@ function ListVehiclePriceDetails({
   const autoContainerRef = useRef(null);
   const [paymentMethod, setPaymentMethod] = useState("Online-Payment");
   const [cashPaymentModal,setCashPaymentModal] = useState(false)
+  const {message} = useSelector(state=>state.trip)
   const navigate = useNavigate();
   const { additionalSearchMetaData } = useSelector((state) => state.trip);
   const dispatch = useDispatch();
@@ -36,8 +37,11 @@ function ListVehiclePriceDetails({
   }
 
   useEffect(()=>{
-console.log('seleected',selectCategory);
-  },[selectCategory])
+    if(message === "Ride Requested"){
+      navigate('/trip')
+      return
+    }
+  },[message])
   const handleRequestRide = (e) => {
     if(selectCategory === ""){
       e.preventDefault()
@@ -62,7 +66,7 @@ console.log('seleected',selectCategory);
       data = { ...data, fare: autoFare };
     }
     dispatch(requestRideAction(data));
-    navigate("/trip");
+    // navigate("/trip");
   };
 
   useEffect(() => {

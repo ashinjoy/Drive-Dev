@@ -47,9 +47,12 @@ function DriverNavBar() {
   };
   useEffect(() => {
     const handleRideRequest = (tripData) => {
+      console.log('tripData',tripData);
+      
       setTrip(tripData);
       setOpenNotification(true);
-      chatSocket?.emit("driver-chat-connect", { driverId: driver?.id });
+      // chatSocket?.emit("driver-chat-connect", { driverId: driver?.id });
+      // chatSocket?.emit("driver-chat-connect", tripData?._id);
       setEnableChat(true);
       notificationDurationRef.current = setTimeout(() => {
         setOpenNotification(false);
@@ -114,6 +117,13 @@ function DriverNavBar() {
       socket?.off("cancel-ride");
     };
   }, [socket, tripDetail, tripCoordinates, startRide, tripStatus]);
+
+  useEffect(()=>{
+    if(tripDetail && chatSocket){
+      chatSocket?.emit("driver-chat-connect", tripDetail._id);
+    }
+
+  },[tripDetail,chatSocket])
 
   return (
     <>

@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { seacrhNearByDriver,requestRideAction,acceptTrip,startTrip,finishRide,cancelRide, payment, rideOngoing } from "./tripActions";
-import { json } from "react-router-dom";
-import { act } from "react";
 
 const trip = JSON.parse(localStorage.getItem('tripDetail'))
 const tripStatus = localStorage.getItem('tripStatus')
@@ -66,6 +64,7 @@ const tripSlice = createSlice({
         })
         .addCase(requestRideAction.fulfilled,(state)=>{
             state.success = true
+            state.message = "Ride Requested"
         })
         .addCase(requestRideAction.rejected,(state,action)=>{
             
@@ -74,7 +73,6 @@ const tripSlice = createSlice({
             state.loading = true
         })
         .addCase(acceptTrip.fulfilled,(state,action)=>{
-            
             localStorage.setItem('tripDetail',JSON.stringify(action?.payload?.acceptRide))
             localStorage.setItem('tripStatus','accepted')
             state.tripDetail = action?.payload?.acceptRide

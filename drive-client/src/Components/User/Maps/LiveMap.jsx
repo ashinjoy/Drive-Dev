@@ -30,11 +30,16 @@ function LiveMapUpdates() {
   const [route,setRoute] = useState(null)
   const {socket,chatSocket} = useSocket();
   useEffect(()=>{
-    if(chatSocket && token){
-      chatSocket?.emit("user-chat-connect",{userId:user?.id})
+    if(chatSocket && token ){
+      // console.log('logger id',tripDetail?._id);
+      console.log('reconnecting soccket');
+      
+      // chatSocket?.emit("user-chat-connect",{userId:user?.id})
+      chatSocket?.emit("user-chat-connect",tripDetail?._id)
+
     }
 
-  },[chatSocket])
+  },[chatSocket,token])
 
   useEffect(() => {
     if(tripDetail && (tripStatus === "started" || tripStatus === "accepted")){ 

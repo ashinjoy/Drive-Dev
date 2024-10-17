@@ -3,17 +3,19 @@ import { useSocket } from '../Hooks/socket'
 import { useSelector } from 'react-redux'
 export const MessageProvider = createContext(null)
 
-function ChatProvider({children}) {
+function    ChatProvider({children}) {
     const {chatSocket} = useSocket()
     const {driver} = useSelector((state)=>state.driver)
     const {user} = useSelector(state=>state.user)
   const [messages,setMessages] = useState([])
+  const [chatName,setChatName] = useState('')
     
-    useEffect(()=>{
+    useEffect(()=>{  
         if(chatSocket){
             chatSocket?.on("latestMessage",(data)=>{
-                console.log("message Recieved ",data);
                 setMessages((prev)=>[...prev,data])
+                console.log('ser',messages);
+                
             })
         }
         return ()=>{
@@ -22,7 +24,7 @@ function ChatProvider({children}) {
 
     },[chatSocket,driver,user])
   return (
-   <MessageProvider.Provider value={{messages,setMessages}}>{children}</MessageProvider.Provider>
+   <MessageProvider.Provider value={{messages,setMessages,chatName,setChatName}}>{children}</MessageProvider.Provider>
   )
 }
 

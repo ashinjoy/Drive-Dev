@@ -82,7 +82,7 @@ function BookingInfo() {
 
   return (
 <div className="w-[22rem] h-[85vh] border-2 border-gray-300 rounded-lg shadow-xl mt-[7rem] ml-[4rem] p-6 flex flex-col bg-white">
-  {openChat && <Chat openChat={openChat} user={user} setOpenChat={setOpenChat} />}
+  {openChat && <Chat  user={'user'} setOpenChat={setOpenChat} />}
   
   <div className="flex flex-col items-center border-b pb-4">
     <div className="flex w-full items-center mb-4">

@@ -50,7 +50,6 @@ function UserProfilePage() {
     setChange(true);
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -88,7 +87,7 @@ function UserProfilePage() {
   
 
   useEffect(()=>{
-    if(message == 'User Profile updated SuccessFully'){
+    if(message === 'User Profile updated SuccessFully'){
       toast(message)
       dispatch(reset())
       return

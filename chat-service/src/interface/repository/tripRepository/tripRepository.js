@@ -22,5 +22,15 @@ export class TripRepository {
     );
   }
 
+  async getChatNames(tripId){
+    try {
+    return  await tripModel.findById(tripId).populate({path:'userId',select:'name'}).populate({path:'driverId',select:'name'})
+    } catch (error) {
+      console.error(error);
+      
+    }
+    
+  }
+
 
 }

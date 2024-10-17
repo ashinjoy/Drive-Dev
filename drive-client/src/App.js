@@ -8,12 +8,12 @@ function App() {
   return (
     <div className="App">
       <Toast />
-      <DriverLocation>
-      <UserSearchContext>
-        <ChatProvider>
-        <Router/>
-        </ChatProvider>
-      </UserSearchContext>
+       <DriverLocation>
+         <UserSearchContext>
+           <ChatProvider>
+             <Router />
+           </ChatProvider>
+         </UserSearchContext>
       </DriverLocation>
     </div>
   );

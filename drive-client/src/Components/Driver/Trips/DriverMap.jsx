@@ -314,12 +314,13 @@ function DriverMap() {
         </div>
       </div>
       {openChat && (
-          <Chat
-            driver={driver}
-            recieverId={recieverId}
-            senderId={senderId}
-            setOpenChat={setOpenChat}
-          />
+          // <Chat
+          //   driver={driver}
+          //   recieverId={recieverId}
+          //   senderId={senderId}
+          //   setOpenChat={setOpenChat}
+          // />
+          <Chat user={'driver'} setOpenChat={setOpenChat}/>
         )}
       <AnimatePresence mode="wait">
         {endRide && <DriverNearByDropOff setEndRide={setEndRide} />}

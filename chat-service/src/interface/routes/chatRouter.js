@@ -12,7 +12,7 @@ const controllers={
 }
 
 chatRouter.post('/sendMessage',async(req,res,next)=>controllers.sendMessageController.sendMessage(req,res,next))
-chatRouter.get('/messages/:userId',async(req,res,next)=>controllers.getMessageController.getMessage(req,res,next))
+chatRouter.get('/messages/:tripId',async(req,res,next)=>controllers.getMessageController.getMessage(req,res,next))
 
 
 export default chatRouter

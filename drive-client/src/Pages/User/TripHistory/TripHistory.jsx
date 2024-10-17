@@ -31,10 +31,9 @@ function TripHistory() {
     <UserNavbar/>
     
     <div className='w-[100%] flex  justify-center'>
-
     <div className=" h-[80%] w-[80%] mt-[7rem] flex flex-col justify-center items-center">
     <h1 className="text-2xl font-bold mb-6">My Trips</h1>
-       {(tripDetails && tripDetails.length > 0 ) && tripDetails.map((trip,index)=>{
+       {(tripDetails && tripDetails.length > 0 ) && tripDetails.map((trip)=>{
         const dateFormat = new Date(trip?.createdAt)
         const formattedDate =dateFormat.toLocaleString('en-US',{
             month:'short',
@@ -53,6 +52,7 @@ function TripHistory() {
         status={trip?.tripStatus}
         id = {trip?._id}
         key={trip._id}
+        trip={trip}
       />)
        })} 
        <Pagination count={totalPages} page={currentPage} onChange={handlePageChange} color='primary' />
