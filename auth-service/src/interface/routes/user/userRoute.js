@@ -24,7 +24,7 @@ const controllers = {
   logoutController: new UserLogoutController(dependencies),
 };
 
-userRouter.post("/login/:type", async (req, res, next) =>
+userRouter.post("/login", async (req, res, next) =>
   controllers.userLoginController.userLogin(req, res, next)
 );
 userRouter.post("/verify-otp", async (req, res, next) =>

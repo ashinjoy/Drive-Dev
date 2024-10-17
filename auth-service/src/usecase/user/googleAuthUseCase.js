@@ -26,7 +26,7 @@ export class GoogleAuthUseCase {
         if (isUserExist.isBlocked) {
           const error = new Error();
           error.status = 403;
-          error.message = "You are Currently blocked by the Admin";
+          error.message = "You Account is  blocked by the Admin";
           throw error;
         }
         data = {

@@ -192,7 +192,7 @@ function BookingInfo() {
     )}
   </div>
   {openCancelModal && <CancellationModal setCancelModal={setCancelModal} setCancelConfirmModal={setCancelConfirmModal} />}
-  {cancelConfirmed && <CancelConfirmedModal />}
+  {cancelConfirmed && <CancelConfirmedModal setCancelConfirmModal={setCancelConfirmModal} />}
 
   {(tripStatus === "requested" || tripStatus === "accepted") && (
     <button

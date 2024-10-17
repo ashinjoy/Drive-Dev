@@ -11,7 +11,7 @@ export class UserLoginController {
   }
   async userLogin(req, res, next) {
     try {
-      const { type } = req.params;
+      const { type } = req.body;
       if (type === "google") {
         const { token } = req.body;
         if (!token) {

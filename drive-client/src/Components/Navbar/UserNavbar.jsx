@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { BiUserCircle } from "react-icons/bi";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { AnimatePresence } from "framer-motion";
-
 import { useSocket } from "../../Hooks/socket";
 import {
   setTripData,

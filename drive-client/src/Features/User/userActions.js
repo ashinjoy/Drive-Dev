@@ -10,16 +10,14 @@ import {
   userCurrentLocationService,
   saveContactServices,
   SosAlertService,
-  reviewRatingsService
+  reviewRatingsService,
 } from "../../Features/User/userService";
-console.log("userAction");
 
 export const googleAuth = createAsyncThunk(
   "googleAuth",
   async (token, { rejectWithValue }) => {
     try {
       const response = await googleAuthService(token);
-
       return response.data;
     } catch (error) {
       console.error(error);
@@ -53,14 +51,18 @@ export const verifyOtp = createAsyncThunk(
   }
 );
 
-export const resendOtp = createAsyncThunk("resendOtp", async (email) => {
-  try {
-    const response = await resendOtpService(email);
-    return response.data;
-  } catch (error) {
-    console.error(error);
+export const resendOtp = createAsyncThunk(
+  "resendOtp",
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await resendOtpService(email);
+      return response.data;
+    } catch (error) {
+      console.error("err in user action", error?.response?.data?.error);
+     return rejectWithValue(error?.response?.data?.error);
+    }
   }
-});
+);
 
 export const userProfileUpdate = createAsyncThunk(
   "userProfileUpdate",
@@ -77,11 +79,10 @@ export const userProfileUpdate = createAsyncThunk(
 
 export const userLogout = createAsyncThunk("userLogout", async () => {
   try {
-  const response =  await userLogoutService();
-  return response.data
+    const response = await userLogoutService();
+    return response.data;
   } catch (error) {
     console.error(error);
-    
   }
 });
 
@@ -129,9 +130,6 @@ export const reviewRatings = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error(error);
-     
     }
   }
 );
-
-

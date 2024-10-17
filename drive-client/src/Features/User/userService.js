@@ -2,20 +2,39 @@ import axios from "../../Utils/Axios/baseUrl";
 import { UserPrivate } from "../../Utils/Axios/userInterceptor";
 
 export const googleAuthService = async (token) => {
-    const data = { token };
-    return await axios.post("auth/user/login/google", data);
+  try {
+    const data = { token, type: "google" };
+    return await axios.post("auth/user/login", data);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const emailAuthService = async (email) => {
-    return await axios.post("auth/user/login/email", { email });
+  try {
+    return await axios.post("auth/user/login", { email, type: "email" });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 export const verifyOtpService = async (otp) => {
-  return await axios.post("auth/user/verify-otp", { otp });
+  try {
+    return await axios.post("auth/user/verify-otp", { otp });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const resendOtpService = async (email) => {
-
+  try {
     return await axios.post("auth/user/resend-otp", { email });
+  } catch (error) {
+    console.error('err in user',error);
+    throw error;
+  }
 };
 
 export const userProfileUpdateService = async (formdata) => {
@@ -32,54 +51,57 @@ export const userCurrentLocationService = async (coordinates) => {
   return await UserPrivate.post("trip/users/location", coordinates);
 };
 
-export const geoCodeService = async(pickup,pickupLong)=>{
-  return await axios.get(`trip/users/reverse-geocode?pickupLat=${pickup}&pickupLong=${pickupLong}`)
-}
-
+export const geoCodeService = async (pickup, pickupLong) => {
+  return await axios.get(
+    `trip/users/reverse-geocode?pickupLat=${pickup}&pickupLong=${pickupLong}`
+  );
+};
 
 export const addMoneyToWalletService = async (data) => {
   try {
-    const response = await UserPrivate.post("payment/user/wallet-addmoney", data);
+    const response = await UserPrivate.post(
+      "payment/user/wallet-addmoney",
+      data
+    );
     return response.data;
   } catch (error) {
     console.error(error);
-    throw error
+    throw error;
   }
 };
 
 export const getWalletBalance = async (userId) => {
   try {
-    const response = await UserPrivate.get(`payment/user/walletbalance/${userId}`);
+    const response = await UserPrivate.get(
+      `payment/user/walletbalance/${userId}`
+    );
     return response.data;
   } catch (error) {
     console.error(error);
-    throw error
-    
+    throw error;
   }
 };
 
-
-
 export const getWalletHistoryService = async (data) => {
   try {
-    const response = await UserPrivate.get(`payment/user/wallethistory?userId=${data?.userId}&page=${data?.page}`);
+    const response = await UserPrivate.get(
+      `payment/user/wallethistory?userId=${data?.userId}&page=${data?.page}`
+    );
     return response.data;
   } catch (error) {
     console.error(error);
-    throw error
+    throw error;
   }
 };
 
 export const saveContactServices = async (contactDetails) => {
-
-    return await UserPrivate.post("auth/user/save-contacts", contactDetails);
- 
+  return await UserPrivate.post("auth/user/save-contacts", contactDetails);
 };
 
-export const SosAlertService = async(userId)=>{
-  return await UserPrivate.post('trip/users/emergency-alert',{userId})
-}
+export const SosAlertService = async (userId) => {
+  return await UserPrivate.post("trip/users/emergency-alert", { userId });
+};
 
-export const reviewRatingsService = async(formData)=>{
-  return await UserPrivate.post('trip/users/review',formData)
-}
+export const reviewRatingsService = async (formData) => {
+  return await UserPrivate.post("trip/users/review", formData);
+};

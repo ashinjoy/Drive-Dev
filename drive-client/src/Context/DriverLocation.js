@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 export const driverLiveLocation = createContext(null);
 
 function DriverLocation({ children }) {
@@ -12,7 +12,7 @@ function DriverLocation({ children }) {
 
 
   const [enableChat, setEnableChat] = useState(false);
-console.log(driverLive,'driver Live in context');
+
 
   return (
     <driverLiveLocation.Provider

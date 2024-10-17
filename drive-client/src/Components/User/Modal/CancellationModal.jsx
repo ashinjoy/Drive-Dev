@@ -23,43 +23,50 @@ function CancellationModal({setCancelModal,setCancelConfirmModal}) {
     }
   return createPortal(
     <>
-   <div className='fixed inset-0 flex flex-col justify-center items-center bg-slate-900 bg-opacity-75 z-40'>
-    <div className='flex flex-col w-[45%] h-[70%] rounded-md bg-gray-50 justify-center items-center gap-3'>
-        <h1 className='text-xl font-bold'>Cancellation Reasons</h1>
+  <div className='fixed inset-0 flex justify-center items-center bg-slate-900 bg-opacity-75 z-40 transition-opacity duration-300 ease-in-out'>
+  <div className='flex flex-col w-full max-w-lg md:w-[45%] h-auto p-6 rounded-lg bg-white shadow-xl border-2 border-yellow-500'>
+    <h1 className='text-2xl font-semibold text-gray-800 mb-4 text-center'>
+      Cancellation Reasons
+    </h1>
     <div className='w-full flex flex-col justify-center items-center space-y-4'>
-        <label className='w-[80%] flex  gap-2 p-2 border border-black rounded-md cursor-pointer'>
-          <input type="radio" value={"Selected Wrong Pickup Location"} className="text-blue-600 focus:ring-blue-500" onClick={(e)=>setSelectReason(e.target.value)} />    
-          Selected Wrong Pickup Location
+      {[
+        'Selected Wrong Pickup Location',
+        'Selected Wrong Drop Location',
+        'Booked by Mistake',
+        'Selected different vehicle type',
+        'Taking too long to confirm ride',
+      ].map((reason, index) => (
+        <label
+          key={index}
+          className='w-[90%] flex items-center gap-3 p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100 transition duration-150 ease-in-out'
+        >
+          <input
+            type="radio"
+            value={reason}
+            className="text-blue-600 focus:ring-blue-500"
+            onClick={(e) => setSelectReason(e.target.value)}
+          />
+          <span className='text-gray-700'>{reason}</span>
         </label>
-
-        <label className='w-[80%] flex  gap-2 p-2 border border-black rounded-md cursor-pointer'>
-          <input type="radio" value={"Selected Wrong Drop Location"} className="text-blue-600 focus:ring-blue-500" onClick={(e)=>setSelectReason(e.target.value)}/>
-          Selected Wrong Drop Location
-        </label>
-
-        <label className='w-[80%] flex  gap-2 p-2 border border-black rounded-md cursor-pointer'>
-          <input type="radio" value={"Booked by Mistake"} className="text-blue-600 focus:ring-blue-500" onClick={(e)=>setSelectReason(e.target.value)}/>
-          Booked by Mistake
-        </label>
-
-        <label className='w-[80%] flex  gap-2 p-2 border border-black rounded-md cursor-pointer'>
-          <input type="radio" value={"Selected different vehicle type"} className="text-blue-600 focus:ring-blue-500" onClick={(e)=>setSelectReason(e.target.value)}/>
-          Selected different vehicle type
-        </label>
-
-        <label className='w-[80%] flex  gap-2 p-2 border border-black rounded-md cursor-pointer'>
-          <input type="radio" value={"Taking too long to confirm ride"} className="text-blue-600 focus:ring-blue-500" onClick={(e)=>setSelectReason(e.target.value)}/>
-          Taking too long to confirm ride
-        </label>
-      </div>
-      <div className='w-full flex justify-around mt-6'>
-        <button className='text-blue-600 ' onClick={()=>setCancelModal(false)}>Don’t Cancel</button>
-        <button className='bg-red-600 text-white px-4 py-2 rounded-md hover:bg-blue-700'onClick={handleCancellation}>
-          Yes, Continue
-        </button>
-      </div>
+      ))}
     </div>
-   </div>
+    <div className='w-full flex justify-between mt-6 space-x-4'>
+      <button
+        className='text-gray-700 hover:text-gray-900 transition duration-150 ease-in-out focus:outline-none'
+        onClick={() => setCancelModal(false)}
+      >
+        Don’t Cancel
+      </button>
+      <button
+        className='bg-red-600 text-white px-5 py-2 rounded-md hover:bg-red-700 transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50'
+        onClick={handleCancellation}
+      >
+        Yes, Continue
+      </button>
+    </div>
+  </div>
+</div>
+
    </>,document.getElementById("cancel-modal")
   )
 }

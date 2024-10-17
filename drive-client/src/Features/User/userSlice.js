@@ -1,14 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { emailAuth, googleAuth, verifyOtp, resendOtp,userProfileUpdate,userCurrentLocation, saveContacts, userLogout, reviewRatings } from "./userActions";
+import {
+  emailAuth,
+  googleAuth,
+  verifyOtp,
+  resendOtp,
+  userProfileUpdate,
+  userCurrentLocation,
+  saveContacts,
+  userLogout,
+  reviewRatings,
+} from "./userActions";
 
+const userDetails = JSON.parse(localStorage.getItem("userDetail"));
 
-const userDetails = JSON.parse(localStorage.getItem('userDetail'))
-
-const userAccessToken = localStorage.getItem('userAccessToken')
+const userAccessToken = localStorage.getItem("userAccessToken");
 
 const initialState = {
-  user:userDetails ? userDetails : null,
-  token: userAccessToken ? userAccessToken :null,
+  user: userDetails ? userDetails : null,
+  token: userAccessToken ? userAccessToken : null,
   loading: false,
   success: false,
   error: "",
@@ -27,12 +36,12 @@ const userSlice = createSlice({
       state.error = "";
       state.message = "";
     },
-    reset:(state)=>{
+    reset: (state) => {
       state.loading = false;
-      state.success = false
-      state.error = ""
-      state.message = ''
-    }
+      state.success = false;
+      state.error = "";
+      state.message = "";
+    },
   },
 
   extraReducers(builder) {
@@ -43,14 +52,17 @@ const userSlice = createSlice({
 
       .addCase(googleAuth.fulfilled, (state, action) => {
         localStorage.setItem("userAccessToken", action?.payload?.accessToken);
-        localStorage.setItem('userDetail',JSON.stringify(action?.payload?.data))
+        localStorage.setItem(
+          "userDetail",
+          JSON.stringify(action?.payload?.data)
+        );
         state.success = true;
         state.user = action?.payload?.data;
         state.token = action?.payload?.accessToken;
         state.message = action?.payload?.message;
       })
 
-      .addCase(googleAuth.rejected, (state, action) => {  
+      .addCase(googleAuth.rejected, (state, action) => {
         state.error = action?.payload;
       })
 
@@ -69,9 +81,11 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(verifyOtp.fulfilled, (state, action) => {
-        
         localStorage.setItem("userAccessToken", action?.payload?.accessToken);
-        localStorage.setItem('userDetail',JSON.stringify(action?.payload?.data))
+        localStorage.setItem(
+          "userDetail",
+          JSON.stringify(action?.payload?.data)
+        );
         state.success = true;
         state.user = action?.payload?.data;
         state.token = action?.payload?.accessToken;
@@ -88,75 +102,83 @@ const userSlice = createSlice({
         state.message = action?.payload?.message;
       })
       .addCase(resendOtp.rejected, (state, action) => {
-        state.error = action?.payload?.message;
+        console.log("action in payload", action);
+        state.error = action?.payload;
       })
       .addCase(userProfileUpdate.pending, (state) => {
         state.loading = true;
       })
       .addCase(userProfileUpdate.fulfilled, (state, action) => {
-        
-        localStorage.setItem('userDetail',JSON.stringify(action?.payload?.data))
+        localStorage.setItem(
+          "userDetail",
+          JSON.stringify(action?.payload?.data)
+        );
         state.success = true;
-        state.user = action?.payload?.data
+        state.user = action?.payload?.data;
         state.message = action?.payload?.message;
       })
-      .addCase(userProfileUpdate.rejected, (state,action) => {
-        console.log('updateProfile',action);
-        state.error = action?.payload
+      .addCase(userProfileUpdate.rejected, (state, action) => {
+        console.log("updateProfile", action);
+        state.error = action?.payload;
       })
-      .addCase(userCurrentLocation.pending,(state,action)=>{
-        state.loading = true
+      .addCase(userCurrentLocation.pending, (state, action) => {
+        state.loading = true;
       })
-      .addCase(userCurrentLocation.fulfilled,(state,action)=>{
-        localStorage.setItem('userDetail',JSON.stringify(action.payload?.userDetail))
-        state.success = true
-        state.user =action?.payload?.userDetail
+      .addCase(userCurrentLocation.fulfilled, (state, action) => {
+        localStorage.setItem(
+          "userDetail",
+          JSON.stringify(action.payload?.userDetail)
+        );
+        state.success = true;
+        state.user = action?.payload?.userDetail;
       })
-      .addCase(userCurrentLocation.rejected,(state,action)=>{
-        console.log('eror');
-        
+      .addCase(userCurrentLocation.rejected, (state, action) => {
+        console.log("eror");
+
         // state.error = action.payload
       })
-      .addCase(saveContacts.pending,(state,action)=>{
-       state.loading =  true
+      .addCase(saveContacts.pending, (state, action) => {
+        state.loading = true;
       })
-      .addCase(saveContacts.fulfilled,(state,action)=>{
-        localStorage.setItem('userDetail',JSON.stringify(action.payload?.userDetail))
-        state.success = true
-        state.user = action?.payload?.userDetail
+      .addCase(saveContacts.fulfilled, (state, action) => {
+        localStorage.setItem(
+          "userDetail",
+          JSON.stringify(action.payload?.userDetail)
+        );
+        state.success = true;
+        state.user = action?.payload?.userDetail;
       })
-      .addCase(saveContacts.rejected,(state,action)=>{
-        // state.error = 
+      .addCase(saveContacts.rejected, (state, action) => {
+        // state.error =
       })
-      .addCase(userLogout.pending,(state)=>{
-        state.loading = true
+      .addCase(userLogout.pending, (state) => {
+        state.loading = true;
       })
-      .addCase(userLogout.fulfilled,(state,action)=>{
-        localStorage.removeItem('userDetail')
-        localStorage.removeItem('userAccessToken')
-        state.token = null
-        state.user =null
-        state.message = action.payload?.message
+      .addCase(userLogout.fulfilled, (state, action) => {
+        localStorage.removeItem("userDetail");
+        localStorage.removeItem("userAccessToken");
+        state.token = null;
+        state.user = null;
+        state.message = action.payload?.message;
       })
-      .addCase(userLogout.rejected,(state,action)=>{
-        console.log('err');
-        
+      .addCase(userLogout.rejected, (state, action) => {
+        console.log("err");
       })
-      .addCase(reviewRatings.pending,(state)=>{
-        state.loading = true
+      .addCase(reviewRatings.pending, (state) => {
+        state.loading = true;
       })
-      .addCase(reviewRatings.fulfilled,(state,action)=>{
-        console.log('axtion',action.payload.message);
-        
-        state.success = action?.payload?.success
-        state.message = action?.payload?.message
+      .addCase(reviewRatings.fulfilled, (state, action) => {
+        console.log("axtion", action.payload.message);
+
+        state.success = action?.payload?.success;
+        state.message = action?.payload?.message;
       })
-      .addCase(reviewRatings.rejected,(state,action)=>{
+      .addCase(reviewRatings.rejected, (state, action) => {
         // state.error
-      })
+      });
   },
 });
 
-export const { resetAll ,reset } = userSlice.actions;
+export const { resetAll, reset } = userSlice.actions;
 
 export default userSlice.reducer;

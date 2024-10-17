@@ -12,17 +12,19 @@ export class VerifyOtpUseCase {
   async execute(session, otpEntered) {
     try {
       const awsS3Config = new S3Config();
-      if (!session) {
-        const error = new Error();
-        error.status = 400;
-        error.message = "Otp Expired";
-        throw error;
-      }
+      console.log("session", session);
+
+      // if (!session) {
+      //   const error = new Error();
+      //   error.status = 400;
+      //   error.message = "Otp Session has Expired";
+      //   throw error;
+      // }
       const { userId, otp } = session;
       if (!userId || !otp) {
         const error = new Error();
         error.status = 400;
-        error.message = "Bad Request";
+        error.message = "Otp Session has Expired";
         throw error;
       }
       const user = await this.userRepository.findUserById(userId);
@@ -35,7 +37,7 @@ export class VerifyOtpUseCase {
       if (otp !== otpEntered) {
         const error = new Error();
         error.status = 400;
-        error.message = "Otp is not matching";
+        error.message = "OTP is not Matching";
         throw error;
       }
       const updateVerificationStatus = { isVerified: true };
