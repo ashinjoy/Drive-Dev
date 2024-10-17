@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class VerifyOtpController {
   constructor(dependencies) {
     this.verifyAuthUseCase = new dependencies.useCase.DriverVerifyOtpUseCase(
@@ -12,24 +14,25 @@ export class VerifyOtpController {
         error.status = 400;
         error.message = "Provide Valid OTP";
         throw error;
-      } 
-      const {otpDetails} = req.session
-      if(!otpDetails){
-        const error = new Error()
-        error.message = "OTP has been expired"
-        error.status = 400
-        throw error
       }
-      const verifiedDriverData  =
-          await this.verifyAuthUseCase.execute(
-          otpDetails,
-          otp
-        )
-      res
-        .status(200)
-        .json({ data:verifiedDriverData, message: "Otp Verification SucessFull" });
+      const { otpDetails } = req.session;
+      if (!otpDetails) {
+        const error = new Error();
+        error.message = "OTP has been expired";
+        error.status = 400;
+        throw error;
+      }
+      const verifiedDriverData = await this.verifyAuthUseCase.execute(
+        otpDetails,
+        otp
+      );
+      res.status(200).json({
+        data: verifiedDriverData,
+        message: "Otp Verification SucessFull",
+      });
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       next(error);
     }
   }

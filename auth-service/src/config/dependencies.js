@@ -1,14 +1,19 @@
 import {
   GoogleAuthUseCase,
-  userRefreshTokenUseCase,
   EmailAuthUseCase,
   VerifyOtpUseCase,
   ResendOtpUseCase,
+  userRefreshTokenUseCase,
+  UpdateUserDataUseCase,
+  SaveContactsUseCase,
+  UserLogoutUseCase,
   DriverRegisterUseCase,
   DriverLoginUseCase,
   DriverVerifyOtpUseCase,
   DriverCompleteProfileUseCase,
   DriverProfileUpdateUseCase,
+  DriverRefreshTokenUseCase,
+  DriverResendOtpUseCase,
   adminLoginUseCase,
   GetAllDriverUseCase,
   GetDriverDetailsUseCase,
@@ -17,27 +22,29 @@ import {
   DriverBlockUnblockUseCase,
   UserBlockUnblockUseCase,
   GetAllUserUseCase,
-  UpdateUserDataUseCase,
-  DriverRefreshTokenUseCase,
   AdminRefreshTokenUseCase,
-  SaveContactsUseCase,
   NewlyEnrolledUserUseCase,
-  DriverResendOtpUseCase,
-  UserLogoutUseCase
 } from "../usecase/index.js";
-import { MongoUserRepository,MongoDriverRepository, MongoAdminRepository } from "../interface/repository/index.js";
+
+import {
+  MongoUserRepository,
+  MongoDriverRepository,
+  MongoAdminRepository,
+} from "../interface/repository/index.js";
 
 const useCase = {
   GoogleAuthUseCase,
-  EmailAuthUseCase,
+  EmailAuthUseCase,    // Users UseCases
   VerifyOtpUseCase,
   userRefreshTokenUseCase,
   ResendOtpUseCase,
   UserLogoutUseCase,
+  UpdateUserDataUseCase,
+  SaveContactsUseCase,
 
   DriverRegisterUseCase,
   DriverLoginUseCase,
-  DriverCompleteProfileUseCase,
+  DriverCompleteProfileUseCase,   // Drivers UseCases
   DriverVerifyOtpUseCase,
   DriverProfileUpdateUseCase,
   DriverRefreshTokenUseCase,
@@ -47,20 +54,18 @@ const useCase = {
   AdminRefreshTokenUseCase,
   GetAllDriverUseCase,
   GetDriverDetailsUseCase,
-  DriverApprovalUseCase,
+  DriverApprovalUseCase,          // Admin UseCases
   ApproveProfileUpdateUseCase,
   DriverBlockUnblockUseCase,
   UserBlockUnblockUseCase,
   GetAllUserUseCase,
-  UpdateUserDataUseCase,
-  SaveContactsUseCase,
-  NewlyEnrolledUserUseCase
+  NewlyEnrolledUserUseCase,
 };
 
 const repository = {
   MongoUserRepository,
   MongoDriverRepository,
-  MongoAdminRepository
+  MongoAdminRepository,
 };
 
 export const dependencies = {

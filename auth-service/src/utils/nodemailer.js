@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { infologger } from "../config/winstonConfig.js";
 
 async function sendMail(otp, email) {
   try {
@@ -16,11 +17,12 @@ async function sendMail(otp, email) {
     const mailtransfered = await transport.sendMail(mailoptions);
     if (mailtransfered) {
       console.log("mail transfered successfully");
-      return
+      infologger.info("mail transfered successfully");
+      return;
     }
   } catch (err) {
     console.error(err);
-    throw err
+    throw err;
   }
 }
 

@@ -1,4 +1,5 @@
 import express from "express";
+
 import { adminLogincontroller } from "../../controller/admin/adminLoginController.js";
 import { GetAllDriverControllers } from "../../controller/admin/getAllDriverController.js";
 import { DriverDetailsController } from "../../controller/admin/getDriverDetails.js";
@@ -9,8 +10,8 @@ import { verifyProfileUpdateController } from "../../controller/admin/verifyProf
 import { GetAllUserController } from "../../controller/admin/getAllUsersController.js";
 import { AdminRefreshTokenController } from "../../controller/admin/adminRefreshController.js";
 import { NewlyEnrolledUserController } from "../../controller/admin/newlyEnrolledUsersController.js";
-import { AuthHandler } from "../../middleware/authMiddleware.js";
 
+import { AuthHandler } from "../../middleware/authMiddleware.js";
 import { dependencies } from "../../../config/dependencies.js";
 const adminRouter = express.Router();
 const controllers = {
@@ -18,19 +19,26 @@ const controllers = {
   getAllDriversController: new GetAllDriverControllers(dependencies),
   getDriverDetailsController: new DriverDetailsController(dependencies),
   approveDriverController: new ApproveDriverController(dependencies),
-  verifyProfileUpdateController: new verifyProfileUpdateController(dependencies),
-  adminDriverBlockAndUnblockController: new DriverBlockUnblockController(dependencies),
-  adminUserBlockAndUnblockController: new UserBlockUnblockController(dependencies),
+  verifyProfileUpdateController: new verifyProfileUpdateController(
+    dependencies
+  ),
+  adminDriverBlockAndUnblockController: new DriverBlockUnblockController(
+    dependencies
+  ),
+  adminUserBlockAndUnblockController: new UserBlockUnblockController(
+    dependencies
+  ),
   getAllUsersController: new GetAllUserController(dependencies),
   adminRefreshTokenController: new AdminRefreshTokenController(dependencies),
-  newUsersReportController: new NewlyEnrolledUserController(dependencies)
-  
+  newUsersReportController: new NewlyEnrolledUserController(dependencies),
 };
 
 adminRouter.post("/login", async (req, res, next) =>
   controllers.loginController.login(req, res, next)
 );
-adminRouter.get('/refreshToken',async(req,res,next)=>controllers.adminRefreshTokenController.refreshUserToken(req,res,next))
+adminRouter.get("/refreshToken", async (req, res, next) =>
+  controllers.adminRefreshTokenController.refreshUserToken(req, res, next)
+);
 
 adminRouter.get(
   "/getAllDrivers",
@@ -86,7 +94,11 @@ adminRouter.get(
   async (req, res, next) =>
     controllers.getAllUsersController.getAllUsers(req, res, next)
 );
-adminRouter.get('/dashboard/newusers/:filter',AuthHandler.isAdminLogin,async(req,res,next)=>controllers.newUsersReportController.newlyEnrolledUsers(req,res,next))
-
+adminRouter.get(
+  "/dashboard/newusers/:filter",
+  AuthHandler.isAdminLogin,
+  async (req, res, next) =>
+    controllers.newUsersReportController.newlyEnrolledUsers(req, res, next)
+);
 
 export default adminRouter;

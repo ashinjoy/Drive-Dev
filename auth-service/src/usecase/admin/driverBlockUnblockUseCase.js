@@ -1,3 +1,4 @@
+import { errorLogger } from "../../config/winstonConfig.js";
 import { KafkaClient } from "../../events/KafkaClient.js";
 import { TOPIC, DRIVER_UPDATED } from "../../events/config.js";
 
@@ -25,9 +26,8 @@ export class DriverBlockUnblockUseCase {
       return updateDriver;
     } catch (error) {
       console.error(error);
-      throw error
-      
+      errorLogger.error(error);
+      throw error;
     }
-   
   }
 }

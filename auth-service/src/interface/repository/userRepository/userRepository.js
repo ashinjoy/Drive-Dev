@@ -1,3 +1,4 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
 import { userModel } from "../../database/schema/userSchema/userSchema.js";
 export class UserRepository {
   constructor() {}
@@ -6,6 +7,7 @@ export class UserRepository {
       return await userModel.create(userData);
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }
@@ -14,6 +16,7 @@ export class UserRepository {
       return await userModel.findOne({ email: email });
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }
@@ -22,6 +25,7 @@ export class UserRepository {
       return await userModel.findById({ _id: id });
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }
@@ -32,27 +36,31 @@ export class UserRepository {
         .lean();
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }
-  async getAllUsers(search,page) {
+  async getAllUsers(search, page) {
     try {
-      const result =  await userModel.find({name:new RegExp(search,"i")}, { password: 0 }).skip((page-1)*7) .limit(7)
-      return result
+      const result = await userModel
+        .find({ name: new RegExp(search, "i") }, { password: 0 })
+        .skip((page - 1) * 7)
+        .limit(7);
+      return result;
     } catch (error) {
       console.error(error);
-      throw error
+      errorLogger.error(error);
+      throw error;
     }
-   
-
   }
 
   async getTotalDocs(search) {
     try {
-    return await userModel.countDocuments({name:new RegExp(search,"i")});
+      return await userModel.countDocuments({ name: new RegExp(search, "i") });
     } catch (error) {
       console.error(error);
-      throw error
+      errorLogger.error(error);
+      throw error;
     }
   }
   async getUserAndSaveContacts(id, data) {
@@ -64,6 +72,7 @@ export class UserRepository {
       );
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }
@@ -94,6 +103,7 @@ export class UserRepository {
       ]);
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }

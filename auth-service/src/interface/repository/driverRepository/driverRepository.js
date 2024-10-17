@@ -1,3 +1,4 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
 import { driverModel } from "../../database/schema/driverSchema/driverSchema.js";
 export class DriverRepository {
   constructor() {}
@@ -7,7 +8,8 @@ export class DriverRepository {
       return driver.save();
     } catch (error) {
       console.error(error);
-      throw error
+      errorLogger.error(error);
+      throw error;
     }
   }
   async findDriverbyId(id) {
@@ -15,8 +17,8 @@ export class DriverRepository {
       return await driverModel.findById({ _id: id }, { password: 0 });
     } catch (error) {
       console.error(error);
-      throw error
-
+      errorLogger.error(error);
+      throw error;
     }
   }
   async findDriverByEmail(email) {
@@ -24,7 +26,8 @@ export class DriverRepository {
       return await driverModel.findOne({ email: email }).lean();
     } catch (error) {
       console.error(error);
-      throw error
+      errorLogger.error(error);
+      throw error;
     }
   }
   async findDriverByPhone(phone) {
@@ -32,20 +35,24 @@ export class DriverRepository {
       return await driverModel.findOne({ phone });
     } catch (error) {
       console.error(error);
-      throw error
+      errorLogger.error(error);
+      throw error;
     }
   }
   async findDriverByIdAndUpdate(id, detailsToUpdate) {
     try {
       return await driverModel
-      .findByIdAndUpdate({ _id: id }, { $set: detailsToUpdate }, { new: true })
-      .lean();
+        .findByIdAndUpdate(
+          { _id: id },
+          { $set: detailsToUpdate },
+          { new: true }
+        )
+        .lean();
     } catch (error) {
       console.error(error);
-      throw error
-      
+      errorLogger.error(error);
+      throw error;
     }
-  
   }
 
   async getDriverByIdAndUpdate(id, dataToUpdate) {
@@ -57,10 +64,9 @@ export class DriverRepository {
       );
     } catch (error) {
       console.error(error);
-      throw error
-      
+      errorLogger.error(error);
+      throw error;
     }
-    
   }
   async getAllDrivers(search, page) {
     try {
@@ -71,6 +77,7 @@ export class DriverRepository {
       return result;
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }
@@ -84,10 +91,9 @@ export class DriverRepository {
       );
     } catch (error) {
       console.error(error);
-      throw error
-      
+      errorLogger.error(error);
+      throw error;
     }
-    
   }
 
   async getTotalDocs(search) {
@@ -98,6 +104,7 @@ export class DriverRepository {
       return totalDocs;
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }
@@ -128,9 +135,8 @@ export class DriverRepository {
       ]);
     } catch (error) {
       console.error(error);
-      throw error
-      
+      errorLogger.error(error);
+      throw error;
     }
-   
   }
 }

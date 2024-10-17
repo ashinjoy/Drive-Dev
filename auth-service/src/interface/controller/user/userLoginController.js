@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class UserLoginController {
   constructor(dependencies) {
     this.googleAuthUseCase = new dependencies.useCase.GoogleAuthUseCase(
@@ -30,8 +32,6 @@ export class UserLoginController {
           message: "Google Authentication SuccessFull",
         });
       } else if (type === "email") {
-        console.log("hello9 hjdbhfbdshbhb");
-        
         const { email } = req.body;
         if (!email) {
           const error = new Error();
@@ -45,6 +45,7 @@ export class UserLoginController {
         res.status(200).json({ message: "Otp Send Sucessfully" });
       }
     } catch (error) {
+      errorLogger.error(error);
       next(error);
     }
   }

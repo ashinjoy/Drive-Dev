@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class DriverLoginController {
   constructor(dependencies) {
     this.driverLoginUseCase = new dependencies.useCase.DriverLoginUseCase(
@@ -17,6 +19,7 @@ export class DriverLoginController {
         .json({ data, accessToken, message: "Logged In Successfully" });
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       next(error);
     }
   }

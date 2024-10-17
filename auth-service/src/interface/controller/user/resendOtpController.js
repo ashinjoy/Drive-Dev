@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class ResendOtpController {
   constructor(dependencies) {
     this.resendOtpUserCase = new dependencies.useCase.ResendOtpUseCase(
@@ -11,6 +13,7 @@ export class ResendOtpController {
         const error = new Error();
         error.status = 400;
         error.message = "Bad Request";
+        throw error;
       }
       const { userId, otp } = await this.resendOtpUserCase.execute(email);
       req.session.userId = userId;
@@ -18,6 +21,7 @@ export class ResendOtpController {
       res.status(200).json({ message: "OTP send Sucessfully" });
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       next(error);
     }
   }

@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class DriverBlockUnblockController {
   constructor(dependencies) {
     this.driverBlockUnblockUseCase =
@@ -22,7 +24,8 @@ export class DriverBlockUnblockController {
       res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      next(error)
+      errorLogger.error(error);
+      next(error);
     }
   }
 }

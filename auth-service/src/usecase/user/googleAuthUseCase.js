@@ -2,6 +2,7 @@ import axios from "axios";
 import { createAccessToken, createRefreshToken } from "../../utils/jwt.js";
 import { KafkaClient } from "../../events/KafkaClient.js";
 import { TOPIC, USER_CREATED } from "../../events/config.js";
+import { errorLogger } from "../../config/winstonConfig.js";
 export class GoogleAuthUseCase {
   constructor(dependencies) {
     this.userRepository = new dependencies.repository.MongoUserRepository();
@@ -90,6 +91,7 @@ export class GoogleAuthUseCase {
       };
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }

@@ -1,3 +1,4 @@
+import { errorLogger } from "../../config/winstonConfig.js";
 import { KafkaClient } from "../../events/KafkaClient.js";
 import { TOPIC, DRIVER_UPDATED } from "../../events/config.js";
 export class DriverVerifyOtpUseCase {
@@ -42,6 +43,7 @@ export class DriverVerifyOtpUseCase {
         }
       } else {
         console.log("User is being Blocked by the Admin");
+
         const error = new Error();
         error.status = 403;
         error.message = "You are Blocked by the Admin";
@@ -49,6 +51,7 @@ export class DriverVerifyOtpUseCase {
       }
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }

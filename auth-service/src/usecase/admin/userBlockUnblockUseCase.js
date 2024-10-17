@@ -1,3 +1,4 @@
+import { errorLogger } from "../../config/winstonConfig.js";
 import { TOPIC, USER_UPDATED } from "../../events/config.js";
 import { KafkaClient } from "../../events/KafkaClient.js";
 
@@ -24,6 +25,7 @@ export class UserBlockUnblockUseCase {
       return updateUser;
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }

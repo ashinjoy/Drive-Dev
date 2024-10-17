@@ -1,3 +1,4 @@
+import { errorLogger, infologger } from "../../config/winstonConfig.js";
 import { verifyAccessToken } from "../../utils/jwt.js";
 import {
   MongoUserRepository,
@@ -7,7 +8,7 @@ import {
 
 export class AuthHandler {
   static async isUserLogin(req, res, next) {
-    try { 
+    try {
       const userRepository = new MongoUserRepository();
       if (!req.headers["Authorization"] && !req.headers["authorization"]) {
         const error = new Error();
@@ -43,12 +44,13 @@ export class AuthHandler {
         const error = new Error();
         error.status = 403;
         error.message = "Your Account has been Blocked temporarily";
-        throw error
+        throw error;
       }
 
       next();
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       next(error);
     }
   }
@@ -81,22 +83,26 @@ export class AuthHandler {
         const error = new Error();
         error.status = 403;
         error.message = "You are not Authorized";
-        throw error; 
+        throw error;
       }
-      console.log(',decode',decodeToken);
-      
-      const isDrivervalid = await driverRepository.findDriverbyId(decodeToken._id);
+      console.log("decode", decodeToken);
+      infologger.info("decode", decodeToken);
+
+      const isDrivervalid = await driverRepository.findDriverbyId(
+        decodeToken._id
+      );
 
       if (!isDrivervalid || isDrivervalid.isBlocked) {
         const error = new Error();
         error.status = 403;
         error.message = "Your Account has been Blocked temporarily";
-        throw error
+        throw error;
       }
 
       next();
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       next(error);
     }
   }
@@ -131,14 +137,13 @@ export class AuthHandler {
         error.message = "You are not Authorized";
         throw error;
       }
-      console.log(decodeToken);
-      
-       await adminRepository.findAdminById(decodeToken.id);
+
+      await adminRepository.findAdminById(decodeToken.id);
       next();
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       next(error);
     }
-    
-}
+  }
 }

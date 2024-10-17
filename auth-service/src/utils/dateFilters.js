@@ -1,5 +1,3 @@
-
-
 export const getDailyFilters = (now) => {
   const dailyDateRange = [];
   const currentTime = new Date(now);
@@ -30,11 +28,11 @@ export const getDailyFilters = (now) => {
 
 export const getWeeklyFilters = (now) => {
   const dailyDateRange = [];
-  
+
   const startTime = new Date(now);
   startTime.setDate(startTime.getDate() - 7);
   startTime.setHours(0, 0, 0, 0);
- 
+
   dailyDateRange.push({
     label: "week4",
     startTime: new Date(startTime),
@@ -54,13 +52,13 @@ export const getWeeklyFilters = (now) => {
     });
     startTime.setDate(startTime.getDate() - 7);
   }
- 
-  return dailyDateRange
+
+  return dailyDateRange;
 };
 
 export const getMonthlyFilter = (now) => {
   const dailyDateRange = [];
-  
+
   const startTime = new Date(now);
   startTime.setMonth(startTime.getMonth());
   startTime.setDate(1);
@@ -90,20 +88,19 @@ export const getMonthlyFilter = (now) => {
     startTime.setHours(0, 0, 0, 0);
   }
   console.log(dailyDateRange);
-  return dailyDateRange
-
+  return dailyDateRange;
 };
 
 export const getYearlyFilter = (now) => {
   const dailyDateRange = [];
-  
+
   const startTime = new Date(now);
   startTime.setFullYear(startTime.getFullYear());
   startTime.setMonth(0);
   startTime.setDate(1);
   startTime.setHours(0, 0, 0, 0);
   dailyDateRange.push({
-    label: startTime.toLocaleString('en-US',{year:"numeric"}),
+    label: startTime.toLocaleString("en-US", { year: "numeric" }),
     startTime: new Date(startTime),
     endTime: now,
   });
@@ -122,11 +119,11 @@ export const getYearlyFilter = (now) => {
     startTime.setDate(1);
     startTime.setHours(0, 0, 0, 0);
     dailyDateRange.push({
-      label: startYear.toLocaleString('en-US',{year:"numeric"}),
+      label: startYear.toLocaleString("en-US", { year: "numeric" }),
       startTime: startYear,
       endTime: endYear,
     });
   }
-  
-  return dailyDateRange
+
+  return dailyDateRange;
 };

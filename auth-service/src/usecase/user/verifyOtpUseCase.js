@@ -1,12 +1,13 @@
 import { createAccessToken, createRefreshToken } from "../../utils/jwt.js";
 import { S3Config } from "../../utils/s3-bucketConfig.js";
 import { KafkaClient } from "../../events/KafkaClient.js";
-import { TOPIC ,USER_UPDATED } from "../../events/config.js";
+import { TOPIC, USER_UPDATED } from "../../events/config.js";
+import { errorLogger } from "../../config/winstonConfig.js";
 
 export class VerifyOtpUseCase {
   constructor(dependencies) {
     this.userRepository = new dependencies.repository.MongoUserRepository();
-    this.kafka = new KafkaClient()
+    this.kafka = new KafkaClient();
   }
   async execute(session, otpEntered) {
     try {
@@ -18,11 +19,11 @@ export class VerifyOtpUseCase {
         throw error;
       }
       const { userId, otp } = session;
-      if(!userId || !otp){
-        const error = new Error()
-        error.status = 400
-        error.message = "Bad Request"
-        throw error
+      if (!userId || !otp) {
+        const error = new Error();
+        error.status = 400;
+        error.message = "Bad Request";
+        throw error;
       }
       const user = await this.userRepository.findUserById(userId);
       if (user?.isBlocked) {
@@ -43,14 +44,14 @@ export class VerifyOtpUseCase {
         updateVerificationStatus
       );
       const userDataToPublish = {
-        _id:verifyUser._id,
-        isVerified:verifyUser.isVerified,
-      }
+        _id: verifyUser._id,
+        isVerified: verifyUser.isVerified,
+      };
 
-      this.kafka.produceMessage(TOPIC,{
-        type:USER_UPDATED,
-        value:JSON.stringify(userDataToPublish)
-      })
+      this.kafka.produceMessage(TOPIC, {
+        type: USER_UPDATED,
+        value: JSON.stringify(userDataToPublish),
+      });
 
       let getImageUrl;
       if (verifyUser.profileImg) {
@@ -85,10 +86,8 @@ export class VerifyOtpUseCase {
       };
     } catch (error) {
       console.error(error);
-      throw error
-      
+      errorLogger.error(error);
+      throw error;
     }
-      
-    } 
   }
-
+}

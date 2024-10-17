@@ -5,6 +5,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import crypto from "crypto";
+import { errorLogger } from "../config/winstonConfig.js";
 export class S3Config {
   constructor() {
     this.bucketName = process.env.BUCKET_NAME;
@@ -20,29 +21,33 @@ export class S3Config {
     });
   }
   async uploadImage(imageDetails) {
-    const imageName = crypto.randomBytes(32).toString("hex");
-    const params = {
-      Bucket: this.bucketName,
-      Key: imageName,
-      Body: imageDetails.buffer,
-      ContentType: imageDetails.mimetype,
-    };
+    try {
+      const imageName = crypto.randomBytes(32).toString("hex");
+      const params = {
+        Bucket: this.bucketName,
+        Key: imageName,
+        Body: imageDetails.buffer,
+        ContentType: imageDetails.mimetype,
+      };
 
-    const upload = new PutObjectCommand(params);
-    await this.s3.send(upload);
-    return {
-      Key: params.Key,
-      imgField: imageDetails.fieldname,
-    };
+      const upload = new PutObjectCommand(params);
+      await this.s3.send(upload);
+      return {
+        Key: params.Key,
+        imgField: imageDetails.fieldname,
+      };
+    } catch (error) {
+      errorLogger.error(error);
+      throw error;
+    }
   }
   async getImageUrl(img) {
     try {
-     
       const getObjectParams = {
         Bucket: this.bucketName,
         Key: img.Key,
       };
-     
+
       const command = new GetObjectCommand(getObjectParams);
       const url = await getSignedUrl(this.s3, command, { expiresIn: 3600 });
       return {
@@ -51,6 +56,8 @@ export class S3Config {
       };
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
+      throw error;
     }
   }
 }

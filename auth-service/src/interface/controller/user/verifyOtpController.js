@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class VerifyOtpController {
   constructor(dependencies) {
     this.verifyAuthUseCase = new dependencies.useCase.VerifyOtpUseCase(
@@ -24,6 +26,7 @@ export class VerifyOtpController {
         .json({ data, accessToken, message: "Otp Verification SucessFull" });
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       next(error);
     }
   }

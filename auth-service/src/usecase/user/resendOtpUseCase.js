@@ -1,5 +1,6 @@
 import sendMail from "../../utils/nodemailer.js";
 import generateOTP from "../../utils/generateOtp.js";
+import { errorLogger } from "../../config/winstonConfig.js";
 
 export class ResendOtpUseCase {
   constructor(dependencies) {
@@ -17,6 +18,7 @@ export class ResendOtpUseCase {
       };
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }

@@ -1,3 +1,4 @@
+import { errorLogger } from "../../config/winstonConfig.js";
 import { compare } from "../../utils/hash.js";
 import { createAccessToken, createRefreshToken } from "../../utils/jwt.js";
 import { S3Config } from "../../utils/s3-bucketConfig.js";
@@ -25,41 +26,49 @@ export class DriverLoginUseCase {
                 ...existingUser,
                 role: "DRIVER",
               });
-              const awsS3Config = new S3Config()
- 
-              const uploadedImgArr = [{imgField:'profileImg',Key:existingUser?.profileImg},{imgField:'licenseImg',Key:existingUser?.license_Img},{imgField:'permitImg',Key:existingUser?.permit}]
-              const filteredUploadedImg = uploadedImgArr.filter((img)=>img.Key != undefined)
-              console.log(filteredUploadedImg);
-              const imgUploads = await Promise.all(filteredUploadedImg.map((img)=>{
-                return awsS3Config.getImageUrl(img)
-              }))
-              
-              const imgUrlsFromS3 = {}
-              for(const img of imgUploads){
-                 if(img.key == 'profileImg'){
-             imgUrlsFromS3['profileImg'] = img.url
-                 }else if(img.key == 'licenseImg'){
-                     imgUrlsFromS3['licenseImg'] = img.url
-                 }else if(img.key == 'permitImg'){
-                     imgUrlsFromS3['permitImg'] = img.url
-                 }
+              const awsS3Config = new S3Config();
+
+              const uploadedImgArr = [
+                { imgField: "profileImg", Key: existingUser?.profileImg },
+                { imgField: "licenseImg", Key: existingUser?.license_Img },
+                { imgField: "permitImg", Key: existingUser?.permit },
+              ];
+              const filteredUploadedImg = uploadedImgArr.filter(
+                (img) => img.Key != undefined
+              );
+
+              const imgUploads = await Promise.all(
+                filteredUploadedImg.map((img) => {
+                  return awsS3Config.getImageUrl(img);
+                })
+              );
+
+              const imgUrlsFromS3 = {};
+              for (const img of imgUploads) {
+                if (img.key == "profileImg") {
+                  imgUrlsFromS3["profileImg"] = img.url;
+                } else if (img.key == "licenseImg") {
+                  imgUrlsFromS3["licenseImg"] = img.url;
+                } else if (img.key == "permitImg") {
+                  imgUrlsFromS3["permitImg"] = img.url;
+                }
               }
               const data = {
                 id: existingUser?._id,
                 name: existingUser?.name,
                 email: existingUser?.email,
                 phone: existingUser?.phone,
-                licenseNumber:existingUser?.license_Number,
+                licenseNumber: existingUser?.license_Number,
                 vehicleType: existingUser?.vehicleDetails?.vehicle_type,
                 rc_Number: existingUser?.vehicleDetails?.rc_Number,
-                licenseUrl:imgUrlsFromS3?.licenseImg,
-                profileUrl:imgUrlsFromS3?.profileImg,
-                permitUrl:imgUrlsFromS3?.permitImg,
-                isBlocked:existingUser?.isBlocked,
-                isVerified:existingUser?.isVerified,
-                isProfileCompleted:existingUser?.isProfileComplete,
-                isAccepted:existingUser?.isAccepted,
-                editRequest:existingUser?.editRequest,
+                licenseUrl: imgUrlsFromS3?.licenseImg,
+                profileUrl: imgUrlsFromS3?.profileImg,
+                permitUrl: imgUrlsFromS3?.permitImg,
+                isBlocked: existingUser?.isBlocked,
+                isVerified: existingUser?.isVerified,
+                isProfileCompleted: existingUser?.isProfileComplete,
+                isAccepted: existingUser?.isAccepted,
+                editRequest: existingUser?.editRequest,
               };
               return {
                 data,
@@ -88,9 +97,11 @@ export class DriverLoginUseCase {
         const error = new Error();
         error.message = "UnAuthorized";
         error.status = 401;
+        throw error;
       }
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }

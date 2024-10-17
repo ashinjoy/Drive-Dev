@@ -1,3 +1,4 @@
+import { errorLogger } from "../../config/winstonConfig.js";
 import { verifyRefreshToken } from "../../utils/jwt.js";
 import { createAccessToken } from "../../utils/jwt.js";
 
@@ -18,7 +19,7 @@ export class DriverRefreshTokenUseCase {
         const error = new Error();
         error.status = 403;
         error.message = "Not Authorized";
-        throw error;  
+        throw error;
       }
 
       const isDriverValid = await this.userRepository.findDriverbyId(
@@ -41,11 +42,11 @@ export class DriverRefreshTokenUseCase {
         ...data,
         role: "USER",
       });
-      console.log('newyser',newAccessToken);
-      
+
       return newAccessToken;
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }

@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class verifyProfileUpdateController {
   constructor(dependencies) {
     this.approveProfileUpdate =
@@ -21,6 +23,7 @@ export class verifyProfileUpdateController {
       }
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       next(error);
     }
   }

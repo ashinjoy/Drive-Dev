@@ -2,6 +2,7 @@ import sendMail from "../../utils/nodemailer.js";
 import generateOTP from "../../utils/generateOtp.js";
 import { KafkaClient } from "../../events/KafkaClient.js";
 import { TOPIC, USER_CREATED } from "../../events/config.js";
+import { errorLogger, infologger } from "../../config/winstonConfig.js";
 export class EmailAuthUseCase {
   constructor(dependencies) {
     this.userRepository = new dependencies.repository.MongoUserRepository();
@@ -46,12 +47,14 @@ export class EmailAuthUseCase {
       const otp = generateOTP();
       await sendMail(otp, email);
       console.log("otp=====", otp);
+      infologger.info("otp=====", otp);
       return {
         userId,
         otp,
       };
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }

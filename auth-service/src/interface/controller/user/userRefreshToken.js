@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class UserRefreshTokenController {
   constructor(dependencies) {
     this.userRefreshTokenUseCase =
@@ -11,6 +13,7 @@ export class UserRefreshTokenController {
         const error = new Error();
         error.message = "No Token";
         error.status = 400;
+        throw error;
       }
       const newUserAceessToken = await this.userRefreshTokenUseCase.execute(
         userRefreshToken
@@ -19,10 +22,12 @@ export class UserRefreshTokenController {
         const error = new Error();
         error.message = "No Token";
         error.status = 400;
+        throw error;
       }
 
       res.status(201).json(newUserAceessToken);
     } catch (error) {
+      errorLogger.error(error);
       next(error);
     }
   }

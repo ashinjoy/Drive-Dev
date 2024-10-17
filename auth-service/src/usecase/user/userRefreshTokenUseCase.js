@@ -1,13 +1,13 @@
-import { verifyRefreshToken ,createAccessToken } from "../../utils/jwt.js";
-
+import { errorLogger } from "../../config/winstonConfig.js";
+import { verifyRefreshToken, createAccessToken } from "../../utils/jwt.js";
 
 export class userRefreshTokenUseCase {
   constructor(dependencies) {
     this.userRepository = new dependencies.repository.MongoUserRepository();
   }
   async execute(RefreshToken) {
-  try {
-    const decodeUserRefreshToken = await verifyRefreshToken(RefreshToken);
+    try {
+      const decodeUserRefreshToken = await verifyRefreshToken(RefreshToken);
       if (!decodeUserRefreshToken) {
         const error = new Error();
         error.status = 400;
@@ -18,7 +18,7 @@ export class userRefreshTokenUseCase {
         const error = new Error();
         error.status = 403;
         error.message = "Not Authorized";
-        throw error;  
+        throw error;
       }
 
       const isUserValid = await this.userRepository.findUserById(
@@ -41,15 +41,12 @@ export class userRefreshTokenUseCase {
         ...data,
         role: "USER",
       });
-    
-      
-      return newAccessToken;
-  } catch (error) {
-    console.error(error);
-    throw error
-    
-  }
-      
-    } 
-  }
 
+      return newAccessToken;
+    } catch (error) {
+      console.error(error);
+      errorLogger.error(error);
+      throw error;
+    }
+  }
+}

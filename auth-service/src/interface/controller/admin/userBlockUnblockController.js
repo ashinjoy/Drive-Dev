@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class UserBlockUnblockController {
   constructor(dependencies) {
     this.userBlockUnblockUseCase =
@@ -20,6 +22,7 @@ export class UserBlockUnblockController {
       res.status(200).json(data);
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       next(error);
     }
   }

@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { errorLogger } from "../config/winstonConfig.js";
 
 export const createAccessToken = async (data) => {
   try {
@@ -12,6 +13,8 @@ export const createAccessToken = async (data) => {
     return accessToken;
   } catch (error) {
     console.error(error);
+    errorLogger.error(error);
+    throw error;
   }
 };
 
@@ -24,6 +27,8 @@ export const verifyAccessToken = async (data) => {
     return verifyToken;
   } catch (error) {
     console.error(error);
+    errorLogger.error(error);
+    throw error;
   }
 };
 
@@ -37,6 +42,8 @@ export const createRefreshToken = async (data) => {
     return refreshToken;
   } catch (error) {
     console.error(error);
+    errorLogger.error(error);
+    throw error;
   }
 };
 export const verifyRefreshToken = async (data) => {
@@ -48,5 +55,7 @@ export const verifyRefreshToken = async (data) => {
     return verifyToken;
   } catch (error) {
     console.error(error);
+    errorLogger.error(error);
+    throw error;
   }
 };

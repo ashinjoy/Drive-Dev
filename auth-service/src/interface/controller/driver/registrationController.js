@@ -1,3 +1,5 @@
+import { errorLogger } from "../../../config/winstonConfig.js";
+
 export class DriverRegisterController {
   constructor(dependencies) {
     this.registerUseCase = new dependencies.useCase.DriverRegisterUseCase(
@@ -8,11 +10,14 @@ export class DriverRegisterController {
     try {
       const { userId, otp } = await this.registerUseCase.execute(req.body);
 
-      req.session.otpDetails ={userId,otp}
-      res.status(200).json({message:'OTP send Verify to Register Your Account'})
+      req.session.otpDetails = { userId, otp };
+      res
+        .status(200)
+        .json({ message: "OTP send Verify to Register Your Account" });
     } catch (error) {
       console.error(error);
-      next(error)
+      errorLogger.error(error);
+      next(error);
     }
   }
 }

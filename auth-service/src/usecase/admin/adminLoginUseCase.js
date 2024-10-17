@@ -1,3 +1,4 @@
+import { errorLogger, infologger } from "../../config/winstonConfig.js";
 import { compare } from "../../utils/hash.js";
 import { createAccessToken, createRefreshToken } from "../../utils/jwt.js";
 export class adminLoginUseCase {
@@ -8,30 +9,32 @@ export class adminLoginUseCase {
     try {
       const { name, email, password } = loginData;
       console.log("==============>", name, email, password);
+      infologger.info("name", name, email, password);
       const isAdminExist = await this.adminRepository.findAdminByEmailandName(
         name,
         email
       );
       if (isAdminExist) {
         console.log("user exist");
-        console.log(isAdminExist?.password,password);
+        errorLogger.info("user exist");
+        console.log(isAdminExist?.password, password);
         const isValidPassword = await compare(password, isAdminExist?.password);
         if (isValidPassword) {
           const adminAccessToken = await createAccessToken({
-            id:isAdminExist?._id,
+            id: isAdminExist?._id,
             name: isAdminExist?.name,
             email: isAdminExist?.email,
             role: "ADMIN",
           });
-          console.log('isAdmin',isAdminExist);
+          console.log("isAdmin", isAdminExist);
           const adminRefreshToken = await createRefreshToken({
-            id:isAdminExist?._id,
+            id: isAdminExist?._id,
             name: isAdminExist?.name,
             email: isAdminExist?.email,
             role: "ADMIN",
           });
           return {
-            id:isAdminExist._id,
+            id: isAdminExist._id,
             name: isAdminExist?.name,
             email: isAdminExist?.email,
             adminAccessToken,
@@ -51,6 +54,7 @@ export class adminLoginUseCase {
       }
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }

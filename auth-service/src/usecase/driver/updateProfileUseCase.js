@@ -1,3 +1,4 @@
+import { errorLogger, infologger } from "../../config/winstonConfig.js";
 import { DRIVER_UPDATED, TOPIC } from "../../events/config.js";
 import { KafkaClient } from "../../events/KafkaClient.js";
 import { S3Config } from "../../utils/s3-bucketConfig.js";
@@ -41,6 +42,7 @@ export class DriverProfileUpdateUseCase {
           })
         );
         console.log("uplooad", uploadResults);
+        infologger.info("upload", uploadResults);
         for (const img of uploadResults) {
           if (img.imgField == "profileImg") {
             imageDetails["profileImg"] = img.Key;
@@ -108,6 +110,7 @@ export class DriverProfileUpdateUseCase {
       return data;
     } catch (error) {
       console.error(error);
+      errorLogger.error(error);
       throw error;
     }
   }
