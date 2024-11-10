@@ -21,19 +21,19 @@ function Table({type}) {
 
     },[])
   return (
-    <table className="w-[70dvw] table-auto">
-  <thead className="bg-gray-100">
+    <table className="w-[70dvw] table-auto rounded-lg  shadow-md">
+  <thead className="bg-gradient-to-r from-yellow-200 to-yellow-100 text-gray-800">
     <tr>
-      <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Name</th>
-      <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Pickup Location</th>
-      <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Drop Location</th>
-      <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Fare</th>
-      <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Distance (km)</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold">Name</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold">Pickup Location</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold">Drop Location</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold">Fare</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold">Distance (km)</th>
     </tr>
   </thead>
   <tbody className="bg-white divide-y divide-gray-200">
     {tableData && tableData.length > 0 && tableData.map((data) => (
-      <tr className="hover:bg-gray-50 transition-colors duration-200" key={data._id}>
+      <tr className="hover:bg-yellow-50 transition-colors duration-200" key={data._id}>
         <td className="px-6 py-4 text-sm text-gray-600">{data?.userId?.name}</td>
         <td className="px-6 py-4 text-sm text-gray-600">{data?.pickUpLocation}</td>
         <td className="px-6 py-4 text-sm text-gray-600">{data?.dropOffLocation}</td>
@@ -43,6 +43,7 @@ function Table({type}) {
     ))}
   </tbody>
 </table>
+
 
 
   )

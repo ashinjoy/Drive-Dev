@@ -169,6 +169,7 @@ if(driverState?.message == 'Profile request send'){
                     id=""
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-yellow-500 focus:border-yellow-500"
                     value={name}
+                    readOnly
                     onChange={(e) => {
                       setName(e.target.value);
                     }}
@@ -224,6 +225,7 @@ if(driverState?.message == 'Profile request send'){
                     id=""
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-yellow-500 focus:border-yellow-500"
                     value={licenseNumber}
+                    readOnly
                     onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
@@ -240,7 +242,7 @@ if(driverState?.message == 'Profile request send'){
                         src={licenseImgUrl}
                         className="w-full h-full object-contain"
                         alt=""
-                        onClick={handleLicenseImgUpload}
+                        // onClick={handleLicenseImgUpload}
                       />
                     ) : (
                       "No Image Found"
@@ -250,8 +252,8 @@ if(driverState?.message == 'Profile request send'){
                       name=""
                       id=""
                       className="hidden"
-                      ref={licenseImgRef}
-                      onChange={(e) => setLicenseImg(e.target.files[0])}
+                      // ref={licenseImgRef}
+                      // onChange={(e) => setLicenseImg(e.target.files[0])}
                     />
                   </div>
                 </div>
@@ -291,6 +293,7 @@ if(driverState?.message == 'Profile request send'){
                   <input
                     type="text"
                     name="license"
+                    readOnly
                     id="license"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-yellow-500 focus:border-yellow-500"
                     value={VehicleRC}

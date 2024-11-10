@@ -12,7 +12,7 @@ export class DriverLoginUseCase {
       const existingUser = await this.driverRepository.findDriverByEmail(email);
       if(!existingUser){
         const error = new Error();
-          error.message = "UnAuthorized";
+           error.message = "UnAuthorized";
           error.status = 401;
           throw error;
       }

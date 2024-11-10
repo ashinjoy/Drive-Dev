@@ -7,6 +7,10 @@ function DriverProtected({children}) {
 
  const navigate = useNavigate()
  useEffect(()=>{
+  if(!token){
+    navigate('/driver/login',{replace:true})
+    return
+  }
   if(!driver?.isProfileCompleted){
     navigate('/driver/complete-profile',{replace:true})
     return

@@ -35,19 +35,42 @@ function Home() {
   return (
 
     <>
-     
-     <div className="absolute top-[20rem] left-64 w-1/2 p-6 bg-white shadow-lg rounded-lg">
-    <h2 className="text-xl font-bold mb-4">Trips Completed</h2>
-    <div className="flex gap-4 mb-4">
-      <p id="Daily" className="cursor-pointer" onClick={handleFilter}>Daily</p>
-      <p id="Weekly" className="cursor-pointer" onClick={handleFilter}>Weekly</p>
-      <p id="Monthly" className="cursor-pointer" onClick={handleFilter}>Monthly</p>
-      <p id="Yearly" className="cursor-pointer" onClick={handleFilter}>Yearly</p>
-    </div>
-    <div className="w-full">
-      <BarChart data={data} />
-    </div>
+     <div className="w-11/12 sm:w-1/2 p-6 border-2 border-yellow-300 shadow-xl rounded-lg">
+  <h2 className="text-2xl font-semibold text-gray-900 mb-6">Trips Completed</h2>
+  <div className="flex gap-6 justify-center mb-6">
+    <p
+      id="Daily"
+      className="cursor-pointer text-lg font-medium text-gray-800 hover:text-yellow-500 transition duration-300"
+      onClick={handleFilter}
+    >
+      <span role="img" aria-label="daily">📅</span> Daily
+    </p>
+    <p
+      id="Weekly"
+      className="cursor-pointer text-lg font-medium text-gray-800 hover:text-yellow-500 transition duration-300"
+      onClick={handleFilter}
+    >
+      <span role="img" aria-label="weekly">📆</span> Weekly
+    </p>
+    <p
+      id="Monthly"
+      className="cursor-pointer text-lg font-medium text-gray-800 hover:text-yellow-500 transition duration-300"
+      onClick={handleFilter}
+    >
+      <span role="img" aria-label="monthly">📅</span> Monthly
+    </p>
+    <p
+      id="Yearly"
+      className="cursor-pointer text-lg font-medium text-gray-800 hover:text-yellow-500 transition duration-300"
+      onClick={handleFilter}
+    >
+      <span role="img" aria-label="yearly">📅</span> Yearly
+    </p>
   </div>
+  <div className="w-full">
+    <BarChart data={data} />
+  </div>
+</div>
     
     </>
   );

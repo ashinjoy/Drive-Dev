@@ -25,12 +25,20 @@ function Card({type}) {
   },[])
  
   return (
-    <div className="w-[25dvw] h-[25dvh] border-2 border-gray-300 bg-white shadow-lg  rounded-lg p-6">
-    <div className='flex flex-col items-center gap-7'>
-    <h1 className='text-2xl font-bold'>{type == "wallet" ? 'Cash Earned' : 'Total Trips '}</h1>
-    <h1 className='text-3xl font-bold'>{type == "wallet" ? `₹${moneyEarned}` : `Trips Completed:${totalTrips}`}</h1>
+    <div className="w-[25dvw] h-[25dvh] border border-gray-200 bg-gradient-to-br from-yellow-100 via-white to-yellow-50 shadow-lg rounded-2xl p-6 transition duration-200 hover:shadow-xl">
+    <div className="flex flex-col items-center gap-5">
+      <div className="text-yellow-500 text-4xl">
+        {type === "wallet" ? "💰" : "🚗"}
+      </div>
+      <h1 className="text-xl font-semibold text-gray-800">
+        {type === "wallet" ? "Cash Earned" : "Total Trips"}
+      </h1>
+      <h1 className="text-3xl font-bold text-gray-900">
+        {type === "wallet" ? `₹${moneyEarned}` : `Trips Completed: ${totalTrips}`}
+      </h1>
     </div>
   </div>
+  
   )
 }
 
