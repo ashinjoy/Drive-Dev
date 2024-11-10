@@ -32,7 +32,7 @@ export class CompleteProfileUseCase {
           driverLicenseImg = imgData.Key;
         } else if (imgData.imgField === "ProfileImg") {
           driverProfileImg = imgData.Key;
-        } else if (imgData.imgField === "permit") {
+        } else if (imgData.imgField === "permit") {          
           driverPermit = imgData.Key;
         }
       }

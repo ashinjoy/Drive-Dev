@@ -26,6 +26,8 @@ export class VerifyOtpController {
         otpDetails,
         otp
       );
+      console.log(verifiedDriverData);
+      
       res.status(200).json({
         data: verifiedDriverData,
         message: "Otp Verification SucessFull",

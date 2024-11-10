@@ -1,10 +1,12 @@
 import React from 'react'
 import DriverNavBar from '../../../Components/Navbar/DriverNavBar'
+import UserNavbar from '../../../Components/Navbar/UserNavbar'
 
 function Approval() {
   return (
     <>
-<DriverNavBar/>
+{/* <DriverNavBar/> */}
+<UserNavbar driver={'driver'}/>
 <div className="flex h-screen items-center justify-center">
   <div className="flex flex-col items-center">
     <div className="w-[300px] h-[300px] rounded-full border border-gray-300 flex items-center justify-center bg-gradient-to-r from-gray-100 to-gray-200 shadow-md">

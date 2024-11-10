@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { seacrhNearByDriver,requestRideAction,acceptTrip,startTrip,finishRide,cancelRide, payment, rideOngoing } from "./tripActions";
+import { seacrhNearByDriver,requestRideAction,acceptTrip,startTrip,finishRide,cancelRide, payment, rideOngoing, stripePaymentConfirmation } from "./tripActions";
 
 const trip = JSON.parse(localStorage.getItem('tripDetail'))
 const tripStatus = localStorage.getItem('tripStatus')
@@ -120,7 +120,12 @@ const tripSlice = createSlice({
             state.paymentStatus = action.payload?.paymentStatus
         })
         .addCase(payment.rejected,(state,action)=>{
-
+            console.log('hell');
+            state.error = action?.payload
+            if(action.payload === "Your Payment Has Been Completed"){
+                localStorage.setItem('paymentStatus',"paid")
+                state.paymentStatus = "paid"
+            }
         })
         .addCase(rideOngoing.pending,(state)=>{
             state.loading  = true
@@ -131,11 +136,26 @@ const tripSlice = createSlice({
                 localStorage.setItem('tripStatus',action.payload?.tripDetail?.tripStatus)
                 state.tripDetail = action.payload.tripDetail
                 state.tripStatus = action.payload.tripDetail?.tripStatus
+                if(action.payload?.tripDetail?.isPaymentComplete){
+                    localStorage.setItem('paymentStatus',"paid")
+                    state.paymentStatus = "paid"
+                }
             }
             state.message = action?.payload?.message
         })
         .addCase(rideOngoing.rejected,(state)=>{
-            // state.
+           
+        })
+        .addCase(stripePaymentConfirmation.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(stripePaymentConfirmation.fulfilled,(state,action)=>{
+            localStorage.setItem('paymentStatus',action.payload?.paymentStatus)
+            state.success = true
+            state.paymentStatus = action.payload.paymentStatus
+        })
+        .addCase(stripePaymentConfirmation.rejected,(state,action)=>{
+            
         })
     }
 })

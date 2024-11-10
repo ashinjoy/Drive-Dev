@@ -49,7 +49,7 @@ console.log(driverDetails.driver.id);
     formdata.append("licenseNumber", licenseNumber);
     formdata.append("vehicleType", vehicleType);
     formdata.append("vehicleRC", vehicleRC);
-    formdata.append('driverId',driverDetails?.driver?._id)
+    formdata.append('driverId',driverDetails?.driver?.id)
     dispatch(resestAll())
     if(licenseNumber.trim() == "" && licensePhoto == "" && proImg == "" , vehicleType == "" && vehiclePermit == ""){
       toast('Please Fill all Fields')
@@ -70,8 +70,9 @@ console.log(driverDetails.driver.id);
   useEffect(()=>{
     console.log('inside useeffecct');
  if(driverDetails?.message == 'You have completed your profile successfully'){
-  toast('Profile is Completed')
-  navigate('/driver/home',{replace:true})
+  toast('Profile is Completed! verifying you details')
+  navigate('/driver/login',{replace:true})
+  // navigate('/driver/home',{replace:true})
   return
  }
 },[driverDetails?.message])
@@ -138,7 +139,7 @@ const handlePermitUploads =(e)=>{
   return (
     <>
    
-  <UserNavbar/>
+  <UserNavbar driver={'driver'}/>
     <section className="h-screen">
   <div className="flex flex-col items-center justify-center px-6 py-8 mx-24  mt-[4.7rem]  lg:py-0">
     <div className="w-full   rounded-lg shadow-lg sm:max-w-xl xl:p-0 border bg-yellow-50 mt-6">
@@ -147,7 +148,7 @@ const handlePermitUploads =(e)=>{
           Complete Profile
         </h1>
         <form className="space-y-6" action="" onSubmit={(e) => handleSubmit(e)}>
-{  proImg == "" ? (<div className="w-full">
+{  proImg === "" ? (<div className="w-full">
         <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Profile Image</label>
         <div className="border-2 border-dashed border-gray-400 rounded-lg p-4 flex flex-col items-center justify-center h-32 cursor-pointer hover:border-yellow-500 transition duration-200"
           >

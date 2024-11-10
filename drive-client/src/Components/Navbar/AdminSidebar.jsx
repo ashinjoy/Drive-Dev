@@ -1,14 +1,23 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { MdOutlineDashboard } from "react-icons/md";
-import { FaUserCheck } from "react-icons/fa";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUsers } from "react-icons/fa";
 import { FaTaxi } from "react-icons/fa6";
-import { FcSalesPerformance } from "react-icons/fc";
+
 
 function AdminSidebar() {
   return (
-    <div className="fixed top-0 bottom-0 left-0 h-screen w-[16rem]   border-r-2 z-40 bg-white">
+     <>
+     <div className="block md:hidden  w-full flex  items-center">
+      <div className="w-[10%] flex items-center justify-center">
+        <GiHamburgerMenu className="w-[2rem] md:w-[3rem] "/>
+      </div>
+    <div className="w-[80%] flex justify-center items-center">
+    <img src="/assets/logo-cl.png" alt="drive logo" className="w-1/3 h-1/3 object-contain"/>
+    </div>
+    </div> 
+    <div className="hidden md:block fixed top-0 bottom-0 left-0 h-screen  md:w-[15rem]  border-r-2 z-50">
       <div className="w-full flex justify-center items-center ">
         <img
           src="/assets/logo-cl.png"
@@ -70,11 +79,9 @@ function AdminSidebar() {
             </span>
           </NavLink>
         </div>
-
-
-      
       </div>
     </div>
+    </>
   );
 }
 

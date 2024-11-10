@@ -1,10 +1,9 @@
 import express from "express";
-// import http from 'http'
 import cookieParser from "cookie-parser";
-// import paymentRouter from "../interface/routes/paymentRoute.js";
 import userRouter from "../interface/routes/userRoute.js";
 import driverRouter from "../interface/routes/driverRoutes.js";
 import adminRouter from '../interface/routes/adminRoutes.js'
+import { ErrorHandling } from "../interface/middleware/errorHandlingMiddleware.js";
 
 
 
@@ -20,6 +19,7 @@ const createServer = () => {
     app.use('/payment/user',userRouter)
     app.use('/payment/driver',driverRouter)
     app.use('/payment/admin',adminRouter)
+    app.use(ErrorHandling.errorHandler)
 
   return app
 };

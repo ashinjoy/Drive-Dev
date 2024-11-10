@@ -1,24 +1,21 @@
-import React from 'react'
-import {Bar} from 'react-chartjs-2'
+import React from "react";
+import { Bar } from "react-chartjs-2";
 
-function TripReportChart({data}){
-  const options={
-    plugins: {
-      title: {
-        display: true,
-        text: "Users Gained between 2016-2020"
-      }
-    }
-  }
+function TripReportChart({ data }) {
+  const options = {
+
+  };
   return (
-    <div className='relative'>
-      {data && <Bar data={data} options={{
-        ...options,
-        responsive:true,
-        maintainAspectRatio:true
-      }}  />}
-    </div>
-  )
+    <>
+      {data && (
+        <Bar
+          data={data}
+          options={{ ...options, responsive: true, maintainAspectRatio: false }}
+          style={{width:"100%", height:"95%"}}
+        />
+      )}
+    </>
+  );
 }
 
-export default TripReportChart
+export default TripReportChart;

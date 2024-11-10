@@ -7,7 +7,7 @@ body{
   font-family: "Lexend Deca", sans-serif;
   font-weight: 500;
   height: 100%;
-  background: linear-gradient(to right, #ffffff, #F5F5F5);
+  /* background: linear-gradient(to right, #ffffff, #F5F5F5); */
 }
 *{
   margin: 0;

@@ -23,13 +23,12 @@ function Cards({type}) {
         getData()
     },[])
   return (
-    <div className="w-[20rem] h-[13rem] border-2     border-gray-300 bg-white shadow-lg  rounded-xl p-6">
-    <div className='flex flex-col justify-center items-center'>
-    <p className='text-base font-medium'>{type === "companyBalance" ? "Total Revenue Earned" : "Trips Completed"}</p>
-    <h1 className='text-3xl font-bold'>{type ===  "companyBalance" ? `₹${companyBalance.toFixed(2)}` : TripCount }</h1>
+    <div className=" w-full lg:w-[25%]  h-[8rem] border-2  flex  justify-center items-center  border-gray-300 bg-white shadow-lg  rounded-xl p-3">
+    <div className='h-full flex flex-col justify-center items-center gap-3'>
+    <p className='text-xl md:text-2xl font-bold'>{type === "companyBalance" ? "Total Revenue Earned" : "Trips Completed"}</p>
+    <h1 className='text-2xl font-medium'>{type ===  "companyBalance" ? `₹${companyBalance.toFixed(2)}` : TripCount }</h1>
     </div>
     <div>
-    <img src="" alt="" />
     </div>
   </div>
   )

@@ -8,7 +8,7 @@ export class GetCompanyWalletBalanceController {
           res.status(201).json({balance:getCompanyBalance})
       } catch (error) {
           console.error(error);
-          
+          next(error)
       }
     }
   }

@@ -7,33 +7,43 @@ function DriverProtected({children}) {
 
  const navigate = useNavigate()
  useEffect(()=>{
-  if(!token && !driver?.isProfileCompleted && !driver?.isAccepted){
-    console.log('level 1');
-    navigate('/driver/login',{replace:true}) 
+  if(!driver?.isProfileCompleted){
+    navigate('/driver/complete-profile',{replace:true})
+    return
   }
-  else if(!token && driver?.isProfileCompleted && !driver?.isAccepted){
-    console.log('level 2');
-
-    navigate('/driver/approval',{replace:true})
-  }
-  else if(!token && driver?.isProfileCompleted && driver?.isAccepted){
-    console.log('level 3');
-
-    navigate('/driver/login',{replace:true})
-  }
-  else if(driver?.editRequest && !driver?.isVerified){
-    console.log('level 4');
-
-    navigate('/driver/approval',{replace:true})
-  }else if(driver?.isBlocked){
-    console.log('level 5');
-
-    navigate('/driver/login',{replace:true})
-  }else if(!driver?.isAccepted){
-    console.log(driver?.isAccepted);
-    console.log('level 6');
+  if(!driver?.isAccepted){
     navigate('/driver/approval')
   }
+  if(!token || driver?.isBlocked  || !driver.isVerified){
+    navigate('/driver/login',{replace:true})
+    return
+  }
+  // if(!token && !driver?.isProfileCompleted && !driver?.isAccepted){
+    
+  //   navigate('/driver/login',{replace:true}) 
+  // }
+  // else if(!token && driver?.isProfileCompleted && !driver?.isAccepted){
+    
+
+  //   navigate('/driver/approval',{replace:true})
+  // }
+  // else if(!token && driver?.isProfileCompleted && driver?.isAccepted){
+    
+
+  //   navigate('/driver/login',{replace:true})
+  // }
+  // else if(driver?.editRequest && !driver?.isVerified){
+   
+
+  //   navigate('/driver/approval',{replace:true})
+  // }else if(driver?.isBlocked){
+   
+
+  //   navigate('/driver/login',{replace:true})
+  // }else if(!driver?.isAccepted){
+    
+  //   navigate('/driver/approval')
+  // }
  },[token,driver])
 if(token){
   return children

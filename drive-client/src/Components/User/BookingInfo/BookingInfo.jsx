@@ -63,12 +63,13 @@ function BookingInfo() {
     dispatch(SosAlert(user?.id));
   };
   const handleCancelRide = () => {
-    if(tripStatus === "requested"){
+    // if(tripStatus === "requested"){
       setCancelModal(true);
-    }else if(tripStatus === "accepted"){
-      setCancelConfirmModal(true)
-    }
-    dispatch(cancelRide({userId:user?.id,tripId:tripDetail?._id}))
+    // }
+    // else if(tripStatus === "accepted"){
+    //   setCancelConfirmModal(true)
+    // }
+    // dispatch(cancelRide({userId:user?.id,tripId:tripDetail?._id}))
   };
 
   useEffect(() => {
@@ -194,7 +195,7 @@ function BookingInfo() {
   {openCancelModal && <CancellationModal setCancelModal={setCancelModal} setCancelConfirmModal={setCancelConfirmModal} />}
   {cancelConfirmed && <CancelConfirmedModal setCancelConfirmModal={setCancelConfirmModal} />}
 
-  {(tripStatus === "requested" || tripStatus === "accepted") && (
+  {((tripStatus === "requested" || tripStatus === "accepted") && (paymentStatus !== "paid")) && (
     <button
       className="mt-auto bg-red-500 text-white py-2 rounded-lg shadow-md transition hover:bg-red-600 focus:outline-none"
       onClick={handleCancelRide}

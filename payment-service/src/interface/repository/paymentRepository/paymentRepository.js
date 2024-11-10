@@ -8,7 +8,6 @@ export class PaymentRepository {
         userId: data?.userId,
         fare: data?.fare,
         paymentMethod: data?.paymentMethod,
-        paymentStatus: "paid",
       });
       
     } catch (error) {
@@ -23,6 +22,22 @@ export class PaymentRepository {
       console.error(error);
       throw error
       
+    }
+  }
+  async findPaymentDetailsByTripById(tripId){
+    try {
+      return await paymentModel.findOne({tripId:tripId})
+    } catch (error) {
+      console.error(error);
+      throw error
+    }
+  }
+  async findPaymentDetailsByTripById(tripId){
+    try {
+      return await paymentModel.findOne({tripId:tripId})
+    } catch (error) {
+      console.error(error);
+      throw error
     }
   }
 }

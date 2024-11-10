@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@emotion/react";
 import axiosInstance from "../../Utils/Axios/baseUrl";
 import { driverPrivate } from "../../Utils/Axios/driverInterceptor";
 import { UserPrivate } from "../../Utils/Axios/userInterceptor";
@@ -76,7 +77,14 @@ export const getTripDetailService = async (tripId) => {
 };
 
 export const cancelRideService = async (rideCancelInfo) => {
+  try {
   return await UserPrivate.post("trip/users/cancel-ride", rideCancelInfo);
+    
+  } catch (error) {
+    console.error(error);
+    throw error
+    
+  }
 };
 
 export const paymentService = async (data) => {
@@ -85,6 +93,7 @@ export const paymentService = async (data) => {
     return response.data;
   } catch (error) {
     console.error(error);
+    throw error
   }
 };
 
@@ -97,3 +106,13 @@ export const searchAutoCompleteService = async (data) => {
 export const rideOngoingService = async (data) => {
   return await UserPrivate.get(`trip/users/ongoing-ride/${data}`);
 };
+
+export const stripePaymentConfirmService = async (data)=>{
+  try {
+    return await UserPrivate.post(`payment/user/stripe/confirmpayment`, data)
+  } catch (error) {
+    console.error(error);
+    throw error
+    
+  }
+}

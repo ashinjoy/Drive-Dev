@@ -48,7 +48,7 @@ driverRouter.post("/complete-profile", upload.any(), async (req, res, next) =>
 );
 driverRouter.put(
   "/profileUpdate-request",
-  AuthHandler.isDriverLogin,
+  AuthHandler.isDriverLogin, 
   upload.any(),
   async (req, res, next) => {
     controllers.updateProfileController.updateProfile(req, res, next);

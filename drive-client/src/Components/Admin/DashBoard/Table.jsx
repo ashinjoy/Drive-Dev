@@ -21,18 +21,18 @@ function Table({type}) {
     getData()
   },[])
   return (
-    <table className= "w-[100%]">
-        <thead className="bg-gray-100">
+    <table className= " w-[50%] md:w-full">
+        <thead className="bg-gray-100 w-full">
           <tr>
             {/* <th className="px-6 py-3  text-left text-sm font-medium text-gray-700">Date</th> */}
             <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Name</th>
-           {type == "latestRide" && <>
-            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{type == "latestRide" ? "Pickup Location" : "email"}</th>
-            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{type == "latestRide" ? "Drop Location" : "phone"}</th>
-            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{type == "latestRide" ? "Fare" : "License Number"}</th>
+           {type === "latestRide" && <>
+            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{type === "latestRide" ? "Pickup Location" : "email"}</th>
+            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{type === "latestRide" ? "Drop Location" : "phone"}</th>
+            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{type === "latestRide" ? "Fare" : "License Number"}</th>
             </>
             }
-            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{type == "latestRide" ? "Distance" : "completedTrips"}</th>
+            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{type === "latestRide" ? "Distance" : "completedTrips"}</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -41,20 +41,17 @@ function Table({type}) {
         return(
           <tr className="hover:bg-gray-50 transition-colors duration-200" key={data._id} > 
             
-          <td className="px-6 py-4 text-sm text-gray-600">{type == "latestRide" ? data?.userId.name  : data?.name}</td>
+          <td className="px-6 py-4 text-sm text-gray-600">{type === "latestRide" ? data?.userId.name  : data?.name}</td>
         {type == "latestRide" &&  <>
-        <td className="px-6 py-4 text-sm text-gray-600">{type == "latestRide" ? data?.pickUpLocation : data?.email}</td>
-          <td className="px-6 py-4 text-sm text-gray-600">{type == "latestRide" ? data?.dropOffLocation : data?.phone}</td>
-          <td className="px-6 py-4 text-sm text-gray-600">{type == "latestRide" ? data?.fare : data?.licenseNumber}</td>
+        <td className="px-6 py-4 text-sm text-gray-600">{type === "latestRide" ? data?.pickUpLocation : data?.email}</td>
+          <td className="px-6 py-4 text-sm text-gray-600">{type === "latestRide" ? data?.dropOffLocation : data?.phone}</td>
+          <td className="px-6 py-4 text-sm text-gray-600">{type === "latestRide" ? data?.fare : data?.licenseNumber}</td>
           </>
           }
-          <td className="px-6 py-4 text-sm text-gray-600">{type == "latestRide" ? data?.distance : data?.completedTrips}</td>
+          <td className="px-6 py-4 text-sm text-gray-600">{type === "latestRide" ? data?.distance : data?.completedTrips}</td>
        </tr>
         )
-       })}
-           
-
-           
+       })}           
         </tbody>
       </table>
 

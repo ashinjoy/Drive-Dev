@@ -37,9 +37,9 @@ export const socketConnection = async (httpServer) => {
         socket.to(userAndSocketId.get(userId)).emit('ride-complete',data)
       })
 
-      socket.on('ride-start',(data)=>{
-        socket.to('userID')
-      })
+      // socket.on('ride-start',(data)=>{
+      //   socket.to('userID')
+      // })
 
     });
   } catch (error) {
@@ -48,9 +48,10 @@ export const socketConnection = async (httpServer) => {
 };
 
 export const notifyDriver = (event, notification, driverId) => {
-  
     const driverIdToString = driverId.toString();
     io.to(driverIdToString).emit(event,notification)
+    console.log(driverIdToString);
+    
     return;
 };
 

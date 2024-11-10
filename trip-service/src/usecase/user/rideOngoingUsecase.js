@@ -36,6 +36,7 @@ export class RideOngoingUseCase{
             pickUpLocation:ongoingTrip?.pickUpLocation,
             dropOffLocation:ongoingTrip?.dropOffLocation,
             paymentMethod:ongoingTrip?.paymentMethod,
+            isPaymentComplete:ongoingTrip?.isPaymentComplete,
             _id:ongoingTrip?._id
     
           }

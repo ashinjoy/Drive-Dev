@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 
-function DriverNearByPickup({setNearByPickup}) {
+function CancelRideNotification({setRideCancelNotify,rideCancelReason}) {
   const timerRef = useRef(null)
 useEffect(()=>{
  timerRef.current =  setTimeout(()=>{
-setNearByPickup(false)
+  setRideCancelNotify(false)
   },5000)
   return ()=>{
     clearTimeout(timerRef)
@@ -24,8 +24,8 @@ setNearByPickup(false)
 >
   <div className='flex items-center justify-between'>
     <div>
-      <h1 className='text-xl font-bold text-white'>Journey Completed SuccessFully</h1>
-      <p className='text-md text-gray-200'>Amount will be credited to wallet</p>
+      <h1 className='text-xl font-bold text-white'>Ride Has Been Cancelled By the Rider</h1>
+      <p className='text-md text-gray-200'>{rideCancelReason}</p>
     </div>
     <svg className='w-8 h-8 text-white' fill='currentColor' viewBox='0 0 24 24'>
       <path d='M12 2C8.13 2 5 5.13 5 9c0 4.55 6.5 13 6.5 13S18 13.55 18 9c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 7a2.5 2.5 0 0 1 0 5z'/>
@@ -35,4 +35,4 @@ setNearByPickup(false)
   )
 }
 
-export default DriverNearByPickup
+export default CancelRideNotification

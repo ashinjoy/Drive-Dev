@@ -21,33 +21,7 @@ function Table({type}) {
 
     },[])
   return (
-    // <table className=" w-[70dvw]">
-    //     <thead className="bg-gray-100">
-    //       <tr>
-    //         {/* <th className="px-6 py-3  text-left text-sm font-medium text-gray-700">Date</th> */}
-    //         <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Name</th>
-    //         <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Pickup Location</th>
-    //         <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Drop Location</th>
-    //         <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Fare</th>
-    //         <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Distance</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody className="bg-white divide-y divide-gray-200">
-         
-    //        {tableData && tableData.length > 0 && tableData.map((data)=>{
-    //         return(<tr className="hover:bg-gray-50 transition-colors duration-200" key={tableData._id}> 
-    //         {/* <td className="px-6 py-4 text-sm text-gray-600">11/2/2002</td>  */}
-    //         <td className="px-6 py-4 text-sm text-gray-600">{data?.userId?.name}</td>
-    //         <td className="px-6 py-4 text-sm text-gray-600">{data?.pickUpLocation}</td>
-    //         <td className="px-6 py-4 text-sm text-gray-600">{data?.dropOffLocation}</td>
-    //         <td className="px-6 py-4 text-sm text-gray-600">{data?.fare}</td>
-    //         <td className="px-6 py-4 text-sm text-gray-600">{data?.distance/1000}</td>
-    //      </tr>)
-
-    //        }) }
-    //     </tbody>
-    //   </table>
-    <table className="w-full table-auto">
+    <table className="w-[70dvw] table-auto">
   <thead className="bg-gray-100">
     <tr>
       <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Name</th>
@@ -64,7 +38,7 @@ function Table({type}) {
         <td className="px-6 py-4 text-sm text-gray-600">{data?.pickUpLocation}</td>
         <td className="px-6 py-4 text-sm text-gray-600">{data?.dropOffLocation}</td>
         <td className="px-6 py-4 text-sm text-gray-600">₹{data?.fare}</td>
-        <td className="px-6 py-4 text-sm text-gray-600">{data?.distance / 1000}</td>
+        <td className="px-6 py-4 text-sm text-gray-600">{Math.ceil(data?.distance / 1000)} km</td>
       </tr>
     ))}
   </tbody>

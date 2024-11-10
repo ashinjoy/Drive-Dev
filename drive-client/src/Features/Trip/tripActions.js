@@ -9,7 +9,8 @@ import {
   sendMessageService,
   cancelRideService,
   paymentService,
-  rideOngoingService
+  rideOngoingService,
+  stripePaymentConfirmService
 } from "./tripService";
 
 
@@ -95,15 +96,17 @@ export const sendMessage = createAsyncThunk("sendMessage", async (data) => {
 
 export const cancelRide = createAsyncThunk(
   "cancelRide",
-  async (rideCancelInfo) => {
+  async (rideCancelInfo,{rejectWithValue}) => {
     try {
       const response = await cancelRideService(rideCancelInfo);
       return response.data;
-    } catch (error) {}
+    } catch (error) {
+    return rejectWithValue(error?.response?.data?.error)
+    }
   }
 );
 
-export const payment = createAsyncThunk("payment", async (paymentData) => {
+export const payment = createAsyncThunk("payment", async (paymentData,{rejectWithValue}) => {
   try {
     const response = await paymentService(paymentData);
     if (response && response?.payment && response?.payment?.url) {
@@ -113,6 +116,8 @@ export const payment = createAsyncThunk("payment", async (paymentData) => {
     
     return response;
   } catch (error) {
+console.error(error);
+return rejectWithValue(error?.response?.data?.error)
 
   }
 });
@@ -123,6 +128,16 @@ export const rideOngoing = createAsyncThunk("rideOngoing",async(userId)=>{
     return response.data
   } catch (error) {
     console.error(error);
+  }
+})
+
+export const stripePaymentConfirmation = createAsyncThunk('stripePaymentConfirmation',async(paymentInfo)=>{
+  try {
+    const response = await stripePaymentConfirmService(paymentInfo)
+    return response.data
+  } catch (error) {
+    console.error(error);
+    throw error
     
   }
 })

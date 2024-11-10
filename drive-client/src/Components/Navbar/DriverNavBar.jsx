@@ -20,9 +20,12 @@ import {
 } from "../../Features/Trip/tripSlice";
 
 import { logoutAction } from "../../Features/Driver/driverActions";
+import CancelRideNotification from "../Driver/Notifications/CancelRideNotification";
 
 function DriverNavBar() {
   const [openNotification, setOpenNotification] = useState(false);
+  const [rideCancelNotify,setRideCancelNotify] = useState(false)
+  const [rideCancelReason,setRideCancelReson] = useState(false)
   const [trip, setTrip] = useState(null);
   const notificationDurationRef = useRef(null);
   const [rideStarted, setRideStarted] = useState(false);
@@ -104,10 +107,14 @@ function DriverNavBar() {
         clearInterval(liveIntervalRef.current);
       }
     }, 2000);
-    socket?.on("cancel-ride", () => {
+    socket?.on("cancel-ride", (data) => {
+      console.log('inside the cancel-ride');
+      
       clearInterval(liveIntervalRef.current);
       dispatch(resetTripDetails());
       localStorage.removeItem('tripCoordsIndex')
+      setRideCancelReson(data)
+      setRideCancelNotify(true)
     });
     socket?.on("payment-update", (data) => {
       dispatch(setPaymentInfo(data));
@@ -124,6 +131,8 @@ function DriverNavBar() {
     }
 
   },[tripDetail,chatSocket])
+
+
 
   return (
     <>
@@ -183,6 +192,10 @@ function DriverNavBar() {
             setOpenNotification={setOpenNotification}
           />
         )}
+        {
+          rideCancelNotify && <CancelRideNotification setRideCancelNotify={setRideCancelNotify} rideCancelReason={rideCancelReason} />
+
+        }
       </AnimatePresence>
     </>
   );

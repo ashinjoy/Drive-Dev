@@ -20,7 +20,7 @@ export class DriverVerifyOtpUseCase {
             );
 
           const verifiedDriverData = {
-            _id: verifyUser?._id,
+            id: verifyUser?._id,
             name: verifyUser?.name,
             email: verifyUser?.email,
             phone: verifyUser?.phone,

@@ -29,25 +29,6 @@ function RideRequestNotifications({trip,setOpenNotification}) {
       setOpenNotification(false)
     }
   return (
-    // <motion.div 
-    // initial={{x:1000}}
-    // animate={{x:0}}
-    // exit={{x:1000}}
-    // className='fixed p-2 top-11 right-6 flex flex-col gap-3  w-[29rem] min-h-[4rem] border-2  border-black bg-gray-100 shadow-xl z-50'>
-    //     <div className='flex gap-2 px-5'>
-    //     <TfiLocationPin size={20}  />
-    //     <span className=''>{trip?.pickUpLocation}</span>
-    //     </div>
-    //     <div className='flex gap-2 px-5'>
-    //     <ImLocation2 size={20} />
-    //     <span>{trip?.dropOffLocation}</span>
-    //     </div>
-    //     <div className='flex justify-around'>
-    //     <button className='py-1 bg-green-400 rounded-sm w-[40%]' onClick={()=>acceptRide()}>Accept</button>
-    //     <button className='py-1 bg-red-400 rounded-sm w-[40%]' onClick={()=>rejectRide()}>Reject</button>
-    //     </div>
-    //     <div className='absolute right-7 text-xl font-bold'>{trip?.fare}</div>
-    // </motion.div>
     <motion.div 
     initial={{x:1000, opacity: 0}}
     animate={{x:0, opacity: 1}}

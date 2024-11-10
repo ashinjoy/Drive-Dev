@@ -4,12 +4,10 @@ export class CancelRideController{
     }
     async cancelRide(req,res,next){
         try {
-        const cancelDetails = await this.cancelRideUseCase.execute(req.body)
-      
-        
+         await this.cancelRideUseCase.execute(req.body)
         res.status(201).json({status:"cancelled"})
         } catch (error) {
-            console.error(error);
+            console.error('er in contr',error);
             next(error)
         }
     }

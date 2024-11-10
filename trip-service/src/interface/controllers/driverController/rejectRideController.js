@@ -10,9 +10,11 @@ export class RejectRideController{
                 error.message = "Bad Request"
                 error.status = 400
             }
-         const rejectRideRequest =  await this.rejectRideUseCase.execute(tripId,status,driverId)
+         await this.rejectRideUseCase.execute(tripId,status,driverId)
          res.status(200).json({message:"Ride Rejected"})
         } catch (error) {
+            console.error(error);
+            next(error)
             
         }
     }

@@ -1,24 +1,24 @@
 import React from 'react'
-import {Line} from 'react-chartjs-2'
+import {Pie} from 'react-chartjs-2'
 
-const options={
-  plugins: {
-    title: {
-      display: true,
-      text: "Users Gained between 2016-2020"
-    }
-  }
-}
+const options={}
 
 function Userchart({data}) {
   return (
-    <div className='relative'>
-      {data && <Line data={data} options={{
+   <>
+  
+   
+   {data && <Pie data={data} options={{
         ...options,
         responsive:true,
-        maintainAspectRatio:true
-      }} style={{width:"100%"}} />}
-    </div>
+        maintainAspectRatio:false
+      }} 
+      style={{width:"100%", height:"100%"}} />
+      }
+
+  
+      
+    </>
   )
 }
 

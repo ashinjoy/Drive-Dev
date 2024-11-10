@@ -1,5 +1,4 @@
 import express from 'express'
-// import { AuthHandler } from '../middleware/authMiddleware'
 import { SendMessageController } from '../controllers/chatController/sendMessage.js'
 import { GetMessageController } from '../controllers/chatController/getMessage.js'
 import {dependencies} from '../../config/dependencies.js'

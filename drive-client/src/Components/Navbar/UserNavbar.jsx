@@ -15,7 +15,7 @@ import UserAccountMenu from "../User/UserAccountMenu/UserAccountMenu";
 import UserNavBarDrawer from "./UserNavBarDrawer";
 import ReviewRating from "../User/Trip/ReviewRating";
 
-function UserNavbar() {
+function UserNavbar({ driver }) {
   const { user, token } = useSelector((state) => state.user);
   const { tripDetail } = useSelector((state) => state.trip);
   const [showMenu, setShowMenu] = useState(false);
@@ -82,52 +82,71 @@ function UserNavbar() {
         />
       </div>
       {showReviewModal && <ReviewRating setReviewModal={setReviewModal} />}
-      <div className="hidden md:flex items-center gap-x-12 text-gray-600">
-        <NavLink
-          to="/"
-          className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
-        >
-          Home
-        </NavLink>
-        {!token && (
+      {!driver && (
+        <div className="hidden md:flex items-center gap-x-12 text-gray-600">
           <NavLink
-            to="/driver/signup"
+            to="/"
             className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
           >
-            Drive
+            Home
           </NavLink>
-        )}
-        <NavLink
-          to="/search-ride"
-          className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
-        >
-          Ride
-        </NavLink>
-        <NavLink
-          to="/trip-history"
-          className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
-        >
-          Trips
-        </NavLink>
-      </div>
+          {!token && (
+            <NavLink
+              to="/driver/signup"
+              className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
+            >
+              Drive
+            </NavLink>
+          )}
+          <NavLink
+            to="/search-ride"
+            className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
+          >
+            Ride
+          </NavLink>
+          <NavLink
+            to="/trip-history"
+            className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
+          >
+            Trips
+          </NavLink>
+        </div>
+      )}
 
-      <div className="hidden md:flex items-center mr-12 text-gray-600">
-        {token ? (
-          <div
-            className="flex items-center hover:cursor-pointer hover:text-yellow-500 transition-colors"
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            <BiUserCircle size={"28px"} />
-            <RiArrowDropDownLine size={"20px"} />
-          </div>
-        ) : (
-          <NavLink
-            to="/login"
-            className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
-          >
-            Login
-          </NavLink>
-        )}
+      <div className="hidden md:flex items-center gap-[2rem] mr-12 text-gray-600">
+        {!driver ? (
+          <>
+            {token ? (
+              <div
+                className="flex items-center hover:cursor-pointer hover:text-yellow-500 transition-colors"
+                onClick={() => setShowMenu(!showMenu)}
+              >
+                <BiUserCircle size={"28px"} />
+                <RiArrowDropDownLine size={"20px"} />
+              </div>
+            ) : (
+              <NavLink
+                to={"/login"}
+                className="text-base font-medium leading-tight hover:text-yellow-500 transition-colors"
+              >
+                Login
+              </NavLink>
+            )}
+          </>
+        ) : <>
+               <NavLink
+               to={'/driver/login'}
+                className="flex items-center hover:cursor-pointer hover:text-yellow-500 transition-colors"
+              >
+              Login
+              </NavLink>
+              <NavLink
+                className="flex items-center hover:cursor-pointer hover:text-yellow-500 transition-colors"
+               to={'/driver/signup'}
+              >
+               Regsiter
+              </NavLink>
+        </>}
       </div>
       {navDrawer && <UserNavBarDrawer />}
       <div className="md:hidden flex items-center mr-6">

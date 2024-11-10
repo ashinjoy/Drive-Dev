@@ -1,16 +1,11 @@
-import React, {useRef , useCallback } from 'react'
+import React, { useEffect, useRef } from 'react'
 
-const useSearchDebounce = (fn,delay=500) =>{
-    let timer  = useRef(null)
-    const debouncedFn = useCallback((...args)=>{
-        if(timer.current){
-           clearTimeout(timer.current)
-        }
-        timer.current = setTimeout(()=>{
-            fn(...args)
-        },delay)
-    },[fn,delay])
-    return debouncedFn
+function useSearchDebounce(api) {
+let timer = useRef()
+    useEffect(()=>{
+
+    },[])
+
 }
 
 export default useSearchDebounce

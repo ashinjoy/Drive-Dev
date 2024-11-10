@@ -48,13 +48,13 @@ function DriverLoginPage() {
 
   return (
     <>
-      <UserNavbar />
+      <UserNavbar driver={'driver'} />
       <section className="bg-gray-50  h-screen">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mt-6 mx-auto md:h-screen lg:py-0">
-          <div className="w-full bg-white rounded-lg shadow-lg md:mt-16 sm:max-w-md xl:p-0 border bg-gradient-to-t from-white to-yellow-100">
+        <div className="flex flex-col items-center justify-center  mx-auto md:h-screen lg:py-0">
+          <div className="w-full  rounded-lg shadow-lg md:mt-16 sm:max-w-md xl:p-0 border bg-[#FFF8DC]">
             <div className="p-6 space-y-6 md:space-y-8 sm:p-8">
               <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-black md:text-3xl">
-              Driver  Login
+              Driver Login
               </h1>
               <form
                 className="space-y-6 md:space-y-5"
@@ -72,7 +72,7 @@ function DriverLoginPage() {
                     type="text"
                     name="email"
                     id="email"
-                    className="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-yellow-500 focus:border-yellow-500"
+                    className="border-2  text-gray-900 text-sm rounded-lg w-full p-2.5 outline-none focus:ring-yellow-500 focus:border-yellow-500"
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -89,7 +89,7 @@ function DriverLoginPage() {
                     type="password"
                     name="password"
                     id="password"
-                    className="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-yellow-500 focus:border-yellow-500"
+                    className="border-2 outline-none text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-yellow-500 focus:border-yellow-500"
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

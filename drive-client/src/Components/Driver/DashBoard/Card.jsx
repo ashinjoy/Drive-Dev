@@ -10,7 +10,7 @@ function Card({type}) {
     const getData = async()=>{
       if(type == "wallet"){
         const response =   await getDriverBalance(driver?.id)
-        setMoney(response?.balance)
+        setMoney(parseFloat(response?.balance).toFixed(2))
         return
       }
       if(type == "totalTrips"){

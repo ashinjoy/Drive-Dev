@@ -7,10 +7,15 @@ export class GetAdditionalTripDataUseCase {
           `https://api.mapbox.com/directions/v5/mapbox/driving/${pickupLong},${pickupLat};${dropLong},${dropLat}?alternatives=false&annotations=distance,duration&geometries=polyline&overview=full&steps=false&access_token=${process.env.MAPBOX_ACCESS_TOKEN}`
         );
         const data = response.data?.routes[0]
+        console.log('metadata',data.duration,data.distance);
+        console.log('data',data);
+        
         return {
           duration:data?.duration,
           distance:data?.distance
         }
+
+        
 
     } catch (error) {
       console.error(error);

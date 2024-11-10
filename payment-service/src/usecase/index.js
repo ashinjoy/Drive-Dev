@@ -20,6 +20,7 @@ import { GetDriverWalletDetailsUseCase } from "./driver/getDriverWalletDetailsUs
 import { GetCompanyWalletUseCase } from "./admin/getCompanyBalanceUseCase.js";
 import { TripReportUseCase } from "./admin/tripReportUseCase.js";
 import { DownloadTripReportUseCase } from "./admin/downloadTripReportUseCase.js";
+import { ConfirmStripePaymentUseCase } from "./user/confirmStripePaymentUseCase.js";
 export {
     UserCreatedConsumerUseCase,
     UserUpdateUseCase,
@@ -30,6 +31,7 @@ export {
 
 
     StripePaymentUseCase,
+    ConfirmStripePaymentUseCase,
     // CashOnDeliveryUseCase,
     // GetTripDetailsUseCase,
     GetTripDetailByIdUseCase,
@@ -40,6 +42,7 @@ export {
     GetWalletBalanceUseCase,
     GetUserWalletHistoryUseCase,
     GetDriverWalletBalanceUseCase,
+    
     // GetDriverWalletHistoryUseCase,
     GetDriverWalletDetailsUseCase,
     GetCompanyWalletUseCase,

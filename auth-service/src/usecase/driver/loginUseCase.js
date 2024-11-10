@@ -10,14 +10,48 @@ export class DriverLoginUseCase {
     try {
       const { email, password } = loginData;
       const existingUser = await this.driverRepository.findDriverByEmail(email);
-      if (existingUser) {
-        if (existingUser.isVerified) {
-          if (!existingUser.isBlocked) {
+      if(!existingUser){
+        const error = new Error();
+          error.message = "UnAuthorized";
+          error.status = 401;
+          throw error;
+      }
+      if(!existingUser?.isProfileComplete){
+        const error = new Error();
+          error.message = "Profile not completed";
+          error.status = 403;
+          throw error;
+      }
+      if(!existingUser?.isAccepted){
+        const error = new Error();
+        error.message = "Profile under verification";
+        error.status = 403;
+        throw error;
+      }
+      if(!existingUser.isVerified){
+        const error = new Error();
+        error.message = "Unauthorized";
+        error.status = 403;
+        throw error;
+      }
+      if(existingUser?.isBlocked){
+        const error = new Error();
+          error.message = "Your Accoount has Been Blocked Temporarily";
+          error.status = 403;
+           throw error;
+      }
+
             const verifyPassword = await compare(
               password,
               existingUser.password
-            );
-            if (verifyPassword) {
+          );
+          if(!verifyPassword){
+            const error = new Error();
+            error.message = "Invalid Password";
+            error.status = 403;
+            throw error;
+          }
+      
               const accessToken = await createAccessToken({
                 ...existingUser,
                 role: "DRIVER",
@@ -75,30 +109,6 @@ export class DriverLoginUseCase {
                 accessToken,
                 refreshToken,
               };
-            } else {
-              const error = new Error();
-              error.message = "Invalid Password";
-              error.status = 403;
-              throw error;
-            }
-          } else {
-            const error = new Error();
-            error.message = "Your Accoount has Been Blocked Temporarily";
-            error.status = 401;
-            throw error;
-          }
-        } else {
-          const error = new Error();
-          error.message = "UnAuthorized";
-          error.status = 403;
-          throw error;
-        }
-      } else {
-        const error = new Error();
-        error.message = "UnAuthorized";
-        error.status = 401;
-        throw error;
-      }
     } catch (error) {
       console.error(error);
       errorLogger.error(error);

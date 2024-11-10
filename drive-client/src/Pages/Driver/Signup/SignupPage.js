@@ -112,13 +112,13 @@ function SignupPage() {
 
   return (
     <>
-      <UserNavbar />
+      {/* <UserNavbar /> */}
       {showModal && (
         <Modal email={formState.email} setShowModal={setModal} role="driver" />
       )}
-      <section className="bg-gray-50 h-screen">
-        <div className=" flex flex-col items-center justify-center px-6 py-8 mt-6 mx-auto md:h-screen lg:py-0">
-          <div className=" w-full bg-yellow-50 rounded-lg shadow-2xl md:mt-16 sm:max-w-md xl:p-0 border border-gray-200">
+      <section className="flex justify-center items-center bg-[#F5F5F5] min-h-screen">
+        {/* <div className=" flex flex-col items-center justify-center px-6 py-8  mx-auto md:h-screen lg:py-0 w-1/2 bg-white"> */}
+          <div className=" w-full  bg-[#FFF8DC] rounded-lg shadow-2xl md:mt-16 sm:max-w-md xl:p-0 border border-[#BDBDBD]">
             <div className="p-6 space-y-6 md:space-y-8 sm:p-8">
               <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-3xl">
                 Join As a Driver
@@ -141,7 +141,7 @@ function SignupPage() {
                     type="text"
                     name="name"
                     id="name"
-                    className="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-3 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 ease-in-out"
+                    className="border-2 outline-none text-gray-900 text-sm rounded-lg w-full p-3  focus:border-yellow-500 "
                     placeholder="Enter your name"
                     onChange={validateInputs}
                   />
@@ -158,7 +158,7 @@ function SignupPage() {
                     type="text"
                     name="email"
                     id="email"
-                    className="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-3 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 ease-in-out"
+                    className="border-2 outline-none text-gray-900 text-sm rounded-lg w-full p-3  focus:border-yellow-500 "
                     placeholder="Enter your email"
                     onChange={validateInputs}
                   />
@@ -176,7 +176,7 @@ function SignupPage() {
                     type="tel"
                     name="phone"
                     id="phone"
-                    className="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-3 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 ease-in-out"
+                    className="border-2 outline-none text-gray-900 text-sm rounded-lg w-full p-3  focus:border-yellow-500 "
                     placeholder="Enter your phone number"
                     onChange={validateInputs}
                   />
@@ -194,7 +194,7 @@ function SignupPage() {
                     type="password"
                     name="password"
                     id="password"
-                    className="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-3 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 ease-in-out"
+                    className="border-2 outline-none text-gray-900 text-sm rounded-lg w-full p-3  focus:border-yellow-500 "
                     placeholder="Enter your password"
                     onChange={validateInputs}
                   />
@@ -202,15 +202,18 @@ function SignupPage() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-3 text-center transition duration-200 ease-in-out shadow-lg hover:shadow-xl"
+                  className="w-full text-white bg-[#FFC107] hover:bg-[#FFB300] focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-3 text-center transition duration-200 ease-in-out shadow-lg hover:shadow-xl"
                 >
                   Create an account
                 </button>
               </form>
-              <Link to='/driver/login' className="block mb-2 text-base font-medium text-gray-900">Login as Driver</Link>
+              <div className="w-full flex gap-1 items-center ">
+                <span>Already have an account ?</span>
+              <Link to='/driver/login' className="block  text-base font-medium text-blue-400">Login</Link>
+              </div>   
             </div>
           </div>
-        </div>
+        {/* </div> */}
       </section>
     </>
   );

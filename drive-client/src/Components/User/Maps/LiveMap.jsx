@@ -158,6 +158,7 @@ function LiveMapUpdates() {
             tripStatus === "requested" && <RippleEffect/>
           }
     </Map>
+  
    </>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import UserNavbar from "../../../Components/Navbar/UserNavbar";
-import Footer from "../../../Components/Footer/Footer";
 import { BiUpload } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { userProfileUpdate } from "../../../Features/User/userActions";

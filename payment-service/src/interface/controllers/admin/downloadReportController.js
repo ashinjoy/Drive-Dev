@@ -20,6 +20,7 @@ this.downloadTripReportUseCase = new dependencies.useCase.DownloadTripReportUseC
         res.status(201).send(datas);
         } catch (error) {
             console.error(error);
+            next(error)
             
         }
     }

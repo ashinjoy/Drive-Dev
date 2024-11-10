@@ -7,6 +7,7 @@ try {
     await this.createPaymentUseCase.execute(data)
 } catch (error) {
     console.error(error);
+    next(error)
     
 }
     }

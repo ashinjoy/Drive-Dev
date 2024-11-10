@@ -119,7 +119,7 @@ if(driverState?.message == 'Profile request send'){
   return (
     <>
       <DriverMenuBar/>
-      <section className="bg-gray-50 bg-gradient-to-r from-white to-yellow-50 h-screen">
+      <section className="  h-screen">
         <div className="flex flex-col items-center justify-center px-6 py- 8 mt-28 mx-auto  lg:py-0">
           <div className="w-full bg-white rounded-lg shadow-lg sm:max-w-xl xl:p-0 border border-yellow-300 bg-gradient-to-t from-white to-yellow-100">
             <div className="p-6 space-y-6 md:space-y-9 sm:p-8">
@@ -279,12 +279,6 @@ if(driverState?.message == 'Profile request send'){
                         className="w-full h-auto"
                       />
                     </label>
-
-                    {/* <div className="flex items-center w-[40%]">
-                <label htmlFor="bike" className="flex items-center w-full cursor-pointer">
-                  <img src="/assets/scooter-illustration-vintage-vehicle-sign-and-symbol-vector-removebg-preview.png" alt="Bike" className="w-full h-auto" />
-                </label>
-              </div> */}
                   </div>
                 </div>
                 <div>
@@ -323,7 +317,7 @@ if(driverState?.message == 'Profile request send'){
                       ) : (
                         "No Image Found"
                       )}
-                      <input type="file" name="" id="" ref={permitImgRef} onChange={(e)=>setVehiclePermit(e.target.files[0])}/>
+                      <input type="file" name="" className="hidden" id="" ref={permitImgRef} onChange={(e)=>setVehiclePermit(e.target.files[0])}/>
                     </div>
                   </div>
                 )}
