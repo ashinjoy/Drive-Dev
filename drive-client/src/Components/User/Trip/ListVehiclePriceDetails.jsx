@@ -84,7 +84,7 @@ function ListVehiclePriceDetails({
           setCashPaymentModal={setCashPaymentModal}
         />
       )}
-      <div className="flex flex-col mt-[6.3rem] w-[48%] ">
+      <div className="flex flex-col md:w-full ">
         <h2 className="text-xl font-bold mb-4">Choose a ride</h2>
         <div
           className="h-[10rem]"

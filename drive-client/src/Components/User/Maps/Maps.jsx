@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Map, { Marker, Source, Layer } from "react-map-gl";
-import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 import { TbPointFilled } from "react-icons/tb";
@@ -92,7 +91,7 @@ function Maps({ isSearch }) {
 
   return (
     <>
-      <div className="flex w-[100%] gap-2 ">
+      {/* <div className="flex w-[100%] gap-2 ">
         {isSearch && (
           <ListVehiclePriceDetails
             pickUpCoords={pickUpCoords}
@@ -115,6 +114,7 @@ function Maps({ isSearch }) {
           mapStyle="mapbox://styles/mapbox/streets-v9"
           attributionControl={false}
           mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+          
         >
           {pickupLongitude && pickupLatitude && (
             <Marker
@@ -164,7 +164,74 @@ function Maps({ isSearch }) {
               );
             })}
         </Map>
-      </div>
+      </div> */}
+
+<div className={`${isSearch && 'flex-col-reverse lg:flex lg:flex-row '} flex flex-row justify-center w-full md:gap-2 lg:mt-[7rem]  lg:mr-0`}>
+{/* <div className={` flex  flex-row items-center justify-center w-full `}> */}
+
+  {isSearch && (
+    <div className="w-full lg:w-1/2">
+      <ListVehiclePriceDetails
+        pickUpCoords={pickUpCoords}
+        dropCoords={dropCoords}
+        pickupLocation={pickupLocation}
+        dropLocation={dropLocation}
+      />
+    </div>
+  )}
+
+ 
+  <div className={`w-[90%] sm:w-full ${isSearch ? "w-full lg:w-[44%] " : "md:w-[85%]"} h-[50dvh]  md:h-[50dvh] lg:h-[82vh]`}>
+    <Map
+      ref={mapRef}
+      {...viewState}
+      onMove={(evt) => setViewState(evt.viewState)}
+      mapStyle="mapbox://styles/mapbox/streets-v9"
+      attributionControl={false}
+      mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+      style={{ width: "100%", height: "100%", overflow: "hidden" }}
+    >
+      
+      {pickupLongitude && pickupLatitude && (
+        <Marker longitude={pickupLongitude} latitude={pickupLatitude} style={{ width: "2rem" }}>
+          <TbPointFilled size={"2rem"} style={{ color: "#343434" }} />
+        </Marker>
+      )}
+      {dropoffLongitude && dropoffLatitude && (
+        <Marker longitude={dropoffLongitude} latitude={dropoffLatitude} style={{ width: "2rem" }}>
+          <IoLocationSharp size={25} style={{ color: "red" }} />
+        </Marker>
+      )}
+
+      
+      {route && (
+        <Source id="route" type="geojson" data={route}>
+          <Layer {...routeLine} />
+        </Source>
+      )}
+      {nearbyDriverLocations &&
+        nearbyDriverLocations.map((driver, i) => (
+          <Marker
+            key={i}
+            longitude={driver.coordinates[0]}
+            latitude={driver.coordinates[1]}
+            style={{ width: "2rem" }}
+          >
+            {driver.type === "Auto" ? (
+              <img src="/assets/TukTuk_Green_v1.png" alt="AutoDriver_Marker" className="w-8" />
+            ) : (
+              <img
+                src="/assets/scooter-illustration-vintage-vehicle-sign-and-symbol-vector-removebg-preview.png"
+                alt="ScooterDriver_Marker"
+                className="w-8"
+              />
+            )}
+          </Marker>
+        ))}
+    </Map>
+  </div>
+</div>
+
     </>
   );
 }
