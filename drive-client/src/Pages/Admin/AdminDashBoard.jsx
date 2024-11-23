@@ -23,8 +23,7 @@ function AdminDashBoard() {
         <div className="flex flex-col lg:flex-row justify-center items-center md:justify-start md:items-start  gap-[1rem] min-w-full  ">
           <Cards type={"companyBalance"}/>
           <Cards type={"trips"} />
-          <Cards type={"trips"} />
-          <Cards type={"trips"} />
+        
         </div>
         <div className="flex flex-col lg:flex-row justify-center items-center md:justify-start md:items-start  gap-8 min-w-full ">
           <div className="w-[50%] bg-white rounded-lg ">

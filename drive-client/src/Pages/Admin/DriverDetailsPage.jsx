@@ -102,7 +102,7 @@ export default function DriverDetailsPage() {
         <div className="mb-4">
           <h2 className="text-gray-700">Vehicle Permit</h2>
           <div className="border-2 border-dashed border-gray-400 rounded-lg p-2 h-36 w-44 mx-auto">
-            <img src={driverData?.permitUrl} className="object-contain w-full h-full rounded-lg" alt="Permit" />
+            <img src={driverData?.vehicleDetails?.permitUrl} className="object-contain w-full h-full rounded-lg" alt="Permit" />
           </div>
         </div>
       )}

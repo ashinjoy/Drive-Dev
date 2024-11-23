@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+
 import { resetAdminState } from "../../Features/Admin/adminSlice";
 import { adminLogin } from "../../Features/Admin/adminActions";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function AdminLogin() {
   const [name, setName] = useState("");
@@ -26,15 +27,15 @@ function AdminLogin() {
       formData.email === "" &&
       formData.password === ""
     ) {
-      toast("Fill all Fields");
+      toast.error("Fill all Fields");
     } else if (formData.name === "") {
-      toast("Provide Name");
+      toast.error("Provide Name");
     } else if (formData.email === "") {
-      toast("Provide Email");
+      toast.error("Provide Email");
     } else if (!emailRegex.test(formData.email)) {
-      toast("Please Enter valid Email");
+      toast.error("Please Enter valid Email");
     } else if (formData.password === "") {
-      toast("provide valid Password");
+      toast.error("provide valid Password");
     } else {
       dispatch(adminLogin(formData));
     }
@@ -42,11 +43,11 @@ function AdminLogin() {
 
   useEffect(() => {
     if (error) {
-      toast(error);
+      toast.error(error);
       dispatch(resetAdminState());
       return;
     } else if (success) {
-      toast(message);
+      toast.error(message);
       setTimeout(() => {
         navigate("/admin/home", { replace: true });
       }, 1000);

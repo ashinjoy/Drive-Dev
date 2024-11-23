@@ -152,3 +152,8 @@
 {"level":"error","message":"Password is Not Matching","status":401,"timestamp":"2024-11-23T15:52:42.567Z"}
 {"level":"error","message":"Password is Not Matching","status":401,"timestamp":"2024-11-23T15:52:44.866Z"}
 {"level":"error","message":"Password is Not Matching","status":401,"timestamp":"2024-11-23T15:52:44.867Z"}
+{"level":"error","message":"No access Token","status":400,"timestamp":"2024-11-23T16:12:31.219Z"}
+{"level":"error","message":"OTP is not Matching","status":400,"timestamp":"2024-11-23T16:52:02.609Z"}
+{"level":"error","message":"OTP is not Matching","status":400,"timestamp":"2024-11-23T16:52:02.614Z"}
+{"level":"error","message":"OTP is not Matching","status":400,"timestamp":"2024-11-23T16:52:10.136Z"}
+{"level":"error","message":"OTP is not Matching","status":400,"timestamp":"2024-11-23T16:52:10.142Z"}

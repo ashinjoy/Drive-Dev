@@ -265,3 +265,34 @@
 {"level":"info","message":"name","timestamp":"2024-11-23T15:54:20.387Z"}
 {"_id":"6741f77b938b8ece39db6279","isAccepted":true,"level":"info","message":"dataToPublish","timestamp":"2024-11-23T15:54:58.073Z"}
 {"__v":0,"_id":"6741f77b938b8ece39db6279","createdAt":"2024-11-23T15:40:43.870Z","currentLocation":{"coordinates":[],"type":"point"},"editRequest":false,"email":"vineeshj@gmail.com","exp":1732550114,"iat":1732377314,"isAccepted":true,"isBlocked":false,"isProfileComplete":true,"isVerified":true,"level":"info","license_Img":"14031628514b4285036b8e14a36f86bafda72268c132fc3da97738e4c71caebb","license_Number":"Kl53783287JHJHJ","message":"decode","name":"vineeshj","password":"$2b$10$oEy8mcNZkORgNmOHpSAGyOI4E4I01C9LHE8v4rVLjWdACFqq6GvVq","phone":3242311231,"profileImg":"d6b63502538ec6b8f3c2aad5177f4b65cff69812ff68e1ab94108aa615e8ce7c","role":"DRIVER","timestamp":"2024-11-23T15:55:58.269Z","updatedAt":"2024-11-23T15:54:58.022Z","vehicleDetails":{"_id":"6741f7a0938b8ece39db627e","permit":"b9b828c02cfabf2a1cb08b7054af63c7ad9777735f463cdd8734912916652366","rc_Number":"KL 42 B 6754","vehicle_type":"Auto"},"walletBalance":0}
+{"__v":0,"_id":"66cb2fd8ac3799b036181fcb","currentLocation":{"coordinates":[],"type":"point"},"editRequest":false,"email":"arun@gmail.com","exp":1732551176,"iat":1732378376,"isAccepted":true,"isBlocked":false,"isProfileComplete":true,"isVerified":true,"level":"info","license_Img":"abaf0692b1c18fa51a3b7c0e1d6bbce26cbdbdad43eefb062b3e5c3583c6aa55","license_Number":"KL67986HJSHJASA","message":"decode","name":"arun","password":"$2b$10$3aHfkgyxqTFkgMkOcADhPOGidc9HX78kHsCMiEISZLDGoJZqLVGOC","phone":9988776655,"profileImg":"583eda8ff128d57bfb3c70c2b9cc2dcff556dacb0ab8bd2fe1e9bfd05e79ee0f","role":"DRIVER","timestamp":"2024-11-23T16:13:01.381Z","updatedAt":"2024-11-23T16:12:16.162Z","vehicleDetails":{"_id":"66e8632de3a6c0451c106bf5","rc_Number":"KL 48 N 9876","vehicle_type":"Auto"},"wallet":0}
+{"__v":0,"_id":"66cb2fd8ac3799b036181fcb","currentLocation":{"coordinates":[],"type":"point"},"editRequest":false,"email":"arun@gmail.com","exp":1732551240,"iat":1732378440,"isAccepted":true,"isBlocked":false,"isProfileComplete":true,"isVerified":true,"level":"info","license_Img":"abaf0692b1c18fa51a3b7c0e1d6bbce26cbdbdad43eefb062b3e5c3583c6aa55","license_Number":"KL67986HJSHJASA","message":"decode","name":"arun","password":"$2b$10$3aHfkgyxqTFkgMkOcADhPOGidc9HX78kHsCMiEISZLDGoJZqLVGOC","phone":9988776655,"profileImg":"583eda8ff128d57bfb3c70c2b9cc2dcff556dacb0ab8bd2fe1e9bfd05e79ee0f","role":"DRIVER","timestamp":"2024-11-23T16:14:05.226Z","updatedAt":"2024-11-23T16:12:16.162Z","vehicleDetails":{"_id":"66e8632de3a6c0451c106bf5","rc_Number":"KL 48 N 9876","vehicle_type":"Auto"},"wallet":0}
+{"__v":0,"_id":"66cb2fd8ac3799b036181fcb","currentLocation":{"coordinates":[],"type":"point"},"editRequest":false,"email":"arun@gmail.com","exp":1732551388,"iat":1732378588,"isAccepted":true,"isBlocked":false,"isProfileComplete":true,"isVerified":true,"level":"info","license_Img":"abaf0692b1c18fa51a3b7c0e1d6bbce26cbdbdad43eefb062b3e5c3583c6aa55","license_Number":"KL67986HJSHJASA","message":"decode","name":"arun","password":"$2b$10$3aHfkgyxqTFkgMkOcADhPOGidc9HX78kHsCMiEISZLDGoJZqLVGOC","phone":9988776655,"profileImg":"583eda8ff128d57bfb3c70c2b9cc2dcff556dacb0ab8bd2fe1e9bfd05e79ee0f","role":"DRIVER","timestamp":"2024-11-23T16:23:47.537Z","updatedAt":"2024-11-23T16:16:17.591Z","vehicleDetails":{"_id":"66e8632de3a6c0451c106bf5","rc_Number":"KL 48 N 9876","vehicle_type":"Auto"},"wallet":0}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T16:42:44.849Z"}
+{"level":"info","message":"mail transfered successfully","timestamp":"2024-11-23T16:51:51.380Z"}
+{"level":"info","message":"otp=====","timestamp":"2024-11-23T16:51:51.381Z"}
+{"level":"info","message":"name","timestamp":"2024-11-23T17:07:51.236Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:13:31.481Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:13:39.508Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:14:00.126Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:14:11.689Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:14:18.853Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:14:45.276Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:16:55.445Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:16:57.691Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:19:19.929Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:19:32.736Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:19:41.035Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:19:45.000Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:20:29.572Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:20:42.475Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:20:45.752Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:22:05.152Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:22:10.918Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:22:20.294Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:23:50.363Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:24:31.191Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:24:59.729Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:25:32.453Z"}
+{"level":"info","message":"Auth Db Connected SuccessFully","timestamp":"2024-11-23T17:27:23.359Z"}
+{"__v":0,"_id":"66cb2fd8ac3799b036181fcb","currentLocation":{"coordinates":[],"type":"point"},"editRequest":false,"email":"arun@gmail.com","exp":1732553897,"iat":1732381097,"isAccepted":true,"isBlocked":false,"isProfileComplete":true,"isVerified":true,"level":"info","license_Img":"abaf0692b1c18fa51a3b7c0e1d6bbce26cbdbdad43eefb062b3e5c3583c6aa55","license_Number":"KL67986HJSHJASA","message":"decode","name":"arun","password":"$2b$10$3aHfkgyxqTFkgMkOcADhPOGidc9HX78kHsCMiEISZLDGoJZqLVGOC","phone":9988776655,"profileImg":"583eda8ff128d57bfb3c70c2b9cc2dcff556dacb0ab8bd2fe1e9bfd05e79ee0f","role":"DRIVER","timestamp":"2024-11-23T17:29:34.258Z","updatedAt":"2024-11-23T16:16:17.591Z","vehicleDetails":{"_id":"66e8632de3a6c0451c106bf5","rc_Number":"KL 48 N 9876","vehicle_type":"Auto"},"wallet":0}

@@ -8,23 +8,28 @@ export class GetDriverDetailsUseCase {
     try {
       const driverDetails = await this.driverRepository.findDriverbyId(id);
       const awsS3Config = new S3Config();
-      console.log("drievrProfileImg", driverDetails?.profileImg);
-      console.log("license", driverDetails?.license_Img);
+     console.log("driver",driverDetails);
+     
 
       const uploadedImgArr = [
         { imgField: "profileImg", Key: driverDetails?.profileImg },
         { imgField: "licenseImg", Key: driverDetails?.license_Img },
-        { imgField: "permitImg", Key: driverDetails?.permit },
+        { imgField: "permitImg", Key: driverDetails?.vehicleDetails?.permit },
       ];
+      console.log("up",uploadedImgArr);
+      
       const filteredUploadedImg = uploadedImgArr.filter(
         (img) => img.Key != undefined
       );
-      console.log(filteredUploadedImg);
+      
       const imgUploads = await Promise.all(
         filteredUploadedImg.map((img) => {
           return awsS3Config.getImageUrl(img);
         })
       );
+
+      console.log("imgUploads",imgUploads);
+      
 
       const imgUrlsFromS3 = {};
       for (const img of imgUploads) {
@@ -46,7 +51,7 @@ export class GetDriverDetailsUseCase {
         vehicleDetails: {
           vehicle_type: driverDetails?.vehicleDetails?.vehicle_type,
           rc_Number: driverDetails?.vehicleDetails?.rc_Number,
-          permitUrl: driverDetails?.vehicleDetails?.permit,
+          permitUrl: imgUrlsFromS3?.permitImg,
         },
         isBlocked: driverDetails?.isBlocked,
         isVerified: driverDetails?.isVerified,
@@ -56,7 +61,7 @@ export class GetDriverDetailsUseCase {
         profileUrl: imgUrlsFromS3?.profileImg,
       };
     } catch (error) {
-      console.error(error);
+    
       errorLogger.error(error);
     }
   }

@@ -47,9 +47,13 @@ export class S3Config {
         Bucket: this.bucketName,
         Key: img.Key,
       };
-
+      
       const command = new GetObjectCommand(getObjectParams);
+      // console.log('c',command);
+      
       const url = await getSignedUrl(this.s3, command, { expiresIn: 3600 });
+      console.log(url);
+      
       return {
         url,
         key: img.imgField,

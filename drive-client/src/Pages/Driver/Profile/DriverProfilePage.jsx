@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserNavbar from "../../../Components/Navbar/UserNavbar";
 import { profileUpdateRequest,logoutAction } from "../../../Features/Driver/driverActions";
-import { toast } from "react-toastify";
+
 import { useNavigate } from "react-router-dom";
 import DriverMenuBar from "../../../Components/Navbar/DriverMenuBar";
+import toast from "react-hot-toast";
 
 function DriverProfilePage() {
   const [name, setName] = useState("");
@@ -90,7 +91,7 @@ function DriverProfilePage() {
 
   useEffect(()=>{
 if(driverState?.message == 'Profile request send'){
-  toast(driverState?.message)
+  toast.success(driverState?.message)
   navigate('/driver/approval',{replace:true})
   
 }
@@ -121,7 +122,7 @@ if(driverState?.message == 'Profile request send'){
       <DriverMenuBar/>
       <section className="  h-screen">
         <div className="flex flex-col items-center justify-center px-6 py- 8 mt-28 mx-auto  lg:py-0">
-          <div className="w-full bg-white rounded-lg shadow-lg sm:max-w-xl xl:p-0 border border-yellow-300 bg-gradient-to-t from-white to-yellow-100">
+          <div className="w-full bg-white rounded-lg shadow-lg sm:max-w-xl xl:p-0 border border-yellow-50 bg-gradient-to-t from-white to-yellow-50">
             <div className="p-6 space-y-6 md:space-y-9 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center">
                 My Profile
@@ -188,6 +189,7 @@ if(driverState?.message == 'Profile request send'){
                     id=""
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-yellow-500 focus:border-yellow-500"
                     value={email}
+                    
                     onChange={(e) => {
                       setEmail(e.target.value);
                     }}
@@ -206,6 +208,7 @@ if(driverState?.message == 'Profile request send'){
                     id=""
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:ring-yellow-500 focus:border-yellow-500"
                     value={phone}
+                    readOnly
                     onChange={(e) => {
                       setPhone(e.target.value);
                     }}

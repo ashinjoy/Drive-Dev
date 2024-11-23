@@ -88,9 +88,9 @@ function TripDetailPage() {
                 ₹{tripDetail?.fare}
               </span>
             </div>
-            <button className="mt-4 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">
+            {/* <button className="mt-4 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">
               View Receipt
-            </button>
+            </button> */}
           </div>
           <div className="bg-white shadow-md border rounded-lg p-4">
             <h2 className="text-lg font-bold text-gray-800">Routes</h2>
@@ -126,9 +126,9 @@ function TripDetailPage() {
             <div className="flex flex-col gap-3 mt-2">
               <div className="flex justify-between">
                 <TbPointFilled size={"1.5rem"} className="text-gray-600" />
-                <p className="text-gray-700 flex-1">
-                  {tripDetail?.driverId?.name}
-                </p>
+               {tripDetail && <p className="text-gray-700 flex-1">
+                  {tripDetail?.driverId?.name.toUpperCase()}
+                </p>}
                 <span className="text-gray-500">Rating: ★★★★☆</span>
               </div>
               <div className="flex justify-between">
