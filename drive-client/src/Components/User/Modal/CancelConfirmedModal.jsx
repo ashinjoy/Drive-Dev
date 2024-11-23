@@ -1,10 +1,8 @@
 
 import { createPortal } from 'react-dom'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 function CancelConfirmedModal({setCancelConfirmModal}) {
-  const {tripStatus,cancelData} = useSelector(state=>state.trip)
   const navigate = useNavigate()
   const handleNavigate = ()=>{
     navigate('/')

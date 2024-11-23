@@ -28,12 +28,18 @@ export const socketConnection = async (httpServer) => {
         socket.to(data?.userId).emit('nearbyRide',data)
       })
 
+      socket.on('live-update',(data)=>{
+        console.log('sockert in server');
+        
+        socket.to(data?.recieverId).emit('tripLive-Updates',data)
+      })
+
       socket.on('start-ride',(data)=>{
         socket.to(data.userId).emit('ride-start','started')
       })
 
       socket.on('ride-complete',(data)=>{
-        const userId = data?.userId
+        const userId = data?.userId                        
         socket.to(userAndSocketId.get(userId)).emit('ride-complete',data)
       })
 

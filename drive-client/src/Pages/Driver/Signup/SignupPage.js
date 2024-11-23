@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../Components/Driver/Modal/OtpModal";
-import UserNavbar from "../../../Components/Navbar/UserNavbar";
 import { registerDriver } from "../../../Features/Driver/driverActions";
 import { resestAll } from "../../../Features/Driver/driverSlice";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function SignupPage() {
   const [formState, setFormState] = useState({
@@ -30,22 +30,22 @@ function SignupPage() {
       formState.phone.trim() === "" &&
       formState.password.trim() === ""
     ) {
-      toast("Please fill All fields");
+      toast.error("Please fill All fields");
     } else if (formState.name.trim() == "") {
-      toast("Please Enter your Name");
+      toast.error("Please Enter your Name");
     } else if (formState.email.trim() === "") {
-      toast("Please Enter your Email");
+      toast.error("Please Enter your Email");
     } else if (!emailRegex.test(formState.email)) {
       console.log("formstateEmaail", formState.email);
-      toast("Please Enter a Valid Email");
+      toast.error("Please Enter a Valid Email");
     } else if (formState.phone.trim() === "") {
-      toast("please Enter valid Phone");
+      toast.error("please Enter valid Phone");
     } else if (!phoneRegex.test(formState.phone)) {
-      toast("Please Enter Valid Phone");
+      toast.error("Please Enter Valid Phone");
     } else if (formState.password.trim() === "") {
-      toast("Please Enter valid paswword");
+      toast.error("Please Enter valid paswword");
     } else if (!passwordRegex.test(formState.password)) {
-      toast("Password must contain minimum of 8 characters");
+      toast.error("Password must contain minimum of 8 characters");
     } 
     else {
       dispatch(registerDriver(formState));
@@ -101,7 +101,7 @@ function SignupPage() {
 
   useEffect(() => {
     if (error) {
-      toast(error);
+      toast.error(error);
       dispatch(resestAll());
       return;
     } else if (success) {

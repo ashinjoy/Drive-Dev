@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { cancelRide } from "../../../Features/Trip/tripActions";
 import { resetTripDetails } from "../../../Features/Trip/tripSlice";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function CancellationModal({ setCancelModal, setCancelConfirmModal }) {
+  // console.log(setCancelConfirmModal,setCancelModal);
+  
   const [selectReason, setSelectReason] = useState("");
   const { user } = useSelector((state) => state.user);
   const { tripDetail, tripStatus, cancelData, error } = useSelector(
@@ -32,6 +35,10 @@ function CancellationModal({ setCancelModal, setCancelConfirmModal }) {
   }, [error]);
 
   const handleCancellation = () => {
+    if(selectReason.trim() === ""){
+toast.error('Select a reason to cancel Ride')
+return
+    }
     dispatch(
       cancelRide({
         userId: user?.id,
@@ -62,8 +69,9 @@ function CancellationModal({ setCancelModal, setCancelConfirmModal }) {
                 <input
                   type="radio"
                   value={reason}
+                  checked={selectReason === reason}
                   className="text-blue-600 focus:ring-blue-500"
-                  onClick={(e) => setSelectReason(e.target.value)}
+                  onChange={(e) => setSelectReason(e.target.value)}
                 />
                 <span className="text-gray-700">{reason}</span>
               </label>

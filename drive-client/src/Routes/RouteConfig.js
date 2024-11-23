@@ -23,7 +23,7 @@ import LiveLocation from "../Pages/User/Trip/LiveLocation.jsx";
 import TripHistory from "../Pages/User/TripHistory/TripHistory.jsx";
 import PaymentSucess from "../Pages/User/Payment/PaymentSucess.jsx";
 import TripDetailPage from "../Pages/User/TripHistory/TripDetailPage.jsx";
-import WalletPage from "../Pages/User/Profile/WalletPage.jsx";
+import WalletPage from "../Pages/User/Wallet/WalletPage.jsx";
 import AddContacts from "../Pages/User/AddContacts/AddContacts.jsx";
 import DriverWalletPage from "../Pages/Driver/Wallet/DriverWalletPage.jsx";
 import TripReport from "../Pages/Admin/TripReport.jsx";

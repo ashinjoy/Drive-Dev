@@ -10,6 +10,8 @@ function TripProtectedRoute({ children }) {
   const navigate = useNavigate(); 
   useEffect(() => {
     if (tripDetail) {
+      console.log('inside triop');
+      
       navigate("/trip");
       return;
     }

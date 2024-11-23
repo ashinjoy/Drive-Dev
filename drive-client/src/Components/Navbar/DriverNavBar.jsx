@@ -3,16 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import * as turf from "@turf/turf";
-
 import { useSocket } from "../../Hooks/socket";
-
 import RideRequestNotifications from "../Driver/Notifications/RideRequestNotifications";
 import { driverLiveLocation } from "../../Context/DriverLocation";
-
 import { MdSpaceDashboard } from "react-icons/md";
 import { GiJourney } from "react-icons/gi";
 import { FaWallet } from "react-icons/fa6";
-
 import { MdPerson } from "react-icons/md";
 import {
   resetTripDetails,
@@ -31,7 +27,19 @@ function DriverNavBar() {
   const [rideStarted, setRideStarted] = useState(false);
   const liveIntervalRef = useRef(null);
   const tripIndex = localStorage.getItem('tripCoordsIndex')
-  const arrayIndexRef = useRef(tripIndex || 0);
+  const arrayIndexRef = useRef(tripIndex || 0);   // index for iterating over the tripCooordiinates this coordinate has all the dummy coordinates from pickup to dropoff
+
+  const handleRideRequest = (tripData) => {
+    console.log('tripData',tripData);
+    
+    setTrip(tripData);
+    setOpenNotification(true);
+    setEnableChat(true);
+    notificationDurationRef.current = setTimeout(() => {
+      setOpenNotification(false);
+    }, 13000);
+
+  };
   
   const {
     setDriverLive,
@@ -49,19 +57,6 @@ function DriverNavBar() {
     dispatch(logoutAction());
   };
   useEffect(() => {
-    const handleRideRequest = (tripData) => {
-      console.log('tripData',tripData);
-      
-      setTrip(tripData);
-      setOpenNotification(true);
-      // chatSocket?.emit("driver-chat-connect", { driverId: driver?.id });
-      // chatSocket?.emit("driver-chat-connect", tripData?._id);
-      setEnableChat(true);
-      notificationDurationRef.current = setTimeout(() => {
-        setOpenNotification(false);
-      }, 13000);
-
-    };
     if (token && driver) {
       socket?.emit("driver-connected", driver.id);
       socket?.on("ride-request", (tripData) => {
@@ -76,12 +71,15 @@ function DriverNavBar() {
 
   useEffect(() => {
     if (!token || !driver || !tripDetail) {
+      console.log('return statemey');
+      
       return;
     }
     liveIntervalRef.current = setInterval(() => {
-      if (arrayIndexRef.current < tripCoordinates.length) {
+      if (arrayIndexRef.current < tripCoordinates.length) {  // checking if the iteration of trip array is correct and iterate until the destination coords
+       
         if (startRide) {
-          clearInterval(liveIntervalRef.current);
+          clearInterval(liveIntervalRef.current);  // to simulation when the driver reaches near pickup
           return;
         }
         const handleJourneyAfterStart = () => {
@@ -95,23 +93,21 @@ function DriverNavBar() {
             setRideStarted(true);
           }
         }
-        localStorage.setItem('tripCoordsIndex',arrayIndexRef.current)
-        
+        localStorage.setItem('tripCoordsIndex',arrayIndexRef.current)  // storing the current array Index in web sstorage to persist if not the data will reset
         setDriverLive(tripCoordinates[arrayIndexRef.current]);
         socket?.emit("location-update", {
-          liveLocation: tripCoordinates[arrayIndexRef.current],
+          liveLocation: tripCoordinates[arrayIndexRef.current],   //emitting coords to driverr
           userId: tripDetail?.userId,
         });
-        arrayIndexRef.current++;
+        arrayIndexRef.current++;  // incrementing index or iteration to simualate
       } else {
         clearInterval(liveIntervalRef.current);
       }
     }, 2000);
     socket?.on("cancel-ride", (data) => {
-      console.log('inside the cancel-ride');
-      
       clearInterval(liveIntervalRef.current);
       dispatch(resetTripDetails());
+      setTripCoordintes([]);
       localStorage.removeItem('tripCoordsIndex')
       setRideCancelReson(data)
       setRideCancelNotify(true)
@@ -122,6 +118,7 @@ function DriverNavBar() {
     return () => {
       clearInterval(liveIntervalRef.current);
       socket?.off("cancel-ride");
+      socket?.off('payment-update')
     };
   }, [socket, tripDetail, tripCoordinates, startRide, tripStatus]);
 

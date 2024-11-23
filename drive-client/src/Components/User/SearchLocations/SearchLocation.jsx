@@ -91,10 +91,7 @@ function   SearchLocation({isSearch,setSearch}) {
       return
     } 
   }, [additionalSearchMetaData]);
-  useEffect(()=>{
-    console.log('hello',isSearch);
-    
-  },[])
+
   return (
     <>
       <div className={`flex  w-full lg:w-[35%] ${isSearch && 'hidden lg:block' }`}>

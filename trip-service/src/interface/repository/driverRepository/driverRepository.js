@@ -7,9 +7,11 @@ export class DriverRepository {
       return driver.save();
     } catch (error) {
       console.error(error);
+      throw error
     }
   }
   async findDriverbyId(id) {
+    
     return await driverModel.findById({ _id: id }, { password: 0 });
   }
   async findDriverByEmail(email) {
@@ -59,7 +61,7 @@ export class DriverRepository {
 
   async findNearstDriversAvailable(pickupCoordinates) { 
     try {
-      return await driverModel.aggregate([
+      const data =  await driverModel.aggregate([
         {
           $geoNear: {
             near: {
@@ -81,6 +83,7 @@ export class DriverRepository {
             }
             
           }]);
+          return data
     } catch (error) {
         console.error(error);
         throw error
@@ -115,7 +118,10 @@ export class DriverRepository {
         },
       ]);
       return data;
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+      
+    }
   }
 
   async updateDriverStatus(driverId, status) {
@@ -129,8 +135,6 @@ export class DriverRepository {
       console.error(error);
     }
   }
-
-  // async getDriverTripCompletedStat(driverId,dateRange){
-  
+ 
  
 }

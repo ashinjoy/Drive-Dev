@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { FaWindowClose } from "react-icons/fa";
 import { verifyOtp, resendOtp } from "../../../Features/User/userActions";
 import { useSocket } from "../../../Hooks/socket";
-import { toast } from "react-toastify";
 import { reset } from "../../../Features/User/userSlice";
+import toast from "react-hot-toast";
 
 function OtpModal({ email, setShowModal }) {
   const { socket } = useSocket();
@@ -41,8 +41,8 @@ function OtpModal({ email, setShowModal }) {
       return;
     }
     if (error) {
-      toast(error);
-      dispatch(reset());
+    toast.error(error)
+    dispatch(reset())
     }
   }, [message, error]);
 
@@ -63,6 +63,9 @@ function OtpModal({ email, setShowModal }) {
         }
       });
     }, 1000);
+    return ()=>{
+      clearInterval(timer)
+    }
   }, []);
 
   useEffect(() => {

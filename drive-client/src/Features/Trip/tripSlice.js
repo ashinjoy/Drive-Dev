@@ -41,10 +41,18 @@ const tripSlice = createSlice({
             localStorage.removeItem('paymentStatus')
             state.tripDetail = null
             state.tripStatus = null
+            state.paymentStatus = null
+            state.paymentInfo = null
+            state.message = null
+            state.tripStatus = null
         },
         setPaymentInfo:(state,action)=>{
             localStorage.setItem('paymentInfo',JSON.stringify(action.payload))
             state.paymentInfo = action.payload
+        },
+        resetDriverTripDetail:(state,action)=>{
+            state.tripDetail = null
+            state.message = ''
         }
     },
     extraReducers(builder){
@@ -159,5 +167,5 @@ const tripSlice = createSlice({
         })
     }
 })
-export const {setTripData,resetTripDetails,setTripStatus,setPaymentInfo,setTripStatusComplete} = tripSlice.actions
+export const {setTripData,resetTripDetails,setTripStatus,setPaymentInfo,setTripStatusComplete,resetDriverTripDetail} = tripSlice.actions
 export default tripSlice.reducer

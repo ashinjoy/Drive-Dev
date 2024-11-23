@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { reviewRatings } from "../../../Features/User/userActions";
 import { resetTripDetails } from "../../../Features/Trip/tripSlice";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { reset } from "../../../Features/User/userSlice";
+
 
 function ReviewRating({setReviewModal}) {
   const [stars,setStars] = useState(new Array(5).fill(0))
@@ -19,11 +22,14 @@ const navigate = useNavigate()
     const index = parseInt(evt.target.id);
     setSelectedStar(index);
     const filledStars = stars.map((el,i)=>(i<=index ? 1 : 0 ))
-    console.log(filledStars);
+   
     setStars(filledStars)
-    console.log(stars);
+ 
   };
+useEffect(()=>{
+console.log('messagfe',message);
 
+},[message])
   const handleReviews = (e)=>{
     e.preventDefault()
     const formData = new FormData()
@@ -32,17 +38,26 @@ const navigate = useNavigate()
     formData.append('userId',tripDetail?.userId)
     formData.append('driverId',tripDetail?.driverId)
     formData.append('tripId',tripDetail?._id)
+    if(selectedStar === 0  || review.trim() === ''){
+      toast.error('Rate Your Trip ')
+      return
+    }
     dispatch(reviewRatings(formData))
   }
 
   useEffect(()=>{
+    console.log("meee",message);
+    
     if(message  === "review sucess"){
       dispatch(resetTripDetails())
-      navigate('/search-ride')
+      dispatch(reset())
+      setTimeout(()=>{
+        navigate('/search-ride')
+      },2000)
       setReviewModal(false)
       return
     }
-  })
+  },[message])
 
 
   return createPortal(

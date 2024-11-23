@@ -1,9 +1,10 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { requestRideAction } from "../../../Features/Trip/tripActions";
 import { useNavigate } from "react-router-dom";
 import CashPaymentConfirmModal from "../Modal/CashPaymentConfirmModal";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
+
 
 function ListVehiclePriceDetails({
   pickUpCoords,
@@ -45,7 +46,7 @@ function ListVehiclePriceDetails({
   const handleRequestRide = (e) => {
     if (selectCategory === "") {
       e.preventDefault();
-      toast("please select vehicle");
+      toast.error("please select a vehicle to prooceed");
       return;
     }
     let data = {

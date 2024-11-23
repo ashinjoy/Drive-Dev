@@ -130,6 +130,7 @@ export const reviewRatings = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error(error);
+      rejectWithValue(error?.response?.data?.error)
     }
   }
 );

@@ -24,10 +24,7 @@ function Maps({ isSearch }) {
   const [viewState, setViewState] = useGeolocation(); // custom hook for fetching the state for the map
   const route = useMapRoutes(pickUpCoords, dropCoords); // custom hook for fetching the route connectings the markers in maps
 
-  useEffect(() => {
-    console.log("viewState,", viewState, setViewState);
-    console.log("coors", pickUpCoords, dropCoords);
-  }, [viewState, pickUpCoords, dropCoords]);
+
 
   useEffect(() => {
     if (nearbyDrivers && nearbyDrivers.length > 0) {
@@ -91,84 +88,9 @@ function Maps({ isSearch }) {
 
   return (
     <>
-      {/* <div className="flex w-[100%] gap-2 ">
-        {isSearch && (
-          <ListVehiclePriceDetails
-            pickUpCoords={pickUpCoords}
-            dropCoords={dropCoords}
-            pickupLocation={pickupLocation}
-            dropLocation={dropLocation}
-          />
-        )}
-        <Map
-          ref={mapRef}
-          {...viewState}
-          onMove={(evt) => setViewState(evt.viewState)}
-          style={{
-            marginTop: "7rem",
-            width: isSearch ? "45%" : "90%",
-            height: 575,
-            overflow: "hidden",
-            marginRight: 12,
-          }}
-          mapStyle="mapbox://styles/mapbox/streets-v9"
-          attributionControl={false}
-          mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-          
-        >
-          {pickupLongitude && pickupLatitude && (
-            <Marker
-              longitude={pickupLongitude}
-              latitude={pickupLatitude}
-              style={{ width: "2rem" }}
-            >
-              <TbPointFilled size={"2rem"} style={{ color: "#343434" }} />
-            </Marker>
-          )}
-          {dropoffLongitude && dropoffLatitude && (
-            <Marker
-              longitude={dropoffLongitude}
-              latitude={dropoffLatitude}
-              style={{ width: "2rem" }}
-            >
-              <IoLocationSharp size={25} style={{ color: "red" }} />
-            </Marker>
-          )}
-          {route && (
-            <Source id="route" type="geojson" data={route}>
-              <Layer {...routeLine} />
-            </Source>
-          )}
-          {nearbyDriverLocations &&
-            nearbyDriverLocations.length > 0 &&
-            nearbyDriverLocations.map((driver, i) => {
-              return (
-                <Marker
-                  key={i}
-                  longitude={driver?.coordinates[0]}
-                  latitude={driver?.coordinates[1]}
-                  style={{ width: "5rem" }}
-                >
-                  {driver?.type === "Auto" ? (
-                    <img
-                      src="/assets/TukTuk_Green_v1.png"
-                      alt="AutoDriver_Marker"
-                    />
-                  ) : (
-                    <img
-                      src="/assets/scooter-illustration-vintage-vehicle-sign-and-symbol-vector-removebg-preview.png"
-                      alt="AutoDriver_Marker"
-                    />
-                  )}
-                </Marker>
-              );
-            })}
-        </Map>
-      </div> */}
+      
 
 <div className={`${isSearch && 'flex-col-reverse lg:flex lg:flex-row '} flex flex-row justify-center w-full md:gap-2 lg:mt-[7rem]  lg:mr-0`}>
-{/* <div className={` flex  flex-row items-center justify-center w-full `}> */}
-
   {isSearch && (
     <div className="w-full lg:w-1/2">
       <ListVehiclePriceDetails

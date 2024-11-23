@@ -38,6 +38,7 @@ const driverSlice = createSlice({
         state.loading = false
         state.success = false
         state.message = ""
+        state.error = ""
       }
       
     },

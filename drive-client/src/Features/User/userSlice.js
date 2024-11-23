@@ -92,6 +92,7 @@ const userSlice = createSlice({
         state.message = action?.payload?.message;
       })
       .addCase(verifyOtp.rejected, (state, action) => {
+        console.log(action.payload);
         state.error = action?.payload;
       })
       .addCase(resendOtp.pending, (state) => {
@@ -174,7 +175,7 @@ const userSlice = createSlice({
         state.message = action?.payload?.message;
       })
       .addCase(reviewRatings.rejected, (state, action) => {
-        // state.error
+        state.error = action.payload
       });
   },
 });

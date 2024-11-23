@@ -5,15 +5,12 @@ import { FaWindowClose } from "react-icons/fa";
 import { startTrip } from '../../../Features/Trip/tripActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSocket } from '../../../Hooks/socket';
-import { distance } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 
-
-
-
-function RideStartConfirmationModal({setShowOtp,setStartRide}) {
+function RideStartConfirmationModal({setShowOtp,setStartRide,recieverId}) {
   const [otpInp, setOtp] = useState(new Array(4).fill(""));
-  // const {socket} = useSocket()
+  const {socket} = useSocket()
   const {message} = useSelector(state=>state.trip)
   const otpBoxReference = useRef([]);
   const dispatch = useDispatch()
@@ -45,6 +42,8 @@ function RideStartConfirmationModal({setShowOtp,setStartRide}) {
     if( message === 'Ride started SucessFully'){
       setStartRide(false)
       setShowOtp(false)
+      toast.success('User OTP Verification sucess! Passenger Pickup Up')
+    socket?.emit('live-update',{recieverId,message:'Trip verification has been sucessFully completed'})
       return
         // const data = {
         //     userId:tripDetail?.userId,

@@ -7,7 +7,8 @@ function LiveLocation() {
   return (
     <>
     <UserNavbar/>
-    <div className="relative flex flex-col md:flex-row w-full h-full">
+    .
+    <div className="flex flex-col-reverse lg:flex-row w-full  justify-center">
     <BookingInfo/>
     <LiveMapUpdates/>
     </div>

@@ -9,7 +9,7 @@ import { FaTaxi } from "react-icons/fa6";
 function AdminSidebar() {
   return (
      <>
-     <div className="block md:hidden  w-full flex  items-center">
+     <div className=" md:hidden  w-full flex  items-center z-50">
       <div className="w-[10%] flex items-center justify-center">
         <GiHamburgerMenu className="w-[2rem] md:w-[3rem] "/>
       </div>

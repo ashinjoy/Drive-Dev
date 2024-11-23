@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../../Hooks/socket";
 import Map, { Marker, Source, Layer } from "react-map-gl";
@@ -17,15 +17,17 @@ import { AnimatePresence } from "framer-motion";
 import DriverNearByDropOff from "../Notifications/DriverNearByDropOff";
 import Chat from "../../Chat/Chat";
 import RideStartConfirmationModal from "../Modal/RideStartConfirmationModal";
+import toast from "react-hot-toast";
+import { resestAll } from "../../../Features/Driver/driverSlice";
+import { resetDriverTripDetail } from "../../../Features/Trip/tripSlice";
 
 
 function DriverMap() {
   const mapContainerRef = useRef(null);
   const [recieverId, setRecieverId] = useState(null);
-  const [senderId, setSenderId] = useState(null);
   const { driver, currentStatus } = useSelector((state) => state.driver);
   const { tripDetail, message } = useSelector((state) => state.trip);
-  const { driverLive, setTripCoordintes, startRide, setStartRide,tripCoordinates } = useContext(driverLiveLocation);
+  const { driverLive, setTripCoordintes, startRide, setStartRide,tripCoordinates,setDriverLive } = useContext(driverLiveLocation);
   const dispatch = useDispatch();
   const [openChat, setOpenChat] = useState(false);
   const [pickup, setPickUp] = useState([]);
@@ -41,41 +43,41 @@ function DriverMap() {
   const [endRide, setEndRide] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const { socket } = useSocket();
-  const setMapBoundary = ()=>{
+  
+  const setMapBoundary = useCallback(() => {
+    if (!tripDetail) return;
     const bounds = [
       [
         Math.min(
-          tripDetail?.startLocation?.coordinates[0],
-          tripDetail?.endLocation?.coordinates[0],
-          tripDetail?.driverId?.currentLocation?.coordinates[0]
+          tripDetail.startLocation.coordinates[0],
+          tripDetail.endLocation.coordinates[0],
+          tripDetail.driverId.currentLocation.coordinates[0]
         ),
         Math.min(
-          tripDetail?.startLocation?.coordinates[1],
-          tripDetail?.endLocation?.coordinates[1],
-          tripDetail?.driverId?.currentLocation?.coordinates[1]
+          tripDetail.startLocation.coordinates[1],
+          tripDetail.endLocation.coordinates[1],
+          tripDetail.driverId.currentLocation.coordinates[1]
         ),
       ],
       [
         Math.max(
-          tripDetail?.startLocation?.coordinates[0],
-          tripDetail?.endLocation?.coordinates[0],
-          tripDetail?.driverId?.currentLocation?.coordinates[0]
+          tripDetail.startLocation.coordinates[0],
+          tripDetail.endLocation.coordinates[0],
+          tripDetail.driverId.currentLocation.coordinates[0]
         ),
         Math.max(
-          tripDetail?.startLocation?.coordinates[1],
-          tripDetail?.endLocation?.coordinates[1],
-          tripDetail?.driverId?.currentLocation?.coordinates[1]
+          tripDetail.startLocation.coordinates[1],
+          tripDetail.endLocation.coordinates[1],
+          tripDetail.driverId.currentLocation.coordinates[1]
         ),
       ],
     ];
 
     if (mapContainerRef.current) {
-      mapContainerRef.current.fitBounds(bounds, {
-        padding: 20,
-      });
+      mapContainerRef.current.fitBounds(bounds, { padding: 20 });
     }
-  }
-  const checkApproxDistance = (driverLocation, destination) => {
+  }, [tripDetail]);
+  const calculateDistance = (driverLocation, destination) => {
     if (
       driverLocation &&
       driverLocation.length > 0 &&
@@ -88,19 +90,91 @@ function DriverMap() {
       return approx;
     }
   };
+  
 
-  const calculateTripCoordinates = (routeCoords)=>{
-    console.log('routes',routeCoords);
-    const routeLine = turf.lineString(routeCoords)
-    const path = turf.lineChunk(routeLine,100,{units:'meters'})?.features
-    const liveCoords = []
-    console.log('payh',path);
-    for (const point of path){
-      console.log(point?.geometry?.coordinates[0]);
-      liveCoords.push(point?.geometry?.coordinates[0])
+  const calculateTripCoordinates = useCallback((routeCoords) => {
+    const routeLine = turf.lineString(routeCoords);
+    const path = turf.lineChunk(routeLine, 100, { units: "meters" }).features;
+    return path.map((point) => point.geometry.coordinates[0]);
+  }, []);
+
+  
+
+  const getRoute = useCallback(async () => {
+    if (!tripDetail) return;
+
+    try {
+      const response = await axios.get(
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${tripDetail.driverId.currentLocation.coordinates.join(
+          ","
+        )};${tripDetail.startLocation.coordinates.join(
+          ","
+        )};${tripDetail.endLocation.coordinates.join(
+          ","
+        )}?geometries=geojson&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+      );
+
+      const routeInfo = response.data;
+      setRoute(routeInfo.routes[0]?.geometry);
+
+      if (!tripCoordinates.length) {
+        const liveCoordinates = calculateTripCoordinates(
+          routeInfo.routes[0]?.geometry.coordinates
+        );
+        setTripCoordintes(liveCoordinates);
+      }
+    } catch (error) {
+      console.error("Error fetching route:", error);
     }
-    return liveCoords
-  }
+  }, [tripDetail, tripCoordinates, calculateTripCoordinates, setTripCoordintes]);
+
+
+  const handleNotifications = useCallback(() => {
+    const approxPickup = calculateDistance(driverLive, pickup);
+    const approxDrop = calculateDistance(driverLive, dropOff);
+
+    if (approxPickup < 250 && approxPickup > 200) {
+      console.log('level 1');
+      
+      toast("Driver within 200 meters of pickup point!", {
+        icon: "🛺🌫️",
+        style: { borderRadius: "10px", background: "#333", color: "#fff" },
+        position: "top-center",
+        duration: 3000,
+      });
+      socket?.emit("live-update", {
+        recieverId: tripDetail?.userId,
+        message: "Driver is near pickup point!",
+      });
+    } else if (approxPickup <= 100) {
+      console.log('level 2');
+      
+      if (!rideStarted) {
+        setRideStarted(true);
+        setStartRide(true);
+        toast.success("Reached Passenger Pickup SPot!");
+        socket?.emit("live-update", {
+          recieverId: tripDetail?.userId,
+          message: "Driver Haas reached Pickup Location!",
+        });
+      }
+    } else if (approxDrop < 350 && approxDrop > 250) {
+      console.log('level 3');
+      toast("Reaaching Destination 200 mteres more)!", {
+        icon: "🛺🌫️",
+        style: { borderRadius: "10px", background: "#333", color: "#fff" },
+        position: "top-center",
+        duration: 3000,
+      });
+
+      socket?.emit("live-update", {
+        recieverId: tripDetail?.userId,
+        message: "Destination is within 300 meters!",
+      });
+    } else if (approxDrop <= 100) {
+      completeJourney();
+    }
+  }, [driverLive, pickup, dropOff, tripDetail, rideStarted, socket]);
 
   useEffect(() => {
     if (!tripDetail) {
@@ -120,29 +194,23 @@ function DriverMap() {
   useEffect(() => {
     if (tripDetail) {
       setRecieverId(tripDetail?.userId);
-      setSenderId(tripDetail?.driverId?._id);
     }
   }, [tripDetail]);
 
   useEffect(() => {
+    if(!tripDetail) return
+    setPickUp(tripDetail?.startLocation?.coordinates);
+    setDropoff(tripDetail?.endLocation?.coordinates);
+    if(driverLive.length === 0){
+      setDriverCoords(tripDetail?.driverId?.currentLocation?.coordinates);
+    }
+
     if (tripDetail) { 
       setPickUp(tripDetail?.startLocation?.coordinates);
       setDropoff(tripDetail?.endLocation?.coordinates);
       if(driverLive.length === 0){
         setDriverCoords(tripDetail?.driverId?.currentLocation?.coordinates);
       }
-      
-      const getRoute = async () => {
-        const response = await axios.get(
-          `https://api.mapbox.com/directions/v5/mapbox/driving/${tripDetail?.driverId?.currentLocation?.coordinates[0]},${tripDetail?.driverId?.currentLocation?.coordinates[1]};${tripDetail?.startLocation?.coordinates[0]},${tripDetail?.startLocation?.coordinates[1]};${tripDetail?.endLocation?.coordinates[0]},${tripDetail?.endLocation?.coordinates[1]}?geometries=geojson&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
-        );
-        const routeInfo = response.data;
-        setRoute(routeInfo?.routes[0]?.geometry);
-        if(tripCoordinates.length === 0){
-        const liveCoordinate =   calculateTripCoordinates(routeInfo?.routes[0]?.geometry?.coordinates)
-        setTripCoordintes(liveCoordinate); 
-        }
-      };
       setMapBoundary()
       getRoute();
     }
@@ -150,24 +218,22 @@ function DriverMap() {
 
 
   useEffect(() => {
-    if (!driverLive || !tripDetail) return;
-    setDriverCoords(driverLive);
-    const approx = checkApproxDistance(driverLive, pickup);
-    const dropDestination = checkApproxDistance(driverLive, dropOff);
-    if (approx <= 100) {
-      if (!rideStarted) {
-        setStartRide(true);
-        setRideStarted(true);
-      }
-    } else if (dropDestination <100 ) {
-      completeJourney();
-    } else {
-      setEndRide(false);
-      setStartRide(false);
+    if (tripDetail) {
+      setPickUp(tripDetail.startLocation.coordinates);
+      setDropoff(tripDetail.endLocation.coordinates);
+      setDriverCoords(driverLive.length ? driverLive : tripDetail.driverId.currentLocation.coordinates);
+      setMapBoundary();
+      getRoute();
     }
-  }, [socket,driverLive,tripDetail]);
+  }, [tripDetail, driverLive, getRoute, setMapBoundary]);
 
- 
+  useEffect(() => {
+    console.log('driverLive',driverLive);
+    if (driverLive.length > 0 && tripDetail) {
+      handleNotifications();
+    }
+  }, [driverLive]);
+
 
   const routeLine = {
     id: "route",
@@ -185,6 +251,10 @@ function DriverMap() {
   };
 
   const handleDriverActive = () => {
+    if(tripDetail){
+      toast.error('Option Unavailable Trip Ongoing')
+      return
+    }
     let currentLocation;
     if (!navigator.geolocation) {
       return;
@@ -197,26 +267,38 @@ function DriverMap() {
   };
 
   const handleDriverInactive = () => {
+    if(tripDetail){
+      toast.error('Option Unavailable Trip Ongoing')
+      return
+    }
     dispatch(driverInctive(driver?.id));
   };
 
   const verifyRide = () => {
-    // setStartRide(false);
     setShowOtp(true);
   };
 
   const completeJourney = () => {
+    console.log('function called to complete journey');
+    
     dispatch(
       finishRide({ userId: tripDetail?.userId, tripId: tripDetail?._id })
     );
     localStorage.removeItem('tripCoordsIndex')
+    if(localStorage.getItem('paymentInfo')){
+      localStorage.removeItem('paymentInfo')
+    }
+    setDriverLive([])
   };
 
   useEffect(() => {
     if (message === "Ride Completed SuccessFully") {
+      console.log('inside ',endRide);
+      toast.success('Ride Completed SucesFully! Good Job 🤝',{position:"top-center"})
       setEndRide(true);
+      dispatch(resetDriverTripDetail())
     }
-  }, [socket, message, tripDetail]);
+  }, [message]);
 
   return (
     <div className="flex flex-1 flex-col">
@@ -224,6 +306,7 @@ function DriverMap() {
         <RideStartConfirmationModal
           setShowOtp={setShowOtp}
           setStartRide={setStartRide}
+          recieverId={recieverId}
         />
       )}
       <div className="w-full bg-white border-b border-gray-300 shadow-md p-4 flex items-center justify-between">
@@ -314,17 +397,11 @@ function DriverMap() {
         </div>
       </div>
       {openChat && (
-          // <Chat
-          //   driver={driver}
-          //   recieverId={recieverId}
-          //   senderId={senderId}
-          //   setOpenChat={setOpenChat}
-          // />
           <Chat user={'driver'} setOpenChat={setOpenChat}/>
         )}
-      <AnimatePresence mode="wait">
-        {endRide && <DriverNearByDropOff setEndRide={setEndRide} />}
-      </AnimatePresence>
+      {/* <AnimatePresence mode="wait"> */}
+        {/* {endRide && <DriverNearByDropOff setEndRide={setEndRide} />} */}
+      {/* </AnimatePresence> */}
     </div>
   );
 }

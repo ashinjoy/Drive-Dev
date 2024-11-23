@@ -4,8 +4,9 @@ import { BiUpload } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { userProfileUpdate } from "../../../Features/User/userActions";
 import { MdCancel } from "react-icons/md";
-import { toast } from "react-toastify";
+
 import { reset } from "../../../Features/User/userSlice";
+import toast from "react-hot-toast";
 
 function UserProfilePage() {
   const [name, setName] = useState("");
@@ -60,15 +61,15 @@ function UserProfilePage() {
     form.append("profileImg", profileImg);
     form.append("userId", user?.id);
     if(name == ''){
-      toast('Fill your Name')
+      toast.error('Fill your Name')
     }else if(email == ''){
-      toast('Fill Email Field')
+      toast.error('Fill Email Field')
     }else if(phone == ''){
-      toast('fill phone field')
+      toast.error('fill phone field')
     }else if(!emailRegex.test(email)){
-      toast('provide valid Email')
+      toast.error('provide valid Email')
     }else if(!phoneRegex.test(phone)){
-      toast('provide valid phone')
+      toast.error('provide valid phone')
     }
       else{
       dispatch(userProfileUpdate(form));
@@ -87,7 +88,7 @@ function UserProfilePage() {
 
   useEffect(()=>{
     if(message === 'User Profile updated SuccessFully'){
-      toast(message)
+      toast.success(message)
       dispatch(reset())
       return
     }

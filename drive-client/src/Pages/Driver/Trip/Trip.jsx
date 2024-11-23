@@ -42,7 +42,7 @@ function Trip() {
   <div className="hidden md:flex md:flex-col md:w-[12rem] bg-white border-r border-gray-300 shadow-lg">
     <DriverNavBar/>
   </div>
-         <Map />
+    <Map />
  </div>
     </>
   );

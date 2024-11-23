@@ -128,6 +128,7 @@ export const rideOngoing = createAsyncThunk("rideOngoing",async(userId)=>{
     return response.data
   } catch (error) {
     console.error(error);
+    
   }
 })
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { BiUserCircle } from "react-icons/bi";
@@ -14,6 +14,7 @@ import NearByPickup from "../User/Notification/NearByPickup";
 import UserAccountMenu from "../User/UserAccountMenu/UserAccountMenu";
 import UserNavBarDrawer from "./UserNavBarDrawer";
 import ReviewRating from "../User/Trip/ReviewRating";
+import toast from "react-hot-toast";
 
 function UserNavbar({ driver }) {
   const { user, token } = useSelector((state) => state.user);
@@ -28,45 +29,72 @@ function UserNavbar({ driver }) {
 
   const { socket } = useSocket();
 
-  useEffect(() => {
-    if (!token || !user || !socket) {
-      return;
-    }
+  const handleUserConnected = useCallback(() => {
     socket?.emit("user-connected", userId);
-    socket?.on("request-ride", (data) => {
-      dispatch(setTripData(data));
+  }, [socket, userId]);
+
+  const handleRequestRide = useCallback(
+    (data) => dispatch(setTripData(data)),
+    [dispatch]
+  );
+
+  const handleRideAccept = useCallback(
+    (tripData) => dispatch(setTripData(tripData)),
+    [dispatch]
+  );
+
+  const handleRideStart = useCallback(
+    (data) => dispatch(setTripStatus(data)),
+    [dispatch]
+  );
+
+  const handleLiveUpdates = useCallback((data) => {
+    toast(data?.message, {
+      icon: "🛺",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
     });
-    socket?.on("ride-accept", (tripData) => {
-      dispatch(setTripData(tripData));
-    });
-    return () => {
-      socket?.off("user-connected");
-      socket?.off("ride-accept");
-    };
-  }, [socket, user]);
+  }, []);
+
+  const handleRideComplete = useCallback((data) => {
+    dispatch(setTripStatusComplete());
+    setRideComplete(true);
+    setRideCompleteData(data);
+    setReviewModal(true);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (!token || !user || !tripDetail) {
-      return;
-    }
-    const handleRideStartSocket = (data) => {
-      dispatch(setTripStatus(data));
-    };
+    if (!token || !user || !socket) return;
 
-    const handleRideEndSocket = (data) => {
-      dispatch(setTripStatusComplete());
-      setRideComplete(true);
-      setRideCompleteData(data);
-      setReviewModal(true);
-    };
-    socket?.on("ride-start", handleRideStartSocket);
-    socket?.on("ride-complete", handleRideEndSocket);
+    handleUserConnected();
+    socket?.on("request-ride", handleRequestRide);
+    socket?.on("ride-accept", handleRideAccept);
 
     return () => {
-      socket?.off("ride-start");
-      socket?.off("ride-complete");
+      socket?.off("request-ride", handleRequestRide);
+      socket?.off("ride-accept", handleRideAccept);
     };
-  }, [socket, tripDetail]);
+  }, [token, user, socket, handleUserConnected, handleRequestRide, handleRideAccept]);
+
+
+  useEffect(() => {
+    if (!token || !user || !tripDetail || !socket) return;
+
+    socket?.on("ride-start", handleRideStart);
+    socket?.on("ride-complete", handleRideComplete);
+    socket?.on("tripLive-Updates", handleLiveUpdates);
+
+    return () => {
+      socket?.off("ride-start", handleRideStart);
+      socket?.off("ride-complete", handleRideComplete);
+      socket?.off("tripLive-Updates", handleLiveUpdates);
+    };
+  }, [token, user, tripDetail, socket, handleRideStart, handleRideComplete, handleLiveUpdates]);
+
+  
 
   const toggleMobileMenu = () => {
     setNavDrawer(!navDrawer);
